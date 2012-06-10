@@ -1,0 +1,12 @@
+diff --git a/aBuild.exp b/aBuild.exp
+index cf47a7f..619fa82 100755
+--- a/aBuild.exp
++++ b/aBuild.exp
+@@ -1,7 +1,4 @@
+ #!/usr/bin/expect
+-#
+-# Script for making an Android build
+-#
+ source ~/bin/aLib.exp
+ set timeout 3
+ 

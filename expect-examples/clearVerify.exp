@@ -1,0 +1,84 @@
+#!/usr/bin/expect
+#
+# Script for getting a list of 
+#
+source ~/bin/aLib.exp
+set timeout 3
+
+#
+# create a shell
+spawn bash
+
+if { [llength $argv] == 1 } {
+        set data [lindex $argv 0] 
+} elseif { [llength $argv] == 2 } {
+    set fileToParse [lindex $argv 1] 
+	if { [set fid [open $fileToParse  r]] <= 0} {
+		puts "Failed to open $fileToParse"
+		exit 1
+	}
+	set file_data [read $fid]
+	close $fid
+	set data [split $file_data "\n"]
+
+} else {
+	puts "\n\nUsage: ./clearVerify.exp <change ID> <-f fileName>"
+	exit
+}
+foreach changeId $data {
+	regsub {.*\/(\d+)\/\d+$} $changeId {\1} changeId
+	puts "changeId $changeId"
+	#
+	# if I want to send email to all the offenders
+	set input [lindex $argv 0] 
+	set fMail 0
+	if {$input == "s" } {
+	        puts "send spam\n"
+	        set fMail 1
+	} 
+	#
+	
+	#
+	# set the prompt
+	set lPrompt "uniQuePrompt#"
+	set lCommand "export PS1=$lPrompt\n"
+	if {[sendSimple $lCommand $lPrompt 15]} {exit}
+	
+	set timeout [expr 90]
+	expect -re .* {}
+	
+	set lChanges ""
+	match_max 2000000
+	#
+	# logingto the git-android server
+	#exp_send "ssh git-android sudo /qctgit01/gerrit/cfg/un-verify.sh 1486 letmein\n"
+	set lCommand "ssh git-android.quicinc.com\n"
+	if {[sendSimple $lCommand "\~\>" 60]} {exit}
+	
+	
+	#
+	# set the prompt
+	set lPrompt "uniQuePrompt#"
+	set lCommand "export PS1=$lPrompt\n"
+	if {[sendSimple $lCommand $lPrompt 15]} {exit}
+	
+	set lCommand "cd /gitquic01/admin/scripts\n"
+	if {[sendSimple $lCommand $lPrompt 15]} {exit}
+	set lCommand "pwd\n"
+	if {[sendSimple $lCommand $lPrompt 15]} {exit}
+	set timeout 30
+	exp_send "./un-verify.sh $changeId\n"
+	expect {
+		-re {\r\nPassword for user gerrit2:} {
+			exp_send "letmein\n"
+			puts "made it2\n"
+			exp_continue
+		}
+		-re (.*)\r\n$lPrompt {
+			#puts "\1\n"
+			set lChanges $expect_out(1,string)
+		}
+		timeout {puts "Get Verified Changes Failed\n" }
+	}
+	if {[sendSimple "exit\n" $lPrompt 15]} {exit}
+}

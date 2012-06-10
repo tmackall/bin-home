@@ -1,0 +1,159 @@
+#!/usr/bin/expect
+#
+# This script generates Testing statistics
+#
+package require xml
+#package require parserclass 
+source ~/bin/aLib.exp
+set timeout 3
+
+
+#
+# get the currect time for reference
+set currDate [clock format [clock seconds]] 
+set currTime [clock seconds]
+
+#
+# proc to handle file data
+proc processFile { inFileName inFileContents outSummArray} { 
+	upvar 1 $outSummArray arr
+	foreach line $inFileContents {
+		if { [regexp {^(PASS|FAIL|XFAIL|XPASS): *(.*)} $line a match match1]} {
+			puts "testname $match1"
+			set arr($inFileName-TestName-$match1) $match
+		}
+	}
+}
+
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+set fileContents [list]
+set dirList [list]
+
+#
+#****** grab all test directories ******
+set timeout 200
+set command "find /prj/lnxbuild/workspaces -name reports"
+set lChanges  [sendAndReturnOutput $command $lPrompt 200]
+#
+#***** open all of the summary files and process them *****
+foreach item [split $lChanges "\r\n"] {
+	if { [regexp {^\/} $item] } { 
+		set dirList [glob -nocomplain -directory $item *.sum]
+		foreach file $dirList {
+			puts "file: $file"
+			regexp {.*\/(.*\.sum)} $file a fileOnly
+			set fileContents [list]
+	  		set fid [open $file  r]
+	   		while { ![eof $fid] } {
+	      		# Read a line from the file and analyse it.
+	      		gets $fid line
+				lappend fileContents $line
+			}
+			processFile $fileOnly $fileContents fileArray
+			close $fid
+		}
+	}
+}
+#
+#***** create the report file *****
+set totFail 0
+set totPass 0
+set totXfail 0
+set totXpass 0
+set fileName "/tmp/testStatsReport.out"
+set f [open $fileName w]
+foreach {key value} [array get fileArray] {
+	#puts $f "Test: $key - $value"
+	regexp {.*-TestName-(.*)} $key a sKey
+	if {[regexp {^PASS$} $value]} {
+		incr totPass
+		if { ![info exist aPass($sKey)]} {
+			set aPass($sKey) 1
+		} else {
+			incr aPass($sKey)
+		}
+	} elseif {[regexp {^FAIL$} $value]} {
+		incr totFail
+		if { ![info exist aFail($sKey)]} {
+			set aFail($sKey) 1
+		} else {
+			incr aFail($sKey)
+		}
+	} elseif {[regexp {XFAIL} $value]} {
+		incr totXfail
+		if { ![info exist aXFail($sKey)]} {
+			set aXFail($sKey) 1
+		} else {
+			incr aXFail($sKey)
+		}
+	} elseif {[regexp {XPASS} $value]} {
+		incr totXpass
+		if { ![info exist aXPass($sKey)]} {
+			set aXPass($sKey) 1
+		} else {
+			incr aXPass($sKey)
+		}
+	} else {
+		puts "$key Unexpected status: $value"
+		puts $f "$key Unexpected status: $value"
+	}
+
+}
+puts $f "Test Statistics : $currDate\n\n"
+puts $f "Total # passes: $totPass"
+puts $f "Total # unexpected fails: $totFail"
+puts $f "Total # expected fails: $totXfail"
+puts $f "Total # unexpected passes: $totXpass\n\n"
+set tList [list]
+puts $f "\n\nTests that passed and the number of passes:"
+foreach {key value} [array get aPass] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that failed and the number of failures:"
+foreach {key value} [array get aFail] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that failed expectedly and the number of failures:"
+foreach {key value} [array get aXFail] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that passed unexpectedly and the number of passes:"
+foreach {key value} [array get aXPass] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+close $f
+
+#
+# mail results to me
+set lCommand "mail tmackall  -s \
+	\"ABAIT Test Statistics\" \
+	< $fileName\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}

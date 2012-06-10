@@ -1,0 +1,10 @@
+/home/tmackall/django_src
+/home/tmackall/Desktop
+/home/tmackall/Music
+/home/tmackall/Pictures
+/home/tmackall/Videos
+/home/tmackall/media
+*.tgz
+/home/tmackall/.gvfs
+
+

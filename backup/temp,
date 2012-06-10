@@ -1,0 +1,3143 @@
+ectool getJobDetails --jobId  2358396
+
+<response requestId="1">
+
+    <job>
+
+      <jobId>2358396</jobId>
+
+      <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+      <createTime>2011-11-02T10:53:52.775Z</createTime>
+
+      <directoryName>load_and_test_msm8660_surf__2358396</directoryName>
+
+      <elapsedTime>1123608</elapsedTime>
+
+      <finish>2011-11-02T11:12:36.383Z</finish>
+
+      <lastModifiedBy>admin</lastModifiedBy>
+
+      <launchedByUser>project: Android_main</launchedByUser>
+
+      <modifyTime>2011-11-02T11:12:37.778Z</modifyTime>
+
+      <outcome>success</outcome>
+
+      <owner>project: Android_main</owner>
+
+      <priority>normal</priority>
+
+      <procedureName>load_and_test_one_resource</procedureName>
+
+      <start>2011-11-02T10:53:52.775Z</start>
+
+      <status>completed</status>
+
+      <liveProcedure>load_and_test_one_resource</liveProcedure>
+
+      <projectName>Android_main</projectName>
+
+      <propertySheet>
+
+        <propertySheetId>47440475</propertySheetId>
+
+        <createTime>2011-11-02T10:53:52.775Z</createTime>
+
+        <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+        <modifyTime>2011-11-02T11:12:35.920Z</modifyTime>
+
+        <owner>project: Android_main</owner>
+
+        <property>
+
+          <propertyId>243340201</propertyId>
+
+          <propertyName>DLTB</propertyName>
+
+          <createTime>2011-11-02T10:54:31.929Z</createTime>
+
+          <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:31.930Z</modifyTime>
+
+          <owner>project: Linux_Common</owner>
+
+          <propertySheetId>47440652</propertySheetId>
+
+        </property>
+
+        <property>
+
+          <propertyId>243340070</propertyId>
+
+          <propertyName>automation_tools</propertyName>
+
+          <createTime>2011-11-02T10:54:21.733Z</createTime>
+
+          <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:21.736Z</modifyTime>
+
+          <owner>project: Linux_Common</owner>
+
+          <propertySheetId>47440629</propertySheetId>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341210</propertyId>
+
+          <propertyName>ec_ui</propertyName>
+
+          <createTime>2011-11-02T10:54:55.343Z</createTime>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:55.345Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <propertySheetId>47440776</propertySheetId>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341055</propertyId>
+
+          <propertyName>report-urls</propertyName>
+
+          <createTime>2011-11-02T10:54:53.355Z</createTime>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:53.357Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <propertySheetId>47440767</propertySheetId>
+
+        </property>
+
+        <property>
+
+          <propertyId>243340101</propertyId>
+
+          <propertyName>automation_tools_synced</propertyName>
+
+          <createTime>2011-11-02T10:54:24.138Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:24.138Z</modifyTime>
+
+          <owner>project: Linux_Common</owner>
+
+          <value>1</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339064</propertyId>
+
+          <propertyName>build_debug_variant</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339065</propertyId>
+
+          <propertyName>dev_git_pull_line</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243340211</propertyId>
+
+          <propertyName>do-not-delete-automation-tools</propertyName>
+
+          <createTime>2011-11-02T10:54:32.544Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:32.544Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>1</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243358569</propertyId>
+
+          <propertyName>error_class</propertyName>
+
+          <createTime>2011-11-02T11:12:35.918Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T11:12:35.918Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <value>none</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339066</propertyId>
+
+          <propertyName>fastboot_only_load_boot</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339067</propertyId>
+
+          <propertyName>force_load</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339068</propertyId>
+
+          <propertyName>force_use_load_target_pl</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339069</propertyId>
+
+          <propertyName>generic_perl_command_args</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339070</propertyId>
+
+          <propertyName>lab_machine_type</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>linux</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339071</propertyId>
+
+          <propertyName>leave_t32_running</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339072</propertyId>
+
+          <propertyName>manifest_branch</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>gingerbread_house</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339073</propertyId>
+
+          <propertyName>modem_crm_build_id</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.778Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243341918</propertyId>
+
+          <propertyName>msm8660_surf_booted</propertyName>
+
+          <createTime>2011-11-02T10:55:07.303Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T11:06:12.060Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <value>1</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341028</propertyId>
+
+          <propertyName>msm8660_surf_droid_host_hostname</propertyName>
+
+          <createTime>2011-11-02T10:54:52.463Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:52.463Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>abait47-lnx</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341010</propertyId>
+
+          <propertyName>msm8660_surf_droid_host_resource</propertyName>
+
+          <createTime>2011-11-02T10:54:50.071Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:50.072Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>abait47-lnx_droid_host</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341914</propertyId>
+
+          <propertyName>msm8660_surf_loaded</propertyName>
+
+          <createTime>2011-11-02T10:55:07.000Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T11:03:22.594Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <value>1</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341009</propertyId>
+
+          <propertyName>msm8660_surf_modem-apis-dir</propertyName>
+
+          <createTime>2011-11-02T10:54:49.733Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:51.754Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>/local/mnt/workspace/lnxbuild/project/update_modem_msm8660_surf_2358263/checkout/vendor/qcom/proprietary/modem-apis/msm8660_surf</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243358122</propertyId>
+
+          <propertyName>msm8660_surf_outcome</propertyName>
+
+          <createTime>2011-11-02T11:12:28.001Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T11:12:28.001Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <value>success</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341024</propertyId>
+
+          <propertyName>msm8660_surf_project_dir_unc</propertyName>
+
+          <createTime>2011-11-02T10:54:52.125Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:52.125Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>//abait47-lnx/workspace/lnxbuild/project/update_modem_msm8660_surf_2358263</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341849</propertyId>
+
+          <propertyName>msm8660_surf_resource</propertyName>
+
+          <createTime>2011-11-02T10:55:06.698Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:55:06.698Z</modifyTime>
+
+          <owner>project: Android_Common</owner>
+
+          <value>abaitci20-lnx_lab_machine</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341038</propertyId>
+
+          <propertyName>msm8660_surf_retry</propertyName>
+
+          <createTime>2011-11-02T10:54:53.007Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T11:06:13.787Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341030</propertyId>
+
+          <propertyName>non_ci_project_host</propertyName>
+
+          <createTime>2011-11-02T10:54:52.734Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:52.734Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339074</propertyId>
+
+          <propertyName>parent_job_id</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>2358263</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339075</propertyId>
+
+          <propertyName>project_dir</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>/local/mnt/workspace/lnxbuild/project/update_modem_msm8660_surf_2358263</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339076</propertyId>
+
+          <propertyName>project_dir_host</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>abait47-lnx</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339077</propertyId>
+
+          <propertyName>provisioning</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>none</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243341014</propertyId>
+
+          <propertyName>qcom-prop-slash-or-dash</propertyName>
+
+          <createTime>2011-11-02T10:54:50.568Z</createTime>
+
+          <expandable>1</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:54:51.163Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>/</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339078</propertyId>
+
+          <propertyName>resource_pool</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339079</propertyId>
+
+          <propertyName>site_overrides</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339080</propertyId>
+
+          <propertyName>specific_esn</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339081</propertyId>
+
+          <propertyName>specific_resource</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339082</propertyId>
+
+          <propertyName>target</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>msm8660_surf</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339083</propertyId>
+
+          <propertyName>task_name</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value />
+
+        </property>
+
+        <property>
+
+          <propertyId>243339084</propertyId>
+
+          <propertyName>test_dev</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>0</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339085</propertyId>
+
+          <propertyName>tests_sets</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>CI</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339086</propertyId>
+
+          <propertyName>times_to_loop_testing</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.779Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>1</value>
+
+        </property>
+
+        <property>
+
+          <propertyId>243339087</propertyId>
+
+          <propertyName>use_fastboot</propertyName>
+
+          <createTime>2011-11-02T10:53:52.778Z</createTime>
+
+          <expandable>0</expandable>
+
+          <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:52.780Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <value>1</value>
+
+        </property>
+
+      </propertySheet>
+
+      <jobStep>
+
+        <jobStepId>59030518</jobStepId>
+
+        <stepName>setup_distributed_test_bed</stepName>
+
+        <alwaysRun>0</alwaysRun>
+
+        <broadcast>0</broadcast>
+
+        <condition>load_and_test_</condition>
+
+        <createTime>2011-11-02T10:53:52.883Z</createTime>
+
+        <elapsedTime>38087</elapsedTime>
+
+        <errorHandling>failProcedure</errorHandling>
+
+        <exclusive>0</exclusive>
+
+        <exitCode>0</exitCode>
+
+        <finish>2011-11-02T10:54:32.315Z</finish>
+
+        <lastModifiedBy>admin</lastModifiedBy>
+
+        <logFileName>setup_distributed_te.59030518.log</logFileName>
+
+        <modifyTime>2011-11-02T11:12:37.778Z</modifyTime>
+
+        <outcome>success</outcome>
+
+        <owner>project: Android_main</owner>
+
+        <parallel>0</parallel>
+
+        <postExitCode>0</postExitCode>
+
+        <postLogFileName>setup_distributed_te.59030518-postp.log</postLogFileName>
+
+        <procedureName>load_and_test_one_resource</procedureName>
+
+        <releaseExclusive>0</releaseExclusive>
+
+        <retries>0</retries>
+
+        <runTime>0</runTime>
+
+        <runnable>2011-11-02T10:53:53.427Z</runnable>
+
+        <start>2011-11-02T10:53:54.228Z</start>
+
+        <status>completed</status>
+
+        <subprocedure>create_DLTB_properties</subprocedure>
+
+        <subproject>Linux_Common</subproject>
+
+        <timeLimit />
+
+        <waitTime>801</waitTime>
+
+        <jobId>2358396</jobId>
+
+        <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+        <liveProcedure>load_and_test_one_resource</liveProcedure>
+
+        <liveProcedureStep>setup_distributed_test_bed</liveProcedureStep>
+
+        <projectName>Android_main</projectName>
+
+        <propertySheet>
+
+          <propertySheetId>47440479</propertySheetId>
+
+          <createTime>2011-11-02T10:53:53.442Z</createTime>
+
+          <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+          <modifyTime>2011-11-02T10:53:53.740Z</modifyTime>
+
+          <owner>project: Android_main</owner>
+
+          <property>
+
+            <propertyId>243339119</propertyId>
+
+            <propertyName>branch</propertyName>
+
+            <createTime>2011-11-02T10:53:53.442Z</createTime>
+
+            <expandable>0</expandable>
+
+            <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+            <modifyTime>2011-11-02T10:53:53.467Z</modifyTime>
+
+            <owner>project: Android_main</owner>
+
+            <value>gingerbread_house</value>
+
+          </property>
+
+          <property>
+
+            <propertyId>243339143</propertyId>
+
+            <propertyName>delete-automation-tools</propertyName>
+
+            <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+            <expandable>1</expandable>
+
+            <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+            <modifyTime>2011-11-02T10:53:53.715Z</modifyTime>
+
+            <owner>project: Linux_Common</owner>
+
+            <value>1</value>
+
+          </property>
+
+          <property>
+
+            <propertyId>243339120</propertyId>
+
+            <propertyName>resource</propertyName>
+
+            <createTime>2011-11-02T10:53:53.442Z</createTime>
+
+            <expandable>0</expandable>
+
+            <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+            <modifyTime>2011-11-02T10:53:53.467Z</modifyTime>
+
+            <owner>project: Android_main</owner>
+
+            <value>linux_task_host</value>
+
+          </property>
+
+          <property>
+
+            <propertyId>243339121</propertyId>
+
+            <propertyName>site_overrides</propertyName>
+
+            <createTime>2011-11-02T10:53:53.442Z</createTime>
+
+            <expandable>0</expandable>
+
+            <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+            <modifyTime>2011-11-02T10:53:53.467Z</modifyTime>
+
+            <owner>project: Android_main</owner>
+
+            <value />
+
+          </property>
+
+          <property>
+
+            <propertyId>243339122</propertyId>
+
+            <propertyName>target_list</propertyName>
+
+            <createTime>2011-11-02T10:53:53.442Z</createTime>
+
+            <expandable>0</expandable>
+
+            <lastModifiedBy>project: Android_main</lastModifiedBy>
+
+            <modifyTime>2011-11-02T10:53:53.467Z</modifyTime>
+
+            <owner>project: Android_main</owner>
+
+            <value>msm8660_surf</value>
+
+          </property>
+
+        </propertySheet>
+
+        <calledProcedure>
+
+          <jobStep>
+
+            <jobStepId>59030545</jobStepId>
+
+            <stepName>sync_automation_tools</stepName>
+
+            <alwaysRun>0</alwaysRun>
+
+            <broadcast>0</broadcast>
+
+            <condition>1</condition>
+
+            <createTime>2011-11-02T10:53:53.443Z</createTime>
+
+            <elapsedTime>36248</elapsedTime>
+
+            <errorHandling>failProcedure</errorHandling>
+
+            <exclusive>0</exclusive>
+
+            <exitCode>0</exitCode>
+
+            <finish>2011-11-02T10:54:30.454Z</finish>
+
+            <lastModifiedBy>admin</lastModifiedBy>
+
+            <logFileName>sync_automation_tool.59030545.log</logFileName>
+
+            <modifyTime>2011-11-02T11:12:37.779Z</modifyTime>
+
+            <outcome>success</outcome>
+
+            <owner>project: Android_main</owner>
+
+            <parallel>0</parallel>
+
+            <postExitCode>0</postExitCode>
+
+            <postLogFileName>sync_automation_tool.59030545-postp.log</postLogFileName>
+
+            <procedureName>/projects/Linux_Common/procedures/create_DLTB_properties</procedureName>
+
+            <releaseExclusive>0</releaseExclusive>
+
+            <retries>0</retries>
+
+            <runTime>0</runTime>
+
+            <runnable>2011-11-02T10:53:53.619Z</runnable>
+
+            <start>2011-11-02T10:53:54.206Z</start>
+
+            <status>completed</status>
+
+            <subprocedure>sync_automation_tools</subprocedure>
+
+            <subproject>Linux_Common</subproject>
+
+            <timeLimit />
+
+            <waitTime>587</waitTime>
+
+            <jobId>2358396</jobId>
+
+            <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+            <liveProcedure>/projects/Linux_Common/procedures/create_DLTB_properties</liveProcedure>
+
+            <liveProcedureStep>sync_automation_tools</liveProcedureStep>
+
+            <projectName>Linux_Common</projectName>
+
+            <propertySheet>
+
+              <propertySheetId>47440485</propertySheetId>
+
+              <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+              <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+              <modifyTime>2011-11-02T10:54:24.519Z</modifyTime>
+
+              <owner>project: Linux_Common</owner>
+
+              <property>
+
+                <propertyId>243339245</propertyId>
+
+                <propertyName>automation_tools</propertyName>
+
+                <createTime>2011-11-02T10:53:57.124Z</createTime>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:57.126Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <propertySheetId>47440508</propertySheetId>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339365</propertyId>
+
+                <propertyName>auto_tools_branch</propertyName>
+
+                <createTime>2011-11-02T10:53:58.657Z</createTime>
+
+                <expandable>1</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:58.657Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>master</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339358</propertyId>
+
+                <propertyName>auto_tools_myjob_git_cmd</propertyName>
+
+                <createTime>2011-11-02T10:53:58.121Z</createTime>
+
+                <expandable>1</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:58.121Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value />
+
+              </property>
+
+              <property>
+
+                <propertyId>243339361</propertyId>
+
+                <propertyName>auto_tools_state_git_cmd</propertyName>
+
+                <createTime>2011-11-02T10:53:58.384Z</createTime>
+
+                <expandable>1</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:58.384Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value />
+
+              </property>
+
+              <property>
+
+                <propertyId>243339144</propertyId>
+
+                <propertyName>branch</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>master</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339145</propertyId>
+
+                <propertyName>dummy</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>1</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339146</propertyId>
+
+                <propertyName>force</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>1</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339147</propertyId>
+
+                <propertyName>resource</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>abait_sync_automation_tools_mutex</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339148</propertyId>
+
+                <propertyName>site</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value />
+
+              </property>
+
+              <property>
+
+                <propertyId>243339149</propertyId>
+
+                <propertyName>suppress_warnings</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>0</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243340102</propertyId>
+
+                <propertyName>sync_auto_tools_mode</propertyName>
+
+                <createTime>2011-11-02T10:54:24.515Z</createTime>
+
+                <expandable>1</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:54:24.515Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>sync</value>
+
+              </property>
+
+              <property>
+
+                <propertyId>243339150</propertyId>
+
+                <propertyName>test_production</propertyName>
+
+                <createTime>2011-11-02T10:53:53.715Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>0</value>
+
+              </property>
+
+            </propertySheet>
+
+            <calledProcedure>
+
+              <jobStep>
+
+                <jobStepId>59030554</jobStepId>
+
+                <stepName>setup</stepName>
+
+                <alwaysRun>0</alwaysRun>
+
+                <assignedResourceName>bait-task09-lnx_linux_task_host</assignedResourceName>
+
+                <broadcast>0</broadcast>
+
+                <command>#!/bin/bash
+
+# Have bash exit on error and output commands
+
+# along with a timestamp.
+
+export PS4="+ [\t] "
+
+set -o errexit
+
+set -o nounset
+
+set -o pipefail
+
+# set -o xtrace
+
+
+
+##assign_ec_vars() and print_ec_vars()
+
+#Assign vars based on ec_properties
+
+assign_ec_vars() {
+
+
+
+    myjob_auto_tools_synced=$(ectool getProperty /myJob/automation_tools_synced 2>> /dev/null) ||
+
+       myjob_auto_tools_synced=''
+
+
+
+    myjob_git_cmd=$(ectool getProperty /myJob/dev_git_pull_line 2>> /dev/null) ||
+
+       myjob_git_cmd=''
+
+    state_git_cmd=$(ectool getProperty /projects/BAIT_Cmdr_State/automation_tools/dev_git_cmds 2>> /dev/null) ||
+
+       state_git_cmd=''
+
+
+
+    cmdr_env=$(ectool getProperty /server/environment) ||
+
+      cmdr_env='production'
+
+
+
+#Requested values saved from when sync was made if run earlier
+
+    saved_req_branch=$(ectool getProperty /myJob/automation_tools/req_branch 2>> /dev/null) ||
+
+       saved_req_branch=''
+
+    saved_req_myjob_git_cmd=$(ectool getProperty /myJob/automation_tools/req_dev_git_pull_line 2>> /dev/null) ||
+
+       saved_req_myjob_git_cmd=''
+
+    saved_req_state_git_cmd=$(ectool getProperty /myJob/automation_tools/req_dev_git_cmds 2>> /dev/null) ||
+
+       saved_req_state_git_cmd=''
+
+
+
+#Values that were actually used when sync was made
+
+    saved_run_branch=$(ectool getProperty /myJob/automation_tools/run_branch 2>> /dev/null) ||
+
+       saved_run_branch=''
+
+    saved_run_myjob_git_cmd=$(ectool getProperty /myJob/automation_tools/run_dev_git_pull_line 2>> /dev/null) ||
+
+       saved_run_myjob_git_cmd=''
+
+    saved_run_state_git_cmd=$(ectool getProperty /myJob/automation_tools/run_dev_git_cmds 2>> /dev/null) ||
+
+      saved_run_state_git_cmd=''
+
+
+
+}
+
+
+
+#Print out vars assigned in assign_ec_vars()
+
+print_ec_vars() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Server Properties:
+
+/server/environment: \`$cmdr_env'
+
+
+
+State Project Properties:
+
+/projects/gregt_tip_BAIT_Cmdr_State/automation_tools/dev_git_cmds: \`$state_git_cmd'
+
+
+
+Job Properties:
+
+/myJob/automation_tools_synced: \`$myjob_auto_tools_synced'
+
+/myJob/automation_tools/req_branch: \`$saved_req_branch'
+
+/myJob/automation_tools/req_dev_git_pull_line: \`$saved_req_myjob_git_cmd'
+
+/myJob/automation_tools/req_dev_git_cmds: \`$saved_req_state_git_cmd'
+
+/myJob/automation_tools/run_branch: \`$saved_run_branch'
+
+/myJob/automation_tools/run_dev_git_pull_line: \`$saved_run_myjob_git_cmd'
+
+/myJob/automation_tools/run_dev_git_cmds: \`$saved_run_state_git_cmd'
+
+/myJob/dev_git_pull_line: \`$myjob_git_cmd'
+
+
+
+EOF
+
+)
+
+    echo -e "$output\n"
+
+}
+
+
+
+
+
+#Trim leading and trailing white space from var
+
+trim() {
+
+    #two echoes needed to handle &amp;&amp; or ; in string
+
+    eval $1=$(echo $(echo '${!1}'))
+
+}
+
+
+
+check_req_change() {
+
+    if [ "$2" != "$3" ]; then
+
+        msg=$(cat &lt;&lt;EOF
+
+Warning: Requested \`$1' has changed since sync!
+
+Current Value:\`$2'
+
+Requested Value at sync:\`$3'
+
+Use remove_automation_tools to force a resync
+
+EOF
+
+)
+
+        echo -e "$msg\n"
+
+    fi
+
+}
+
+
+
+check_run_diff() {
+
+    if [ "$2" != "$3" ]; then
+
+        msg=$(cat &lt;&lt;EOF
+
+Warning: Requested \`$1' not used even with force=1!
+
+Requested Value:\`$2'
+
+Synced Value:\`$3'
+
+Use remove_automation_tools to force a resync
+
+EOF
+
+)
+
+        echo -e "$msg\n"
+
+    fi
+
+}
+
+
+
+assign_input_parms() {
+
+
+
+    branch='master' &amp;&amp; trim branch
+
+    [ -z "$branch" ] &amp;&amp;
+
+      branch='master'
+
+    trim branch
+
+    [ -z "$branch" ] &amp;&amp; branch='master'
+
+
+
+    force='1' &amp;&amp; trim force
+
+    if [ $force -eq 0 ]; then
+
+        force=false
+
+    else
+
+        force=true
+
+    fi
+
+
+
+    test_prod='0' &amp;&amp; trim test_prod
+
+
+
+}
+
+
+
+assign_control_vars() {
+
+
+
+    [ $test_prod -ne 0 ] &amp;&amp; cmdr_env='production'
+
+
+
+    #True if we are running in production manner
+
+    production=false
+
+    if [ "$cmdr_env" == 'production' ] &amp;&amp; ! $force; then
+
+        production=true
+
+    fi
+
+
+
+}
+
+
+
+print_input_parms() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Input Parameters used in command (after processing):
+
+branch: \`$branch' (set to \`master' if empty)
+
+force: \`$force'
+
+test_production: \`$test_prod'
+
+
+
+EOF
+
+)
+
+
+
+    echo -e "$output\n"
+
+}
+
+
+
+print_control_vars() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Control Vars:
+
+cmdr_env: \`$cmdr_env'
+
+production: \`$production' (True if running in production manner)
+
+
+
+EOF
+
+)
+
+    echo -e "$output\n"
+
+}
+
+
+
+assign_input_parms
+
+print_input_parms
+
+
+
+assign_ec_vars
+
+print_ec_vars
+
+
+
+assign_control_vars
+
+print_control_vars
+
+
+
+ectool setProperty /myCall/automation_tools/req_branch "$branch" >> /dev/null
+
+ectool setProperty /myCall/automation_tools/req_dev_git_pull_line "$myjob_git_cmd" >> /dev/null
+
+ectool setProperty /myCall/automation_tools/req_dev_git_cmds "$state_git_cmd" >> /dev/null
+
+
+
+if $production; then
+
+    branch='master'
+
+    myjob_git_cmd=''
+
+    state_git_cmd=''
+
+    echo "In production env, branch forced to \`master' and no dev git commands allowed"
+
+fi
+
+
+
+ectool setProperty /myCall/auto_tools_myjob_git_cmd "$myjob_git_cmd"
+
+ectool setProperty /myCall/auto_tools_state_git_cmd "$state_git_cmd"
+
+ectool setProperty /myCall/auto_tools_branch "$branch"
+
+
+
+exit 0</command>
+
+                <condition>1</condition>
+
+                <createTime>2011-11-02T10:53:53.717Z</createTime>
+
+                <elapsedTime>4740</elapsedTime>
+
+                <errorHandling>failProcedure</errorHandling>
+
+                <exclusive>0</exclusive>
+
+                <exitCode>0</exitCode>
+
+                <finish>2011-11-02T10:53:58.934Z</finish>
+
+                <hostName>bait-task09-lnx.qualcomm.com</hostName>
+
+                <lastModifiedBy>admin</lastModifiedBy>
+
+                <logFileName>setup.59030554.log</logFileName>
+
+                <modifyTime>2011-11-02T11:12:37.779Z</modifyTime>
+
+                <outcome>success</outcome>
+
+                <owner>project: Linux_Common</owner>
+
+                <parallel>0</parallel>
+
+                <postExitCode>0</postExitCode>
+
+                <postLogFileName>setup.59030554-postp.log</postLogFileName>
+
+                <postProcessor>postp</postProcessor>
+
+                <procedureName>/projects/Linux_Common/procedures/sync_automation_tools</procedureName>
+
+                <releaseExclusive>0</releaseExclusive>
+
+                <resourceName>linux_task_host</resourceName>
+
+                <retries>0</retries>
+
+                <runTime>4651</runTime>
+
+                <runnable>2011-11-02T10:53:53.738Z</runnable>
+
+                <shell>/bin/bash</shell>
+
+                <start>2011-11-02T10:53:54.194Z</start>
+
+                <status>completed</status>
+
+                <timeLimit />
+
+                <waitTime>456</waitTime>
+
+                <workingDirectory />
+
+                <workspaceName>massive</workspaceName>
+
+                <jobId>2358396</jobId>
+
+                <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+                <liveProcedure>/projects/Linux_Common/procedures/sync_automation_tools</liveProcedure>
+
+                <liveProcedureStep>setup</liveProcedureStep>
+
+                <projectName>Linux_Common</projectName>
+
+                <propertySheet>
+
+                  <propertySheetId>47440517</propertySheetId>
+
+                  <createTime>2011-11-02T10:53:58.789Z</createTime>
+
+                  <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                  <modifyTime>2011-11-02T10:53:58.791Z</modifyTime>
+
+                  <owner>project: Linux_Common</owner>
+
+                  <property>
+
+                    <propertyId>243339367</propertyId>
+
+                    <propertyName>charEncoding</propertyName>
+
+                    <createTime>2011-11-02T10:53:58.789Z</createTime>
+
+                    <expandable>1</expandable>
+
+                    <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                    <modifyTime>2011-11-02T10:53:58.789Z</modifyTime>
+
+                    <owner>project: Linux_Common</owner>
+
+                    <value>ISO-8859-1</value>
+
+                  </property>
+
+                </propertySheet>
+
+              </jobStep>
+
+              <jobStep>
+
+                <jobStepId>59030555</jobStepId>
+
+                <stepName>sync_automation_tools</stepName>
+
+                <alwaysRun>0</alwaysRun>
+
+                <assignedResourceName>abait_sync_automation_tools_mutex</assignedResourceName>
+
+                <broadcast>0</broadcast>
+
+                <command>#!/bin/bash
+
+# Have bash exit on error and output commands
+
+# along with a timestamp.
+
+export PS4="+ [\t] "
+
+set -o errexit
+
+set -o nounset
+
+set -o pipefail
+
+# set -o xtrace
+
+
+
+mode="sync"
+
+if [ -d $COMMANDER_WORKSPACE/automation/tools ]; then
+
+  mode="print"
+
+fi
+
+
+
+case $mode in
+
+"sync") 
+
+  myjob_git_cmd=""
+
+  state_git_cmd=""
+
+  branch="master"
+
+
+
+  (
+
+      set -o xtrace
+
+      # Sync tools repo
+
+      cd $COMMANDER_WORKSPACE
+
+      mkdir automation
+
+      cd automation
+
+
+
+      git clone git://git-android.quicinc.com/automation/tools -b "$branch"
+
+
+
+     # Run dev git commands
+
+      cd tools
+
+      if [ "$myjob_git_cmd" -o "$state_git_cmd" ]; then
+
+          eval $myjob_git_cmd
+
+          eval $state_git_cmd
+
+      fi
+
+  )
+
+
+
+
+
+  ectool setProperty /myJob/automation_tools/req_branch "master" >> /dev/null
+
+  ectool setProperty /myJob/automation_tools/req_dev_git_pull_line "" >> /dev/null
+
+  ectool setProperty /myJob/automation_tools/req_dev_git_cmds "" >> /dev/null
+
+
+
+  ectool setProperty /myJob/automation_tools/run_branch "$branch" >> /dev/null
+
+  ectool setProperty /myJob/automation_tools/run_dev_git_pull_line "$myjob_git_cmd" >> /dev/null
+
+  ectool setProperty /myJob/automation_tools/run_dev_git_cmds "$state_git_cmd" >> /dev/null
+
+  ectool setProperty /myJob/automation_tools_synced 1 >> /dev/null
+
+
+
+  ;;
+
+esac
+
+
+
+ectool setProperty /myCall/sync_auto_tools_mode "$mode"
+
+
+
+exit 0
+
+</command>                <condition>1</condition>
+
+                <createTime>2011-11-02T10:53:53.722Z</createTime>
+
+                <elapsedTime>7808</elapsedTime>
+
+                <errorHandling>failProcedure</errorHandling>
+
+                <exclusive>0</exclusive>
+
+                <exitCode>0</exitCode>
+
+                <finish>2011-11-02T10:54:24.683Z</finish>
+
+                <hostName>bait-task02-lnx.qualcomm.com</hostName>
+
+                <lastModifiedBy>admin</lastModifiedBy>
+
+                <logFileName>sync_automation_tool.59030555.log</logFileName>
+
+                <modifyTime>2011-11-02T11:12:37.779Z</modifyTime>
+
+                <outcome>success</outcome>
+
+                <owner>project: Linux_Common</owner>
+
+                <parallel>0</parallel>
+
+                <postExitCode>0</postExitCode>
+
+                <postLogFileName>sync_automation_tool.59030555-postp.log</postLogFileName>
+
+                <postProcessor>postp</postProcessor>
+
+                <procedureName>/projects/Linux_Common/procedures/sync_automation_tools</procedureName>
+
+                <releaseExclusive>0</releaseExclusive>
+
+                <resourceName>abait_sync_automation_tools_mutex</resourceName>
+
+                <retries>0</retries>
+
+                <runTime>7761</runTime>
+
+                <runnable>2011-11-02T10:53:58.956Z</runnable>
+
+                <shell>/bin/bash</shell>
+
+                <start>2011-11-02T10:54:16.875Z</start>
+
+                <status>completed</status>
+
+                <timeLimit />
+
+                <waitTime>17919</waitTime>
+
+                <workingDirectory />
+
+                <workspaceName>massive</workspaceName>
+
+                <jobId>2358396</jobId>
+
+                <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+                <liveProcedure>/projects/Linux_Common/procedures/sync_automation_tools</liveProcedure>
+
+                <liveProcedureStep>sync_automation_tools</liveProcedureStep>
+
+                <projectName>Linux_Common</projectName>
+
+                <propertySheet>
+
+                  <propertySheetId>47440635</propertySheetId>
+
+                  <createTime>2011-11-02T10:54:24.576Z</createTime>
+
+                  <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                  <modifyTime>2011-11-02T10:54:24.578Z</modifyTime>
+
+                  <owner>project: Linux_Common</owner>
+
+                  <property>
+
+                    <propertyId>243340103</propertyId>
+
+                    <propertyName>charEncoding</propertyName>
+
+                    <createTime>2011-11-02T10:54:24.576Z</createTime>
+
+                    <expandable>1</expandable>
+
+                    <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                    <modifyTime>2011-11-02T10:54:24.576Z</modifyTime>
+
+                    <owner>project: Linux_Common</owner>
+
+                    <value>ISO-8859-1</value>
+
+                  </property>
+
+                </propertySheet>
+
+              </jobStep>
+
+              <jobStep>
+
+                <jobStepId>59030556</jobStepId>
+
+                <stepName>teardown</stepName>
+
+                <alwaysRun>0</alwaysRun>
+
+                <assignedResourceName>bait-task13-lnx_linux_task_host</assignedResourceName>
+
+                <broadcast>0</broadcast>
+
+                <command>#!/bin/bash
+
+# Have bash exit on error and output commands
+
+# along with a timestamp.
+
+export PS4="+ [\t] "
+
+set -o errexit
+
+set -o nounset
+
+set -o pipefail
+
+# set -o xtrace
+
+
+
+##assign_ec_vars() and print_ec_vars()
+
+#Assign vars based on ec_properties
+
+assign_ec_vars() {
+
+
+
+    myjob_auto_tools_synced=$(ectool getProperty /myJob/automation_tools_synced 2>> /dev/null) ||
+
+       myjob_auto_tools_synced=''
+
+
+
+    myjob_git_cmd=$(ectool getProperty /myJob/dev_git_pull_line 2>> /dev/null) ||
+
+       myjob_git_cmd=''
+
+    state_git_cmd=$(ectool getProperty /projects/BAIT_Cmdr_State/automation_tools/dev_git_cmds 2>> /dev/null) ||
+
+       state_git_cmd=''
+
+
+
+    cmdr_env=$(ectool getProperty /server/environment) ||
+
+      cmdr_env='production'
+
+
+
+#Requested values saved from when sync was made if run earlier
+
+    saved_req_branch=$(ectool getProperty /myJob/automation_tools/req_branch 2>> /dev/null) ||
+
+       saved_req_branch=''
+
+    saved_req_myjob_git_cmd=$(ectool getProperty /myJob/automation_tools/req_dev_git_pull_line 2>> /dev/null) ||
+
+       saved_req_myjob_git_cmd=''
+
+    saved_req_state_git_cmd=$(ectool getProperty /myJob/automation_tools/req_dev_git_cmds 2>> /dev/null) ||
+
+       saved_req_state_git_cmd=''
+
+
+
+#Values that were actually used when sync was made
+
+    saved_run_branch=$(ectool getProperty /myJob/automation_tools/run_branch 2>> /dev/null) ||
+
+       saved_run_branch=''
+
+    saved_run_myjob_git_cmd=$(ectool getProperty /myJob/automation_tools/run_dev_git_pull_line 2>> /dev/null) ||
+
+       saved_run_myjob_git_cmd=''
+
+    saved_run_state_git_cmd=$(ectool getProperty /myJob/automation_tools/run_dev_git_cmds 2>> /dev/null) ||
+
+      saved_run_state_git_cmd=''
+
+
+
+}
+
+
+
+#Print out vars assigned in assign_ec_vars()
+
+print_ec_vars() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Server Properties:
+
+/server/environment: \`$cmdr_env'
+
+
+
+State Project Properties:
+
+/projects/gregt_tip_BAIT_Cmdr_State/automation_tools/dev_git_cmds: \`$state_git_cmd'
+
+
+
+Job Properties:
+
+/myJob/automation_tools_synced: \`$myjob_auto_tools_synced'
+
+/myJob/automation_tools/req_branch: \`$saved_req_branch'
+
+/myJob/automation_tools/req_dev_git_pull_line: \`$saved_req_myjob_git_cmd'
+
+/myJob/automation_tools/req_dev_git_cmds: \`$saved_req_state_git_cmd'
+
+/myJob/automation_tools/run_branch: \`$saved_run_branch'
+
+/myJob/automation_tools/run_dev_git_pull_line: \`$saved_run_myjob_git_cmd'
+
+/myJob/automation_tools/run_dev_git_cmds: \`$saved_run_state_git_cmd'
+
+/myJob/dev_git_pull_line: \`$myjob_git_cmd'
+
+
+
+EOF
+
+)
+
+    echo -e "$output\n"
+
+}
+
+
+
+
+
+#Trim leading and trailing white space from var
+
+trim() {
+
+    #two echoes needed to handle &amp;&amp; or ; in string
+
+    eval $1=$(echo $(echo '${!1}'))
+
+}
+
+
+
+check_req_change() {
+
+    if [ "$2" != "$3" ]; then
+
+        msg=$(cat &lt;&lt;EOF
+
+Warning: Requested \`$1' has changed since sync!
+
+Current Value:\`$2'
+
+Requested Value at sync:\`$3'
+
+Use remove_automation_tools to force a resync
+
+EOF
+
+)
+
+        echo -e "$msg\n"
+
+    fi
+
+}
+
+
+
+check_run_diff() {
+
+    if [ "$2" != "$3" ]; then
+
+        msg=$(cat &lt;&lt;EOF
+
+Warning: Requested \`$1' not used even with force=1!
+
+Requested Value:\`$2'
+
+Synced Value:\`$3'
+
+Use remove_automation_tools to force a resync
+
+EOF
+
+)
+
+        echo -e "$msg\n"
+
+    fi
+
+}
+
+
+
+assign_input_parms() {
+
+
+
+    branch='master' &amp;&amp; trim branch
+
+    [ -z "$branch" ] &amp;&amp;
+
+      branch='master'
+
+    trim branch
+
+    [ -z "$branch" ] &amp;&amp; branch='master'
+
+
+
+    force='1' &amp;&amp; trim force
+
+    if [ $force -eq 0 ]; then
+
+        force=false
+
+    else
+
+        force=true
+
+    fi
+
+
+
+    test_prod='0' &amp;&amp; trim test_prod
+
+
+
+}
+
+
+
+assign_control_vars() {
+
+
+
+    [ $test_prod -ne 0 ] &amp;&amp; cmdr_env='production'
+
+
+
+    #True if we are running in production manner
+
+    production=false
+
+    if [ "$cmdr_env" == 'production' ] &amp;&amp; ! $force; then
+
+        production=true
+
+    fi
+
+
+
+}
+
+
+
+print_input_parms() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Input Parameters used in command (after processing):
+
+branch: \`$branch' (set to \`master' if empty)
+
+force: \`$force'
+
+test_production: \`$test_prod'
+
+
+
+EOF
+
+)
+
+
+
+    echo -e "$output\n"
+
+}
+
+
+
+print_control_vars() {
+
+
+
+    output=$(cat &lt;&lt;EOF
+
+Control Vars:
+
+cmdr_env: \`$cmdr_env'
+
+production: \`$production' (True if running in production manner)
+
+
+
+EOF
+
+)
+
+    echo -e "$output\n"
+
+}
+
+
+
+branch="master"
+
+myjob_git_cmd=""
+
+state_git_cmd=""
+
+
+
+assign_input_parms
+
+print_input_parms
+
+
+
+assign_ec_vars
+
+print_ec_vars
+
+
+
+assign_control_vars
+
+print_control_vars
+
+
+
+mode="sync"
+
+case $mode in
+
+"print")
+
+  if [ "$myjob_auto_tools_synced" != "1" ]; then
+
+    echo "Warning: unexpected value for /myJob/automation_tools_synced: \`myjob_auto_tools_synced'"
+
+  fi
+
+  step_summary="Already sync'd - \`$saved_run_branch' "
+
+  if [ ! -z "$saved_run_myjob_git_cmd" -o ! -z "$saved_run_state_git_cmd" ]; then
+
+    step_summary+=" + dev sync cmds"
+
+  fi
+
+  ;;
+
+"sync")
+
+  if [ ! -z "$myjob_auto_tools_synced"  -a "$myjob_auto_tools_synced" != "0" ]; then
+
+    echo "unexpected value for /myJob/automation_tools_synced: \`$myjob_auto_tools_synced'"
+
+  fi
+
+
+
+  if [ "$cmdr_env" == "production" ] &amp;&amp; $force &amp;&amp; [ "$branch" != "master" ]; then
+
+    echo "Warning: force syncing of \`$branch' branch on production"
+
+  fi
+
+
+
+  if [ "$cmdr_env" == "production" ] &amp;&amp; $force &amp;&amp;
+
+     [ ! -z "$myjob_git_cmd" -o ! -z "$state_git_cmd" ]; then
+
+    echo "Warning: force running arbitrary git commands on production"
+
+  fi
+
+
+
+  if $production &amp;&amp; [ "$branch" != 'master' ]; then
+
+    echo "Warning: forcing use of \`master' branch on production"
+
+  fi
+
+
+
+  if $production &amp;&amp; [ ! -z "$myjob_git_cmd" -o ! -z "$state_git_cmd" ]; then
+
+    echo "Warning: ignoring git commands on production server"
+
+  fi
+
+
+
+  step_summary="Sync'd - \`$saved_run_branch' "
+
+  if [ ! -z "$saved_run_myjob_git_cmd" -o ! -z "$saved_run_state_git_cmd" ]; then
+
+      step_summary+=" + dev sync cmds"
+
+  fi
+
+  ;;
+
+esac
+
+
+
+#Check requested parameters match what is sync'd
+
+check_req_change 'branch' "$branch" "$saved_req_branch"
+
+check_req_change '/myJob/dev_git_pull_line' "$myjob_git_cmd" "$saved_req_myjob_git_cmd"
+
+check_req_change '/projects/BAIT_Cmdr_State/automation_tools/dev_git_cmds' \
+
+                   "$state_git_cmd" "$saved_req_state_git_cmd"
+
+
+
+#Only warn here if $force is true.
+
+if $force; then
+
+    check_run_diff 'branch' "$branch" "$saved_run_branch"
+
+    check_run_diff '/myJob/dev_git_pull_line' "$myjob_git_cmd" "$saved_run_myjob_git_cmd"
+
+    check_run_diff '/projects/BAIT_Cmdr_State/automation_tools/dev_git_cmds' \
+
+                   "$state_git_cmd" "$saved_run_state_git_cmd"
+
+fi
+
+
+
+(
+
+  set -o xtrace
+
+  cd $COMMANDER_WORKSPACE/automation/tools
+
+  git log --shortstat -6
+
+)
+
+
+
+ectool setProperty /myJobStep/summary "$step_summary" >> /dev/null
+
+
+
+echo "/myJobStep/summary: $step_summary"
+
+
+
+exit 0</command>
+
+                <condition>1</condition>
+
+                <createTime>2011-11-02T10:53:53.724Z</createTime>
+
+                <elapsedTime>5386</elapsedTime>
+
+                <errorHandling>failProcedure</errorHandling>
+
+                <exclusive>0</exclusive>
+
+                <exitCode>0</exitCode>
+
+                <finish>2011-11-02T10:54:30.429Z</finish>
+
+                <hostName>bait-task13-lnx.qualcomm.com</hostName>
+
+                <lastModifiedBy>admin</lastModifiedBy>
+
+                <logFileName>teardown.59030556.log</logFileName>
+
+                <modifyTime>2011-11-02T11:12:37.779Z</modifyTime>
+
+                <outcome>success</outcome>
+
+                <owner>project: Linux_Common</owner>
+
+                <parallel>0</parallel>
+
+                <postExitCode>0</postExitCode>
+
+                <postLogFileName>teardown.59030556-postp.log</postLogFileName>
+
+                <postProcessor />
+
+                <procedureName>/projects/Linux_Common/procedures/sync_automation_tools</procedureName>
+
+                <releaseExclusive>0</releaseExclusive>
+
+                <resourceName>linux_task_host</resourceName>
+
+                <retries>0</retries>
+
+                <runTime>5275</runTime>
+
+                <runnable>2011-11-02T10:54:24.706Z</runnable>
+
+                <shell>/bin/bash</shell>
+
+                <start>2011-11-02T10:54:25.043Z</start>
+
+                <status>completed</status>
+
+                <timeLimit />
+
+                <waitTime>337</waitTime>
+
+                <workingDirectory />
+
+                <workspaceName>massive</workspaceName>
+
+                <jobId>2358396</jobId>
+
+                <jobName>load_and_test_msm8660_surf__2358396</jobName>
+
+                <liveProcedure>/projects/Linux_Common/procedures/sync_automation_tools</liveProcedure>
+
+                <liveProcedureStep>teardown</liveProcedureStep>
+
+                <projectName>Linux_Common</projectName>
+
+                <propertySheet>
+
+                  <propertySheetId>47440647</propertySheetId>
+
+                  <createTime>2011-11-02T10:54:30.231Z</createTime>
+
+                  <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                  <modifyTime>2011-11-02T10:54:30.233Z</modifyTime>
+
+                  <owner>project: Linux_Common</owner>
+
+                  <property>
+
+                    <propertyId>243340178</propertyId>
+
+                    <propertyName>summary</propertyName>
+
+                    <createTime>2011-11-02T10:54:30.231Z</createTime>
+
+                    <expandable>1</expandable>
+
+                    <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                    <modifyTime>2011-11-02T10:54:30.231Z</modifyTime>
+
+                    <owner>project: Linux_Common</owner>
+
+                    <value>Sync'd - `master' </value>
+
+                  </property>
+
+                </propertySheet>
+
+              </jobStep>
+
+              <actualParameter>
+
+                <actualParameterId>243339151</actualParameterId>
+
+                <actualParameterName>branch</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>master</value>
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339152</actualParameterId>
+
+                <actualParameterName>dummy</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>1</value>
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339153</actualParameterId>
+
+                <actualParameterName>force</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>1</value>
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339154</actualParameterId>
+
+                <actualParameterName>resource</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>abait_sync_automation_tools_mutex</value>
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339155</actualParameterId>
+
+                <actualParameterName>site</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value />
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339156</actualParameterId>
+
+                <actualParameterName>suppress_warnings</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>0</value>
+
+              </actualParameter>
+
+              <actualParameter>
+
+                <actualParameterId>243339157</actualParameterId>
+
+                <actualParameterName>test_production</actualParameterName>
+
+                <createTime>2011-11-02T10:53:53.641Z</createTime>
+
+                <expandable>0</expandable>
+
+                <lastModifiedBy>project: Linux_Common</lastModifiedBy>
+
+                <modifyTime>2011-11-02T10:53:53.739Z</modifyTime>
+
+                <owner>project: Linux_Common</owner>
+
+                <value>0</value>
+
+              </actualParameter>
+
+            </calledProcedure>
+
+          </jobStep>
+
+          <jobStep>
+
+            <jobStepId>59030546</jobStepId>
+
+            <stepName>create_DLTB_properties</stepName>
+
+            <alwaysRun>0</alwaysRun>
+
+            <assignedResourceName>bait-task13-lnx_linux_task_host</assignedResourceName>
+
+            <broadcast>0</broadcast>
+
+            <command># Pull-in common shell functions.
+
+#echo -n "Unsetting LD_LIBRARY_PATH..."
+
+#unset LD_LIBRARY_PATH
+
+#echo "Done unsetting LD_LIBRARY_PATH!"
+
+
+
+function log_fail_reason {
+
+   local REASON="$1"
+
+   if [ -z "$REASON" ]; then REASON=unknown ; fi
+
+   REASONS=''
+
+   if [ -z "$REASONS" ]; then
+
+      REASONS=$REASON
+
+   else
+
+      REASONS=$REASONS,$REASON
+
+   fi
+
+   STEP='create_DLTB_properties'
+
+   TARGET='msm8660_surf'
+
+   if [ -z "$TARGET" ]; then TARGET=none ; fi
+
+   LOG_URL='https://commander.qualcomm.com:443/commander/workspaceFile.php?jobStepId=59030546&amp;fileName=create_DLTB_properti.59030546.log'
+
+#   LOG_URL='https://commander.qualcomm.com:443/commander/jobStepDetails.php?jobStepId=59030546&amp;jobId=2358396&amp;jobName=load_and_test_msm8660_surf__2358396'
+
+   MSG=''
+
+   if [ "$REASON" == "test" ]; then
+
+      TEST_RSULTS='Test results summary: https://commander.qualcomm.com:443/commander/link/jobReport/workspaces/massive?fileName=consolidated-summary-report.html&amp;jobId=2358396&amp;s=Jobs'
+
+   fi
+
+   MSG=`cat &lt;&lt;EOF
+
+$MSG
+
+
+
+The job failed to $REASON for target $TARGET at $STEP.
+
+Logs are here: $LOG_URL
+
+$TEST_RSULTS
+
+EOF`
+
+
+
+
+
+   parent_job_id=2358263
+
+
+
+   if [ "$parent_job_id" == "" ]
+
+   then
+
+      job_id="2358396"
+
+   else
+
+      job_id="$parent_job_id"
+
+   fi
+
+
+
+   ectool setProperty /myJob/fail_reasons "$REASONS" --jobId "$job_id"
+
+   ectool setProperty /myJob/fail_msg "$MSG" --jobId "$job_id"
+
+   ectool setProperty /myJob/status_$TARGET "failed"
+
+}
+
+
+
+function run_cmd {
+
+   local CMD="$@"
+
+   echo -e "\n\nexecuting: $CMD\n"
+
+   eval $CMD
+
+   RESULT=$?
+
+   if [ $RESULT != 0 ]; then
+
+      echo -e "\nERROR: command returned $RESULT, exiting.\n"
+
+      log_fail_reason $FAIL_REASON
+
+      exit $RESULT
+
+   fi
+
+}
+
+
+
+function run_cmd__ignore_result {
+
+   local CMD="$@"
+
+   echo -e "\n\nexecuting: $CMD\n"
+
+   eval $CMD
+
+   RESULT=$?
+
+   if [ $RESULT != 0 ]; then
+
+      echo -e "\nWARNING: command returned $RESULT, ignoring.\n"
+
+   fi
+
+}
+
+
+
+function run_cmd_at {
+
+   local WHEN="$1"
+
+   shift
+
+   local CMD="$@"
+
+   echo -e "\n\nexecuting (at $WHEN): $CMD\n"
+
+   echo "$CMD" | at "$WHEN"
+
+   RESULT=$?
+
+   if [ $RESULT != 0 ]; then
+
+      echo -e "\nERROR: attempt to schedule command returned $RESULT, exiting.\n"
+
+      exit $RESULT
+
+   fi
+
+}
+
+
+
+function htmlize {
+
+ local ORIG="$1"
+
+ local HTML="$2"
+
+ echo '&lt;html>&lt;body>&lt;pre>' > $HTML
+
+ cat $ORIG >> $HTML
+
+ echo '&lt;/pre>&lt;/body>&lt;/html>' >> $HTML
+
+}
+
+
+
+
+
+if [[ "gingerbread_house" =~ "AU_LINUX_" ]]; then
+
+   BRANCH=$(echo "gingerbread_house" | sed -e 's,refs/tags/,,' -e 's,AU_LINUX_ANDROID_\([^.]*\).*,\1,g' | tr '[A-Z]' '[a-z]')
+
+else
+
+   BRANCH="gingerbread_house"
+
+fi
+
+
+
+if [ -z "" ]; then
+
+   if [ ! -z "msm8660_surf" ]; then
+
+      TARGET_LIST=$(echo  msm8660_surf | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/[[:space:]][[:space:]]*/ /g' -e 's/[[:space:]]/,/g')
+
+      TARGET_LIST="-t "${TARGET_LIST}
+
+   fi
+
+else
+
+   echo  | grep '@'
+
+   if [ $? -eq 0 ]; then
+
+      SITE_OVERRIDES=$(echo  | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/[[:space:]][[:space:]]*/ /g' -e 's/[[:space:]]/,/g')
+
+      echo  | grep 'all'
+
+      if [ $? -ne 0 ]; then
+
+         if [ ! -z "msm8660_surf" ]; then
+
+            TARGET_LIST=$(echo  msm8660_surf | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/[[:space:]][[:space:]]*/ /g' -e 's/[[:space:]]/,/g')
+
+            TARGET_LIST="-t "${TARGET_LIST}
+
+         fi
+
+      fi
+
+   else
+
+      SITE_OVERRIDES=$(echo  | sed -e 's,^[[:space:]]*\([A-Za-z]*\)[[:space:]]*.*,all@\1,')  
+
+   fi
+
+   SITE_OVERRIDES="-o "${SITE_OVERRIDES}
+
+fi
+
+
+
+run_cmd cd automation/tools/quic_py_libs
+
+
+
+echo "TARGET_LIST=${TARGET_LIST}"
+
+echo "SITE_OVERRIDES=${SITE_OVERRIDES}"
+
+
+
+run_cmd ./generate_EC_DLTB_properties.py -b "${BRANCH}" "${SITE_OVERRIDES}" "${TARGET_LIST}"</command>
+
+            <condition>1</condition>
+
+            <createTime>2011-11-02T10:53:53.448Z</createTime>
+
+            <elapsedTime>1277</elapsedTime>
+
+            <errorHandling>failProcedure</errorHandling>
+
+            <exclusive>0</exclusive>
+
+            <exitCode>0</exitCode>
+
+            <finish>2011-11-02T10:54:32.069Z</finish>
+
+            <hostName>bait-task13-lnx.qualcomm.com</hostName>
+
+            <lastModifiedBy>admin</lastModifiedBy>
+
+            <logFileName>create_DLTB_properti.59030546.log</logFileName>
+
+            <modifyTime>2011-11-02T11:12:37.779Z</modifyTime>
+
+            <outcome>success</outcome>
+
+            <owner>project: Android_main</owner>
+
+            <parallel>0</parallel>
+
+            <postExitCode>0</postExitCode>
+
+            <postLogFileName>create_DLTB_properti.59030546-postp.log</postLogFileName>
+
+            <postProcessor />
+
+            <procedureName>/projects/Linux_Common/procedures/create_DLTB_properties</procedureName>
+
+            <releaseExclusive>0</releaseExclusive>
+
+            <resourceName>linux_task_host</resourceName>
+
+            <retries>0</retries>
+
+            <runTime>1237</runTime>
+
+            <runnable>2011-11-02T10:54:3

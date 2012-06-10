@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+#!F:paco
+#
+#!p:/usr/local/bin
+#
+#!D:Patch Contents Utility 
+#
+#!C:Copyright 1997-2007 by Peter Bieringer <pb@bieringer.de> (Modified by Ben Williams)
+#
+#!V:Version 1.04 2007-07-26
+#
+# Changes to
+#  1.01: Info display
+#  1.02: Supports now bzip2, too
+#  1.03/20010922: fix bug regarding displaying not filename
+#  1.04: Minor support fixes
+
+# Display information
+info() {
+  grep "^#!D" $0 | awk -F: '{ print $2}'
+  grep "^#!C" $0 | awk -F: '{ print " " $2}'
+  grep "^#!V" $0 | awk -F: '{ print " " $2}'
+  echo
+}
+    
+## Start
+
+#info
+
+# Test for argument
+if [ "$1" = "" ]; then
+    echo -e " Usage: $0 *.[gz|bz2|patch]\n"
+    echo
+    exit 1
+fi
+
+SUFFIX=`echo $1 | awk -F. '{ print $NF }'`
+
+if [ "$SUFFIX" = "gz" ]; then
+    gzip -cd $1 | grep 'diff -' | awk '{ print $(NF-1) }'
+elif [ "$SUFFIX" = "bz2" ]; then
+    bzip2 -cd $1 | grep 'diff -' | awk '{ print $(NF-1) }'
+else
+    cat -A $1 | grep 'diff -' | awk '{ print $(NF-1) }'
+fi
+
+echo

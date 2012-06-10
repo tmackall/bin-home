@@ -1,0 +1,88 @@
+#!/usr/bin/expect
+#
+# This script creates the GCov XML file for the Kernel code
+#
+#log_user 0
+package require textutil::split
+source ~/bin/aLib.exp
+set timeout 3
+
+#
+# create a shell
+spawn bash
+puts "\n\n\n"
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+set mainlineBranch "donut"
+#
+# setup log files
+set fileName "/tmp/cgov"
+set f [open $fileName w]
+
+
+#
+# get the currect time for reference
+set currTime [clock seconds]
+set currDate [clock format $currTime] 
+#
+# create the header
+set header [list]
+lappend header "<?xml version=\"1.0\"?>"
+lappend header "<?xml-stylesheet type=\"text/xsl\" href=\"CC.xsl\"?>"
+lappend header "<REPORTS>"
+#
+# add the header to the new XML file
+foreach line $header {
+	puts $f $line
+}
+#
+# see if there are code coverage dirs to process
+set location "\/var\/www\/reports\/code_coverage"
+set lCommand "ls -lat $location\n"
+set files [sendAndReturnOutput $lCommand $lPrompt 15]
+set files [split $files "\n"]
+foreach file $files {
+	if {[regexp { (... \d+ \d\d\:\d\d) (coverage_.*$)} $file a date dir]} {
+		puts "date: $date"
+		puts "dir: $dir"
+		puts $f "<entry>"
+		set temp ""
+		append temp "<DATE>" $date "<\/DATE>"	"\n"
+		append temp "<DIR>" $dir "<\/DIR>"
+		puts $f $temp
+		puts $f "<\/entry>"
+	}
+}
+puts $f "<\/REPORTS>"
+close $f
+set ccXml ""
+append ccXml $location "/" "CC.xml"
+set lCommand "cp -f $fileName $ccXml\n"
+sendSimple $lCommand $lPrompt 15
+exit
+foreach entry $lMainline {
+	puts $f  "<entry>"
+	foreach line $entry {
+		puts $f $line
+	}
+	puts $f  "<\/entry>"
+}
+puts $f "<\/REPORTS>"
+close $f
+close $f1
+set donutXml " \/var\/www\/reports\/AU-reports\/donut.xml"
+#
+# copy the new xml file from tmp to the apache dir that is expected
+set lCommand "mv -f $fileName $donutXml\n"
+sendSimple $lCommand $lPrompt 15
+
+#
+# mail results to me
+set lCommand "mail tmackall@qualcomm.com  -s \
+	\"Latest AU test results have been updated\" \
+	< $donutXml\n"
+sendSimple $lCommand $lPrompt 15

@@ -1,0 +1,223 @@
+#!/usr/bin/expect
+#
+# This script generates Testing statistics
+#
+source ~/bin/aLib.exp
+set timeout 3
+log_user 0
+
+set numDaysOfReports 1
+set twentyFourHours [expr 3600*24]
+set currTime [clock seconds]
+set jobName "mainline*"
+set emailName abait.stats@qualcomm.com
+set jobInfo "Mainline Health"
+set timeInfo "1 day"
+set jobType 0
+set expectedTestRuns 0
+set jobSummaryPy "/local/mnt/workspace/tmackall/gb/vendor/qcom/proprietary/dejagnu/tools/bin/jobsummary.py"
+
+#
+# process command-line arguments
+if { $argc == 0 } { 
+	# no args gives you a 24 hour report
+	set startTime [expr $currTime - $twentyFourHours]
+} 
+
+
+#
+# process # of days to report on and handle help request
+if { $argc > 0 } {
+	if { [regexp {\-h} [lindex $argv 0]] } {
+		puts "Usage getStabilityStatus.exp (num days of results) (job type 1 = ICS preflight) (# hours - takes precedent over days) (test mode)"
+		exit 2
+	}
+	set numDaysOfReports [lindex $argv 0]
+	
+	# interpret a single command-line arg as the num days you want a report for
+	set startTime [expr $currTime - $numDaysOfReports*$twentyFourHours]
+	set timeInfo "[expr $numDaysOfReports * 24] hours"
+} 
+
+
+
+#
+# job to base report on
+if { $argc > 1 } {
+	set jobType [lindex $argv 1]
+	if { $jobType  == 1 } {
+		set jobName "automated_check_gerrit_change_android_ics_2*"
+
+		set jobInfo "ICS Pre-flight"
+	} else {
+		set $jobType 0
+		set jobName "mainline*"
+	}
+} 
+
+#
+# handle hours (hours trump days)
+if { $argc > 2 } {
+	set startTime [expr $currTime - [lindex $argv 2]*3600]
+	set timeInfo "[lindex $argv 2] hours"
+}
+
+if { $argc > 3 } {
+	set emailName tmackall@quicinc.com
+}
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+proc getJobStatus { jobId outOutcome} {
+        upvar 1 $outOutcome out
+        global lPrompt
+        set out ""
+        log_user 0
+        set lCommand "ectool getJobStatus $jobId\n"
+        set lChanges [sendAndReturnOutput $lCommand $lPrompt 60]
+        set lines [split $lChanges "\r\n"]  
+		foreach item $lines {
+        	if { [regexp {outcome\>(.*)\<\/outcome} $item a outcome]} {
+                       set out $outcome
+        	} elseif {[regexp {ectool error} $item]} {
+            	puts $item
+            	return 2
+        	}
+		}
+		if { $out == "error" } {
+        	set lCommand "ectool getProperty errorMessage --jobId $jobId\n"
+        	set lChanges [sendAndReturnOutput $lCommand $lPrompt 60]
+			set out2 ""
+			regexp {[^:]*:([^:]*:[^:]*)Job error \[Aborted]:} $lChanges a out2
+			append out "\n$out2"
+		}
+        return 0
+}
+set fileContents [list]
+set dirList [list]
+
+#
+#****** grab all test directories ******
+set timeout 20
+set workspaces "/prj/lnxbuild/workspaces/"
+set jobIdList [list]
+array unset aJobStatus
+
+#
+# get the job dirs and filter out dirs before start date
+foreach dirName [glob -nocomplain -type d -directory \
+	$workspaces $jobName] {
+	set temp [glob -nocomplain -type f -directory $dirName *]
+	#file stat $dirName lCtime
+	file stat [lindex $temp 0] lCtime
+	set fileModTime $lCtime(ctime)
+	#
+	# only process jobs from the start date
+	if { $fileModTime > $startTime } {
+		#
+		# get the job ID
+		regexp {.*_([[:digit:]]*)$} $dirName a jobId
+		if { $jobId != "" } {
+			lappend jobIdList $jobId
+			getJobStatus $jobId jobStatus
+			set aJobStatus($jobId) $jobStatus
+		}
+	}
+}
+
+if { [llength $jobIdList] == 0 } {
+	puts "Warning: no jobs available for $jobName"
+	exit 3
+}
+
+
+#
+# track the # of Health jobs and calculate the number of test sets expected
+set numJobs [llength $jobIdList]
+if { $jobType == 0 } {
+	set expectedTestRuns [expr $numJobs * 5]
+}
+
+#
+# trim off all the jobsummary up-front text
+set callParam [join $jobIdList " "]
+set lCommand ""
+append lCommand jobsummary.py " " $callParam "\n"
+set lChanges [sendAndReturnOutput $lCommand $lPrompt 200]
+set records [split $lChanges "\r\n"]
+set fStart 0
+set trimmedOutput ""
+set pass 0
+set total 0
+foreach line $records {
+	if { $line != "" } {
+		if { [regexp {Result counts\:} $line] } {
+			set fStart 1
+		}
+		if { $fStart == 1 } {
+			append trimmedOutput $line "\r\n"
+		}
+		if { [regexp {(\d+)\/(\d+) } $line a b c] } {
+			incr pass $b
+			incr total $c
+		} 
+			
+	}
+}
+#
+# write information to a file so that it can be mailed
+append outputToMail "\r\n\r\n" 
+#append outputToMail "Total Jobs: $numJobs\n" 
+#if { [regexp {Mainline Health} $jobInfo] } {
+#	append outputToMail "Load/other failures: [expr $expectedTestRuns - $total]\n" 
+#}
+set jobIdList [lsort $jobIdList]
+#
+# process the job ID and status information
+append outputToMail "\nNumber of Jobs: [array size aJobStatus]\n"
+append outputToMail "\nJob IDs\n"
+set passCnt 0
+set lJobStati [list]
+foreach {key value} [array get aJobStatus] {
+	puts "$key $value"
+	lappend lJobStati  "$key $value\n"
+	if { "success" == $value } {
+		incr passCnt
+	}
+	
+}
+#
+# sort the jobs in order (hopefully by job)
+set lJobStati [lsort $lJobStati]
+#
+# put the job data into the cache to be written
+foreach item $lJobStati {
+	append outputToMail $item
+}
+set totJobs [array size aJobStatus]
+append outputToMail "\nPass: $passCnt\nFail: [expr $totJobs - $passCnt]\n"
+append passCnt ".0"
+append outputToMail "\nPercent Pass: [expr ($passCnt / $totJobs) * 100.0]\n\n"
+append outputToMail $trimmedOutput  
+
+#
+# now write the file out
+set fileName "/tmp/JobSummary.out"
+set f [open $fileName w]
+puts $f $outputToMail
+close $f
+
+
+# create the email subject line
+append resultText $jobInfo " " "results" " - for the past $timeInfo"
+#
+# mail results to me for now
+set lCommand "mail $emailName  -s \"$resultText\"  < $fileName\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}

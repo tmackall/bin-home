@@ -1,0 +1,161 @@
+#!/usr/bin/expect
+#
+# This script is used to manages a PPS with SNMP
+#
+source ~/bin/aLib.exp
+source ~/bin/libPPS.exp
+set timeout 3
+log_user 0
+
+set uPort ""
+set uOperation ""
+set uValue ""
+
+proc pUsage { } {
+	puts "\nUsage: managePPS.exp <set/get> <port> <value>"
+	puts "e.g: managePPS.exp set 1 on"
+	puts "e.g: managePPS.exp set 3 off"
+	puts "e.g: managePPS.exp get 3"
+	puts "e.g: managePPS.exp set 8 reboot\n"
+	exit 10
+}
+
+# process # of days to report on and handle help request
+if { $argc == 0 } {
+	pUsage
+} else {
+	set uOperation [lindex $argv 0]
+        if { ! [regexp {^(get|set)$} $uOperation] } {
+		pUsage
+                exit 2
+        }
+        set uPort [lindex $argv 1]
+        if { $uPort < 0 || ! $uPort > 8} {
+		pUsage
+		exit 3
+	}
+	if { [regexp {^set$} $uOperation] } {
+		set uValue [string tolower [lindex $argv 2]]
+		if { ! [regexp {^(on|off|reboot)$} $uValue] } {
+			pUsage
+			exit 4
+		}
+	}
+}
+
+
+
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {
+	puts "Error: set prompt\n"
+	exit 2
+}
+	
+proc isDeviceOnline {iPrompt iDevice} {
+	set lCommand "ping -c 1 $iDevice\n"
+	set response [sendAndReturnOutput $lCommand $iPrompt 5]
+	if { ![regexp {1 packets transmitted, 1 received} $response]} {
+		puts "Error: could not talk to device: $iDevice"
+		return 5
+	}
+	return 0
+} 
+
+proc getOutletStatus {iPrompt ioaPPS} {
+	upvar $ioaPPS arr
+	set reOutletStatus "^outlet(\\d)+Status.0 = INTEGER: (.*)$"
+	set lCommand "snmpwalk -Os -c public -v2c pps1 Pulizzi\n"
+	set lChanges [sendAndReturnOutput $lCommand $iPrompt 120]
+	set lines [split $lChanges "\r\n"]
+	set lOutletStatus [list]
+	foreach item $lines {
+		if { [regexp $reOutletStatus $item a b c] } { 
+			set arr($b-OutletStatus) $c
+		}
+	}
+	return 0
+}
+
+
+#
+# procedure to command the port to turn on and off
+proc setOutletState {iPrompt iOutlet iCommand oValue} {
+	upvar $oValue state
+	
+	if { ![regexp {\d+} $iCommand] } {
+		if { [regexp {on} $iCommand] } {
+			set iCommand 1
+		} elseif { [regexp {off} $iCommand] } {
+			set iCommand 2
+		} elseif { [regexp {reboot} $iCommand] } {
+			set iCommand 3
+		} else {
+			puts "Error: command $iCommand is not recognized."
+			return 4
+		}
+	}
+		
+	set lCommand ""
+	append lCommand "snmpset -v 2c -c private pps1 outlet" $iOutlet \
+		"Command.0 i " $iCommand "\n"
+	set status [sendAndReturnOutput $lCommand $iPrompt 5]
+	if { ![regexp {\nPulizzi::} $status] } {
+		puts "Error: setOutletState failed.\n $status"
+		return 3
+	}
+	getOutletStatus $iPrompt arr
+	return 0
+}
+
+#
+# process the input parameters
+proc pProcessInput { iAction iPort iCommand ioStatus} {
+	upvar $ioStatus aRet
+	global lPrompt
+	set stat 0
+
+	if { [regexp {^set$} $iAction] } {
+		if { [set stat [setOutletState $lPrompt $iPort $iCommand aRet]] } {
+			return $stat
+		}
+	} else {
+		if { [set stat [getOutletStatus $lPrompt aTemp]] } {
+			return $stat
+		} else {
+			# pull out the subset
+			set aRet $aTemp($iPort-OutletStatus)
+		}
+	}
+	return $stat
+}
+
+proc pProcessExitCode { iOp iState iStatus } {
+	if { $iStatus } {
+		# this indicates that the command failed
+		exit 99
+	}
+	if { [regexp {^get$} $iOp] } { 
+		regexp {\((\d)\)} $iState a num
+		exit $num
+	}
+	exit 0
+}
+
+set state [list]
+set status [pProcessInput $uOperation $uPort $uValue state]
+#if { $status } {
+#
+#	puts $status
+#} else {
+#	puts $status
+#	puts $state
+#}
+	
+pProcessExitCode $uOperation $state $status

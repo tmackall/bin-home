@@ -1,0 +1,145 @@
+#!/usr/bin/expect
+#
+# Script for getting a list of 
+#
+source ~/bin/aLib.exp
+set timeout 3
+
+#
+# if I want to send email to all the offenders
+set fMail 1
+if { [llength $argv] == 0  } {
+	set inBranchRegexp ".*"
+} elseif { [llength $argv] == 1 } {
+	set inBranchRegexp [lindex $argv 0]
+} else {
+	puts "\n\nUsage: getFailedChanges.exp.exp \"froyo.*\"" 
+	puts "Usage: getFailedChanges.exp  <branch regexp> \n"
+	exit
+}
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit 1}
+
+set timeout [expr 60]
+expect -re .* {}
+
+set lChanges ""
+#
+# execute the sql remotely for failed verifications.
+exp_send "ssh review-android.quicinc.com \"getFailedChanges.sh\"\n"
+expect {
+	-re ".*\r\nPassword for user gerrit2_ro:" {
+		exp_send "letmeout\n"
+		exp_continue
+	}
+	-re "(.*)\r\n$lPrompt" {
+		set lChanges $expect_out(1,string)
+	}
+	timeout {puts "Get Failed-Verified Changes Failed\n"; exit }
+}
+
+set records [split $lChanges "\r\n"]
+set lsFailedChanges {}
+#
+# pull out all the change IDs that have failed verification
+foreach rec $records {
+	regsub -all {[ \r\t\n]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	set  id  [lindex $fields 4]
+	if { [regexp {\d+}  $id] }  {
+		lappend lsFailedChanges $id
+	}
+}
+#
+# get a list of open changes and the owners/submitter
+exp_send "ssh review-android.quicinc.com \"getOpenChanges.sh\"\n"
+expect {
+	-re ".*\r\nPassword for user gerrit2_ro:" {
+		exp_send "letmeout\n"
+		exp_continue
+	}
+	-re "(.*)\r\n$lPrompt" {
+		set lChanges $expect_out(1,string)
+	}
+	timeout {puts "Get Verified Open Failed\n"; exit }
+}
+
+
+array unset arChangeOwners
+set records [split $lChanges "\r\n"]
+#
+# pull out all the change IDs that have failed verification
+foreach rec $records {
+	regsub -all {[ \r\t\n]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	if { [regexp {\d+}  [lindex $fields 1]] }  {
+#puts "ch [lindex $fields 1]"
+		set  arChangeOwners([lindex $fields 1]) [lindex $fields 0]
+	}
+}
+
+puts "reading the Gerrit DB"
+set lChanges [list]
+set lCommand "ssh git-android.quicinc.com \"psql -U gerrit2_ro -c \'SELECT * FROM changes\' reviewdb\"\n"
+doGerritQuery $lCommand $lPrompt 1000 lChanges
+set changeRecords [split $lChanges "\r"]
+array unset aChangeBranch
+foreach rec $changeRecords {
+	regsub -all {[\s\t]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	set branch  [lindex $fields 5]
+	set changeId [lindex $fields 12]
+	regsub -all {[\s\t]} $changeId "" changeId
+		if {[regexp {\d+} $changeId]} { 
+			set aChangeBranch($changeId) $branch
+	}
+}
+#
+# create script to unverify
+set outfile [open "/tmp/failedChanges.out" w]
+puts $outfile "Change#\tSubmitter"
+set lsFailedChanges [lsort -int $lsFailedChanges]
+set cntChange 0
+foreach line $lsFailedChanges {
+	if { [regexp "$inBranchRegexp" $aChangeBranch($line)]} {
+		incr cntChange
+		puts $outfile "https://review-android.quicinc.com/Gerrit#change,$line \t$arChangeOwners($line) \t\t$aChangeBranch($line)"
+	}
+}
+puts $outfile "\n\nNumber of items needing attention: $cntChange\n"
+close $outfile
+set lCommand "mail tmackall -s \"Changes that failed verification\" < /tmp/failedChanges.out\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}
+set i 1
+set j [list tmackall@quicinc.com]
+
+#
+# code to spam all
+if { $fMail } {
+	set tSpam "You have a change that that needs to be submitted or has failed verification. Please investigate the Gerrit failure before contacting ABAIT. If you feel that this is an automation mistake, please ask the ABAIT verification person to resubmit. If it needs to be merged/rebased, please do so in a timely manner and re-submit. If you don\'t want the change any longer, please abandon the change. If you have questions about the change, please send it to abait.verify.\n\nThanks,\n-tom\n\nBTW: this is an automated message."
+	foreach line $lsFailedChanges {
+		if { [regexp "$inBranchRegexp" $aChangeBranch($line)]} {
+			set spam [open "/tmp/spam.out" w]
+			puts $spam $tSpam
+			puts $spam "https://review-android.quicinc.com/Gerrit#change,$line"
+			
+		close $spam
+				set lCommand "mail $arChangeOwners($line) -s \
+			\"Gerrit change $line branch: $aChangeBranch($line) needs attention\" \
+			< /tmp/spam.out\n"
+			if {[sendSimple $lCommand $lPrompt 15]} {exit}
+		}
+	}
+}
+exp_close 
+

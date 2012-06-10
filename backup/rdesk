@@ -1,0 +1,1 @@
+rdesktop -g 1274x1000 -a 16 -x lan $1 2>&1 1>/dev/null &

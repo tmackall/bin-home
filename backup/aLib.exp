@@ -1,0 +1,128 @@
+#!/usr/bin/expect
+set lColors {indianred lightcoral orangered crimson darkred pink hotpink palevioletred khaki lightgoldenrodyellow lemonchiffon gold moccasin cyan aquamarine mediumturquoise cadetblue lightcyan powderblue steelblue skyblue deepskyblue royalblue dodgerblue mediumblue navy lightsalmon darkorange tomato aquamarine springgreen greenyellow lawngreen lightgreen limegreen darkseagreen seagreen olivedrab darkolivegreen mediumaquamarine lightseagreen teal thistle violet magenta mediumorchid blueviolet mediumpurple purple darkslateblue honeydew azure ghostwhite lavenderblush antiquewhite snow beige oldlace ivory lightgrey darkgray dimgray lightslategray cornsilk bisque wheat goldenrod peru maroon brown darkred tan black darksalmon salmon red firebrick mediumvioletred lightpink deeppink darkkhaki palegoldenrod lightyellow yellow papayawhip peachpuff aqua turquoise darkturquoise slategray paleturquoise lightsteelblue lightblue lightskyblue cornflowerblue mediumslateblue blue darkblue midnightblue orange coral orangered mediumspringgreen palegreen chartreuse lime yellowgreen mediumseagreen forestgreen green olive darkgreen turquoise darkcyan lavender plum fuchsia orchid darkorchid darkviolet slateblue darkmagenta indigo mintcream aliceblue whitesmoke mistyrose seashell white linen floralwhite gainsboro silver gray darkslategray slategray blanchedalmond navajowhite sandybrown darkgoldenrod chocolate saddlebrown sienna burlywood rosybrown}
+
+proc getRandomColor {} {
+	return [lindex $lColors [expr int (rand()* [llength $lColors])]]
+}
+proc sendSimple { inCommand inPrompt inTimeout } {
+
+	set timeout $inTimeout
+	expect * {}
+	exp_send $inCommand
+	expect {
+		-re .*(\a|(\r\n))$inPrompt.* {
+			#puts "$inCommand successful!\n"
+		}	
+		timeout {puts "Command failed: $inCommand\n";return 127}
+	}
+	set timeout 2
+	exp_send "echo $?\n"
+	expect {
+		-re .*(\[0-9]+)(\a|(\r\n)).*$inPrompt.* {
+            set lStatus $expect_out(1,string)
+			if {$lStatus > 0} {
+				puts "$inCommand returned: $lStatus\n"
+				return $lStatus
+			} 
+		}	
+		timeout {puts "Failed to get status for $inCommand\n";return 126}
+	}
+	return 0
+}
+proc sendAndReturnOutput { inCommand inPrompt inTimeout } {
+
+	set timeout $inTimeout
+	expect -re .* {} 
+	set returnOutput ""
+	exp_send $inCommand
+	expect {
+		#-re (\a|(\r\n))$inPrompt 
+		-re $inPrompt$ {
+			append returnOutput $expect_out(buffer)
+			return $returnOutput
+		}	
+		full_buffer { 
+			append returnOutput $expect_out(buffer)
+			#puts "size of result is: [string length $returnOutput]"
+			exp_continue
+		} 
+		timeout {puts "Command failed: $inCommand\n";return 127}
+	}
+	puts "ERROR: $inPrompt prompt was never received"
+	return 1
+}
+#
+#
+#***** doGerritQuery *****
+proc doGerritQuery { inCommand inPrompt inTimeout outResults} {
+	# return the expect buffer
+	upvar $outResults returnOutput
+	set returnOutput ""
+	set timeout $inTimeout
+	expect -re .*$ {}
+	exp_send $inCommand
+	expect {
+		-re "\r\nPassword for user gerrit2_ro:" {
+			exp_send "letmeout\n"
+			exp_continue
+		}
+		-re "\r\n$inPrompt" {
+			append returnOutput $expect_out(buffer)
+		}
+		full_buffer { 
+			append returnOutput $expect_out(buffer)
+			puts "size of result is: [string length $returnOutput]"
+			exp_continue
+		}
+		timeout {puts "Getting the changes from the DB failed\n"; exit }
+	}
+}
+
+
+#
+# this proc returns the email address for a given change ID
+proc getUser {inChangeId outOwner} {
+	
+	upvar $outOwner email
+	set lPrompt "uniQuePrompt#"
+	set lChanges [list]
+        set email ""
+	set lCommand "psql -h review-android.quicinc.com -U gerrit2_ro -c \'SELECT owner_account_id FROM changes WHERE change_id = $inChangeId\' reviewdb\n"
+	doGerritQuery $lCommand $lPrompt 10 account
+	if { [regexp {(\d+)\r\n\(} $account a sAccount] } {
+		set lChanges [list]
+		# get the email address from the account_external_ids using
+		# the numeric user-id
+		set lCommand "psql -h review-android.quicinc.com -U gerrit2_ro -c \'SELECT email_address FROM account_external_ids WHERE account_id = $sAccount\' reviewdb\n"
+		doGerritQuery $lCommand $lPrompt 20 dEmail
+		if { [regexp {\w+@quicinc\.com} $dEmail cEmail] } {
+			set email $cEmail
+		} elseif { [regexp {\w+@qualcomm\.com} $dEmail cEmail]} {
+			set email $cEmail
+                } else {
+                    puts "User not found"
+                    return 1
+                }
+        } else {
+              puts "Account not found"
+              return 2
+        }
+	return 0
+}
+
+
+
+#
+# this proc returns the branch for a given change ID
+proc getBranch {inChangeId outBranch} {
+	
+	upvar $outBranch sBranch
+	set sBranch ""
+	set lPrompt "uniQuePrompt#"
+	set lChanges [list]
+	set lCommand "psql -h review-android.quicinc.com -U gerrit2_ro -c \'SELECT dest_branch_name FROM changes WHERE change_id = $inChangeId\' reviewdb\n"
+	doGerritQuery $lCommand $lPrompt 10 branch
+	if { [regexp {refs/heads/(.*)\r\n\(} $branch a sBranch] } {
+		puts $sBranch
+	}
+}

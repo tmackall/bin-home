@@ -1,0 +1,162 @@
+#!/usr/bin/expect
+#
+# Script for getting a list of 
+#
+source ~/bin/aLib.exp
+set timeout 3
+set tomorrow9 1241189870
+log_user 0
+#
+# if I want to send email to all the offenders
+set input [lindex $argv 0] 
+set fMail 0
+if {$input == "s" } {
+	puts "send spam\n"
+        set fMail 1
+} 
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit 1}
+
+set timeout [expr 60]
+expect -re .* {}
+
+set lChanges ""
+#
+# setup the repo environment
+#exp_send "psql  -h gitquic01 -U gerrit2_ro -c \'select ac.preferred_email,changes.change_id,changes.open from changes,accounts as ac WHERE changes.owner_account_id=ac.account_id\' reviewdb\n"
+cwset lCommand "psql  -h gitquic01 -U gerrit2_ro -c \'select ac.preferred_email,changes.change_id,changes.open from changes,accounts as ac WHERE changes.owner_account_id=ac.account_id\' reviewdb\n"
+
+doGerritQuery $lCommand $lPrompt 120 lChanges
+
+set records [split $lChanges "\r\n"]
+set lsItems {}
+array unset lsSubmitItems
+set lsNotSubmitItems {}
+
+#
+# Iterate over the records
+foreach rec $records {
+	regsub -all {[ \r\t\n]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	set  id  [lindex $fields 1]
+	set  user  [lindex $fields 0]
+	puts "id: \"$id\""
+	if { [regexp {^\d+$} $id] > 0} {
+		if { [regexp "Y" [lindex $fields 2]] } { 
+			if {![regexp {lnxbuild@} $user]} {
+	puts "rec: $rec"
+				lappend lsItems $id
+			}
+		}
+	}
+}
+
+#
+# create script to unverify
+set outfile [open "/tmp/openChanges.out" w]
+set lsItems [lsort $lsItems]
+set lTemp [list]
+lappend lTemp 13824
+lappend lTemp 13761
+lappend lTemp 27722
+set lReadyChange [list]
+foreach item $lsItems {
+puts "Change: $item"
+	#
+	# process To-Be-Merged changes
+	set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT change_open,category_id,value FROM patch_set_approvals WHERE change_id=$item\' reviewdb\n"
+	doGerritQuery $lCommand $lPrompt 120 lChanges
+	set records [split $lChanges "\r\n"]
+	
+	set fVerified 0
+	set fApproved 0
+	#
+	# Iterate over the records
+	foreach rec $records {
+		regsub -all {[ \r\t\n]+} $rec "" rec
+		regsub -all {refs/heads/} $rec "" rec
+		set fields [split $rec "|"]
+		set  changeOpen  [lindex $fields 0]
+		set  categoryId  [lindex $fields 1]
+		set  value  [lindex $fields 2]
+		if { [regexp {^Y} $changeOpen] } {
+		puts "rec: $rec"
+		#	set lsSubmitItems($commitId) $changeId
+		} elseif { [regexp {^N} $changeOpen] } {
+			# exit if the patchset is not open
+			break
+		}
+		
+		if { [regexp {CRVW} $categoryId] && \
+			[regexp {^2$} $value]} {
+			set fApproved 1
+		}
+		if { [regexp {VRIF} $categoryId] && \
+			[regexp {^1$} $value]} {
+			set fVerified 1
+		}
+	}
+	if { $fVerified && $fApproved} {
+		puts "Change $item is ready"
+		lappend lReadyChange $item 
+	}
+}
+set pullString1 "git pull git://git-android.quicinc.com/"
+set pullString2  "refs/changes/"
+set lPull [list]
+foreach item $lReadyChange {
+	puts $item
+	set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT dest_project_name,current_patch_set_id FROM changes WHERE change_id=$item\' reviewdb\n"
+	doGerritQuery $lCommand $lPrompt 120 lChanges
+	set records [split $lChanges "\r\n"]
+	foreach rec $records {
+		regsub -all {[ \r\t\n]+} $rec "" rec
+		regsub -all {refs/heads/} $rec "" rec
+		set fields [split $rec "|"]
+		set  project  [lindex $fields 0]
+		set  patchsetId  [lindex $fields 1]
+		if { [regexp { *(\d+) *} $patchsetId a ps]} {
+			set gitPull ""
+			regexp {(\d{2}$)} $item a id
+			append gitPull $pullString1 $project " " $pullString2  $id \
+				"/" $item "/" $patchsetId
+			puts $outfile $gitPull
+			lappend lPull $gitPull
+		}
+	}
+}
+
+close $outfile
+
+puts [clock format [clock seconds]]
+set lCommand "mail tmackall -s \"Changes Open\" < /tmp/openChanges.out\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}
+set i 1
+set j [list tmackall@quicinc.com]
+
+set secsToDeletion [expr $tomorrow9 - [clock seconds]]
+#
+# code to spam all
+if { $fMail } {
+	set spam [open "/tmp/spam.out" w]
+	puts $spam "All,\n\nThis change(s) is considered open in Gerrit. This is a friendly reminder to move this change along. If this changes is no longer needed, please abandon the change. If the change is needed, then please work to get the change approved and verified. \n\nThanks,\n-tom"
+	close $spam
+	foreach line $lsItems {
+		set fields [split $line " "]
+		set lCommand "mail [lindex $fields 1]  -s \
+			\"Gerrit change\# [lindex $fields 0] is open\" \
+			< /tmp/spam.out\n"
+		#if {[sendSimple $lCommand $lPrompt 15]} {exit}
+		puts "lc: $lCommand\n"
+	}
+}
+exp_close 
+

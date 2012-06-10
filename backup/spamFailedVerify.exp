@@ -1,0 +1,141 @@
+#!/usr/bin/expect
+#
+# This script parses a Commander failure email, looks up the owner
+# of each change, creates a message to investigate it, and then
+# sends an email to the owners, abait.verify, and android.pes
+#
+#log_user 0
+source ~/bin/aLib.exp
+set timeout 3
+
+#
+# create a shell
+spawn bash
+puts "\n\n\n"
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+#
+# setup the file to be emailed
+set fileName "/tmp/changeOwners.txt"
+set f [open $fileName w]
+
+set isTest 0
+
+#*********************************
+#
+# Handle the user input
+#
+#*********************************
+if { [llength $argv] == 1 } {
+    set fileToParse [lindex $argv 0] 
+	if { ![file exist $fileToParse]} {
+		puts "File does not exist: $fileToParse"
+		exit 1
+	}
+	if { [set fid [open $fileToParse  r]] <= 0} {
+		puts "Failed to open $fileToParse"
+		exit 1
+	}
+	set file_data [read $fid]
+	close $fid
+	set data [split $file_data "\n"] 
+} elseif { [llength $argv] == 2 } {
+	if { [lindex $argv 0] == "-t"} { 
+		set isTest 1
+    	set fileToParse [lindex $argv 1] 
+		if { ![file exist $fileToParse]} {
+			puts "File does not exist: $fileToParse"
+			exit 1
+		}
+		if { [set fid [open $fileToParse  r]] <= 0} {
+			puts "Failed to open $fileToParse"
+			exit 1
+		}
+		set file_data [read $fid]
+		close $fid
+		set data [split $file_data "\n"] 
+	} elseif { [lindex $argv 1] == "-t"} {
+		set isTest 1
+    	set fileToParse [lindex $argv 0] 
+		if { ![file exist $fileToParse]} {
+			puts "File does not exist: $fileToParse"
+			exit 1
+		}
+		if { [set fid [open $fileToParse  r]] <= 0} {
+			puts "Failed to open $fileToParse"
+			exit 1
+		}
+		set file_data [read $fid]
+		close $fid
+		set data [split $file_data "\n"] 
+	} else {
+		puts "\n\nUsage: spamFailedVerify.exp  input.txt"
+		puts "Usage: spamFailedVerify.exp  <-t (test)> <input file>\n"
+		exit
+	}
+} else {
+	puts "\n\nUsage: spamFailedVerify.exp  input.txt"
+	puts "Usage: spamFailedVerify.exp  <-t (test)> <input file>\n"
+	exit
+}
+
+#*********************************
+#
+# put the message into the email
+# get each line of the email and process it
+#
+#*********************************
+set lEmails [list]
+foreach changeId $data {
+	# pull the change ID from the git-pull line
+	if {[regexp {git pull.*\/(\d+)\/\d+$} $changeId  a changeId]} {
+		puts $a
+		puts $changeId
+
+		#
+		# get the numeric owner of the change from the changes table
+		set lChanges [list]
+		set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT owner_account_id FROM changes WHERE change_id = $changeId\' reviewdb\n"
+		doGerritQuery $lCommand $lPrompt 10 account
+		if { [regexp {(\d+)\r\n\(} $account a sAccount] } {
+			set lChanges [list]
+			# get the email address from the account_external_ids using
+			# the numeric user-id
+			set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT email_address FROM account_external_ids WHERE account_id = $sAccount\' reviewdb\n"
+			doGerritQuery $lCommand $lPrompt 20 dEmail
+			if { [regexp {\w+@quicinc\.com} $dEmail cEmail] } {
+				puts $f "$changeId: $cEmail"
+				lappend lEmails $cEmail
+			} elseif { [regexp {\w+@qualcomm\.com} $dEmail cEmail]} {
+				puts $f "$changeId: $cEmail"
+				lappend lEmails $cEmail
+			}
+
+		}
+	}
+}
+#
+# put the email string together
+lappend lEmails android.leads@qualcomm.com
+lappend lEmails abait.verify@qualcomm.com
+set emails [join $lEmails ,]
+puts $f "\n\n"
+foreach line $data {
+	puts $f $line
+}
+close $f
+# email the guilty
+#
+# if only testing, send it to the person running the test
+if { $isTest } {
+	set emails [exec "whoami"]
+	append emails "@qualcomm.com"
+}
+set lCommand "mail  $emails  -s \
+	\"Job failure\" \
+	< /tmp/changeOwners.txt\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit 1}

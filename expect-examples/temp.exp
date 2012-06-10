@@ -1,0 +1,190 @@
+#!/usr/bin/expect
+#
+# This script generates Testing statistics
+#
+source ~/bin/aLib.exp
+set timeout 3
+log_user 0
+
+set twentyFourHours [expr 3600*24]
+set currTime [clock seconds]
+#
+# process command-line arguments
+if { [llength $argv] == 0 } { 
+	# no args gives you a 24 hour report
+	set startTime [expr $currTime - $twentyFourHours]
+} elseif { [llength $argv] == 1 } {
+	# interpret a single command-line arg as the num days you want a report for
+	set startTime [expr $currTime - [lindex $argv 0]*$twentyFourHours]
+} 
+
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+set fileContents [list]
+set dirList [list]
+
+#
+#****** grab all test directories ******
+set timeout 20
+set workspaces "/prj/lnxbuild/workspaces/"
+set jobIdList [list]
+
+
+#
+# get the mainline_stability* job dirs
+foreach dirName [glob -nocomplain -type d -directory \
+	$workspaces automated_check_gerrit_change_android_gingerbread_2*] {
+	set fileModTime [file mtime $dirName]
+	#
+	# only process jobs from the start date
+	if { $fileModTime > $startTime } {
+		#
+		# get the job ID
+		regexp {.*_([[:digit:]]*)$} $dirName a jobId
+		if { $jobId != "" } {
+			lappend jobIdList $jobId
+		}
+	}
+}
+set callParam [join $jobIdList " "]
+set lCommand ""
+append lCommand jobsummary.py " " $callParam "\n"
+set lChanges [sendAndReturnOutput $lCommand $lPrompt 200]
+puts $lChanges
+exit
+set records [split $lChanges "\r"]
+set fStart 0
+set lTrimmedOutput [list]
+foreach line $lChanges {
+	if { [regexp {Result counts\:} $line] } {
+		set fStart 1
+	}
+	if { $fStart == 1 } {
+		lappend lTrimmedOutput $line
+	}
+}
+puts $lTrimmedOutput
+exit
+	
+#
+#***** open all of the summary files and process them *****
+foreach item [split $lChanges "\r\n"] {
+	if { [regexp {^\/} $item] } { 
+		set dirList [glob -nocomplain -directory $item *.sum]
+		foreach file $dirList {
+			puts "file: $file"
+			regexp {.*\/(.*\.sum)} $file a fileOnly
+			set fileContents [list]
+	  		set fid [open $file  r]
+	   		while { ![eof $fid] } {
+	      		# Read a line from the file and analyse it.
+	      		gets $fid line
+				lappend fileContents $line
+			}
+			processFile $fileOnly $fileContents fileArray
+			close $fid
+		}
+	}
+}
+#
+#***** create the report file *****
+set totFail 0
+set totPass 0
+set totXfail 0
+set totXpass 0
+set fileName "/tmp/testStatsReport.out"
+set f [open $fileName w]
+foreach {key value} [array get fileArray] {
+	#puts $f "Test: $key - $value"
+	regexp {.*-TestName-(.*)} $key a sKey
+	if {[regexp {^PASS$} $value]} {
+		incr totPass
+		if { ![info exist aPass($sKey)]} {
+			set aPass($sKey) 1
+		} else {
+			incr aPass($sKey)
+		}
+	} elseif {[regexp {^FAIL$} $value]} {
+		incr totFail
+		if { ![info exist aFail($sKey)]} {
+			set aFail($sKey) 1
+		} else {
+			incr aFail($sKey)
+		}
+	} elseif {[regexp {XFAIL} $value]} {
+		incr totXfail
+		if { ![info exist aXFail($sKey)]} {
+			set aXFail($sKey) 1
+		} else {
+			incr aXFail($sKey)
+		}
+	} elseif {[regexp {XPASS} $value]} {
+		incr totXpass
+		if { ![info exist aXPass($sKey)]} {
+			set aXPass($sKey) 1
+		} else {
+			incr aXPass($sKey)
+		}
+	} else {
+		puts "$key Unexpected status: $value"
+		puts $f "$key Unexpected status: $value"
+	}
+
+}
+puts $f "Test Statistics : $currDate\n\n"
+puts $f "Total # passes: $totPass"
+puts $f "Total # unexpected fails: $totFail"
+puts $f "Total # expected fails: $totXfail"
+puts $f "Total # unexpected passes: $totXpass\n\n"
+set tList [list]
+puts $f "\n\nTests that passed and the number of passes:"
+foreach {key value} [array get aPass] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that failed and the number of failures:"
+foreach {key value} [array get aFail] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that failed expectedly and the number of failures:"
+foreach {key value} [array get aXFail] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+set tList [list]
+puts $f "\n\nTests that passed unexpectedly and the number of passes:"
+foreach {key value} [array get aXPass] {
+	lappend tList "$key :  $value"	
+}
+set tList [lsort $tList]
+foreach item $tList {
+	puts $f $item
+} 
+close $f
+
+#
+# mail results to me
+set lCommand "mail tmackall  -s \
+	\"ABAIT Test Statistics\" \
+	< $fileName\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}

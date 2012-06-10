@@ -1,0 +1,383 @@
+#!/usr/bin/expect
+#
+# This script generates Testing statistics
+#
+#package require parserclass 
+source ~/bin/aLib.exp
+set timeout 3
+
+
+#
+# get the currect time for reference
+set currDate [clock format [clock seconds]] 
+set currTime [clock seconds]
+
+
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+
+#
+# get job details - this will contain the error messages
+proc getJobDetails { inJobName outFinishTime outResource} {
+	upvar 1 $outFinishTime finishTime
+	upvar 1 $outResource resource
+	global lPrompt
+	set elapsedTime 0
+	set createTime 0
+	set outcome 0
+	set finishTime ""
+	set resourceName ""
+	set resource ""
+	log_user 0
+
+	if { [regexp {(\d\d\d\d\d+$)} $inJobName a jobId]} {
+		set lCommand "ectool getJobDetails $jobId\n"
+		set lChanges [sendAndReturnOutput $lCommand $lPrompt 60]
+		set lines [split $lChanges "\r\n"]
+		foreach item $lines {
+			if {  $outcome == 0} {
+				if { [regexp {errorMessage\> *Job error.*:([^<]+)} \
+					$item a b]} {
+					set outcome $b
+				}
+			} 
+			if { $elapsedTime == 0} {
+				if { [regexp {elapsedTime>([^<]+)<} $item a b]} {
+					set elapsedTime $b
+				}
+			} 
+			if { $createTime == 0} {
+				if {[regexp {createTime>([^<]+)<} $item a b]} {
+					set createTime $b
+				}				
+			}
+			#
+			# if I have everything I want, head back
+			if { ($createTime != 0) && ($elapsedTime != 0) && ($outcome != 0)} {
+				set finishTime $createTime
+				regsub {T} $finishTime ":" finishTime
+				regsub {Z} $finishTime "" finishTime
+				regsub {\.\d\d\d} $finishTime "" finishTime
+				set startTimeSecs [clock scan $finishTime -gmt yes \
+					 -format {%Y-%m-%d:%T}]
+				set endTimeSecs [expr $startTimeSecs + ($elapsedTime/1000)]
+				set finishTime [clock format $endTimeSecs]
+			}
+			if {[regexp {resourceName>([^<]+)<} $item a b]} {
+				set resourceName $b
+			}
+			if {[regexp {value>Booting\.\.\.FAIL} $item]} {
+				set resource $resourceName
+				break
+			}
+				
+		}
+	}
+	return $outcome
+	#return ""
+}
+
+#
+# get job status
+proc getJobStatus { inJobName outOutcome} {
+	upvar 1 $outOutcome out
+	global lPrompt
+	set out ""
+	log_user 0
+
+	if { [regexp {_(\d\d\d\d\d+$)} $inJobName a jobId]} {
+		set lCommand " ssh abait18-lnx.qualcomm.com \"ectool getJobStatus $jobId\"\n"
+		set lChanges [sendAndReturnOutput $lCommand $lPrompt 60]
+		set lines [split $lChanges "\r\n"]
+		foreach item $lines {
+			if { [regexp {outcome\>(.*)\<\/outcome} $item a outcome]} {
+				set out $outcome
+			} elseif {[regexp {ectool error} $item]} {
+				puts $item
+				return 2
+			}
+		}
+	} else {
+		puts "$inJobName not found"
+		return 3
+	}
+	return 0
+}
+
+
+#
+# get the machine name from the ip address
+proc getMachineName { inIP outMachineName} { 
+	upvar 1 $outMachineName machineName
+	global lPrompt
+	log_user 0
+	set lCommand "nslookup $inIP\n"
+
+	set lChanges [sendAndReturnOutput $lCommand $lPrompt 60]
+	set lines [split $lChanges "\r\n"]
+	set lTemp [list]
+	foreach item $lines {
+        if { [regexp {name *= *([^\.]*)\.} $item a machineName] } {
+			set machineName [string tolower $machineName]
+			return 0
+        }
+	}
+	return 128
+}
+
+#
+# procedure to open the get_lab_pc logs and get the assocaite PCs
+proc getTargetPC { inPath inTarget } {
+
+	set lLabPcs [glob -nocomplain  -directory $inPath  get_lab_pc* ]
+	foreach item $lLabPcs {
+	  	set fid [open $item  r]
+	   	while { ![eof $fid] } {
+	      	# Read a line from the file and analyse it.
+	      	gets $fid line
+			if {[regexp {Acquired resource (.*)_lab_machine .* target ([^\.]*)\.} $line a machine target]} {
+				if { $inTarget == $target } {
+					return $machine
+				}
+			}
+		}
+	}
+	return ""
+}
+				
+
+
+proc processFile { inJobName inFileName inFileContents outFailList} { 
+	upvar 1 $outFailList lReturn
+
+	foreach line $inFileContents {
+		if { [regexp {^(PASS|FAIL|XFAIL|XPASS): *([^ ]+)} $line a match match1]} {
+			#puts "testname $match1"
+			#set arr($inFileName-TestName-$match1) $match
+		}
+		if { [regexp {^FAIL: *([^ ]+)} $line a test]} {
+			#set arr($jobId-$test) failed
+			lappend lReturn "$test failed"
+		} elseif  {[regexp {^UNRESOLVED: *(.*)} $line a test]} {
+			lappend lReturn "$test unresolved"
+		}
+			
+	}
+}
+
+proc processTestFail { inJobName outFailedTest}  {
+	upvar 1 $outFailedTest fileArray
+	global lPrompt
+	regsub {\/submit_or_mark_chang.*} $inJobName "" jobPath
+	set fileList [glob -nocomplain -directory $jobPath test--*.html]
+	foreach file $fileList {
+		regexp {.*\/(.*\.html)} $file a fileOnly
+		set fileContents [list]
+		set fid [open $file  r]
+		while { ![eof $fid] } {
+		# Read a line from the file and analyse it.
+			gets $fid line
+			lappend fileContents $line
+		}
+		processFile $inJobName $fileOnly $fileContents fileArray 
+		close $fid
+	}
+} 
+################################################
+#
+#
+# Start of Program
+#
+#
+################################################
+
+
+
+#
+# get the check gerrit jobs from the past week
+set basedir "/prj/lnxbuild/workspaces/"
+set numDays 1
+# set the absolute time back 24 hours
+set after [expr ([clock seconds] - ($numDays * 24 * 3600))]
+puts "The time is: [clock format $after -format %D:%H:%M:%S]"
+
+
+#
+# get all the check_gerrit* jobs based on after (# hours)
+set lDirs [glob -nocomplain -type d -directory $basedir  *check_gerrit_change_* ]
+set lRecentDirs [list]
+foreach dirName $lDirs {
+#set when [file mtime $dirName]
+	file stat $dirName when
+    if {$when(ctime) > $after} {
+		if { 0 != [getJobStatus $dirName status]} {
+			puts "WARNING: could not get Job Info"
+#			exit
+		} elseif { "error" == $status} {
+			lappend lRecentDirs $dirName
+		}
+    }
+}
+
+foreach item $lRecentDirs {
+	regexp {_(\d\d\d+)$} $item a jobId
+puts $item
+if { [info exists jobId]} {
+	puts $jobId
+}
+}
+
+exit
+
+#
+# pull out the test dirs
+set lAllSubmitFiles [list]
+foreach item $lRecentDirs {
+	set lSubmitFiles [glob -nocomplain \
+		-directory $item  submit_or_mark_chang* ]
+	set after 0
+	set theFile ""
+	foreach submitFile $lSubmitFiles {
+		file stat $submitFile when
+        if {$when(ctime) > $after} {
+			set theFile $submitFile
+        }
+	}
+	if { "" != $theFile } {
+		lappend  lAllSubmitFiles $theFile
+	} else {
+		puts "WARNING:Is something wrong with $item?"
+	}
+}
+
+
+#
+# main processing loop
+set lJobStatus [list]
+array unset aJobInfo
+foreach item $lAllSubmitFiles {
+	puts $item
+	set fid [open $item  r]
+	set fFound 0
+	# pull out the branch name from the path
+	regexp {check_gerrit_change_(.*)_\d\d\d+\/} $item a branch
+	while { ![eof $fid] } {
+		# Read a line from the file and analyse it.
+	   	gets $fid line
+		#
+		# check for a job failed message in the submit_or_mark* files
+		if {[regexp {The job failed to (.*) for target (.*) at } $line \
+			a failure target]} {
+			# pull out the job ID from the path
+			regexp {(\d\d\d+)\/submit_or_mark_chang} $item a jobId
+			# pull out just the past name without the file as part of it
+			regsub {\/submit_or_mark_chang.*} $item "" justPath
+			# get the the target PC name (from on of the step logs)
+			set targetPC [getTargetPC $justPath $target]
+			getJobDetails $jobId finishTime resource
+			#
+			# set the array information to be used in the report
+			set aJobInfo($jobId-branch) $branch
+			set aJobInfo($jobId-time) $finishTime
+			set aJobInfo($jobId-target) $target
+			set aJobInfo($jobId-failure) $failure
+			set temp ""
+			if { [regexp {^build} $failure]} {
+				
+				append temp "\n$jobId\n$branch\n$finishTime\n" \
+					 "$target\nfailure:$failure"
+			} else {
+				append temp "\n$jobId\n$branch\n$finishTime\n" \
+					 "$target\n$failure\n$targetPC"
+				set aJobInfo($jobId-pc) $targetPC
+			}
+			lappend lJobStatus  $temp
+			set lFailures [list]
+			#	
+			# get the test failure (when applicable)
+			if { [regexp {^test} $failure]} { 
+				processTestFail $item lFailures
+				foreach value $lFailures {
+					lappend lJobStatus  $value
+					append aJobInfo($jobId-tests) "$value\n"
+				}
+					
+			}
+			set fFound 1
+			break
+		}
+	}
+	close $fid
+	#
+	# for changes that failed to merge
+	if { $fFound == 0} {
+		regexp {(\d\d\d+)\/submit_or_mark_chang} $item a jobId
+		set temp [getJobDetails $jobId finishTime resource]
+		lappend lJobStatus  \
+			"\n$jobId\n$branch\n$finishTime\nfailure:$temp" 
+		set aJobInfo($jobId-branch) $branch
+		set aJobInfo($jobId-time) $finishTime
+		set aJobInfo($jobId-failure) $temp
+	}
+		
+}
+
+#
+# process data stored in array	
+set temp[list]
+foreach key [array names aJobInfo] {
+	if { [regexp {(\d+)-branch} $key a jobId]} {
+		lappend temp $jobId
+	}
+}
+
+set temp [lsort -decreasing $temp]
+
+
+
+#
+# print out the information to a file
+set fileName2 "/tmp/stats.out"
+set f [open $fileName2 w]
+foreach item $temp {
+	# make sure it is a id
+	if { [regexp {^\d+$} $item]} {
+		puts $f "\n$item"
+		if { [info exists aJobInfo($item-branch)]} {
+			puts $f $aJobInfo($item-branch)
+		}
+		if { [info exists aJobInfo($item-time)]} {
+			puts $f $aJobInfo($item-time)
+		}
+		if { [info exists aJobInfo($item-target)]} {
+			puts $f $aJobInfo($item-target)
+		}
+		if { [info exists aJobInfo($item-failure)]} {
+			puts $f $aJobInfo($item-failure)
+		}
+		if { [info exists aJobInfo($item-tests)]} {
+			puts $f $aJobInfo($item-tests)
+		}
+	}
+		
+}
+close $f
+
+
+
+
+#
+# mail results to me
+#set lCommand "mail abait.stats.4-hour@qualcomm.com  -s  
+set lCommand "mail tmackall@qualcomm.com  -s  \
+	\"Job Failures in the last [expr $numDays * 24] hours\" \
+	< $fileName2\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit}

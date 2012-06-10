@@ -1,0 +1,252 @@
+#!/usr/bin/expect
+#
+# This script generates an email with the changes, commits, and CR #'s between 2 tags
+#
+source ~/bin/aLib.exp
+set timeout 3
+log_user 0
+
+#
+# setup all the vars for the script
+if {[info exists env(GWORKSPACE)]} {
+	set workspace $env(GWORKSPACE)
+} else {
+	set workspace "/local/mnt/workspace/tmackall/ics"
+}
+
+#
+# setup all the vars for the script
+if {[info exists env(REL_USER)]} {
+	set relUser $env(REL_USER)
+} else {
+	set relUser "tmackall@qualcomm.com"
+}
+
+#
+# Check to see if 1 or 2 tags are supplied - if only one then calculate
+# the prec tag
+if { [llength $argv] == 1 } {
+	set toTag [lindex $argv 0] 
+	regexp {(.*)(\d\d)$} $toTag a front oldVersion
+	incr oldVersion -1
+	append fromTag $front $oldVersion
+	puts "old release: $fromTag\n"
+} elseif {  [llength $argv] == 2 } {
+	set toTag [lindex $argv 1] 
+	set fromTag [lindex $argv 0] 
+	puts "old release: $fromTag\n"
+} else {
+	puts "\n\nUsage: makeRelease.exp au-01.08.01.XXX <au-01.08.01.XXX>"
+	puts "Usage: makeRelease.exp  <from tag-optional> <to tag>\n"
+	puts "Set env var REL_USER to the email address of where the report is to be mailed"
+	puts "Set env var GWORKSPACE to the workspace location to use as a reference for the commit history\n"
+	exit 2
+}
+#
+# create a shell
+spawn bash
+
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit 1}
+
+set timeout 120
+expect -re .*$ {}
+
+
+#
+# the rest of the script want the workspace head
+set lCommand "cd $workspace\n"
+sendSimple $lCommand $lPrompt [expr 60*60]
+
+#
+# this section puts the remote API info at the current tag (not the tip)
+set lChanges ""
+if {[file isdirectory "$workspace/vendor/qcom/proprietary/modem-apis"]} {
+	set remoteApisDir "$workspace/vendor/qcom/proprietary/modem-apis/*"
+} else {
+	set remoteApisDir "$workspace/vendor/qcom-proprietary/modem-apis/*"
+}
+puts $remoteApisDir
+set  lRemoteAppDirs [glob -nocomplain  $remoteApisDir]
+set lModems [list]
+foreach dir $lRemoteAppDirs {
+	if {[file isdirectory $dir]} {
+		set lCommand "cd $dir\n"
+		sendSimple $lCommand $lPrompt [expr 60]
+		set lCommand "git reset --hard refs/tags/$toTag\n"
+		sendSimple $lCommand $lPrompt [expr 60]
+		set fApiInfo "$dir/API_INFO"
+		set lCommand ""
+		append lCommand "egrep \"\% whereisbuild\"" " "  $fApiInfo "\n"
+		set output [sendAndReturnOutput $lCommand $lPrompt 15]
+		# pull the target out of the dir path
+		regexp {.*\/modem-apis\/(.*)\/API_INFO} $fApiInfo a target
+		if { [regexp {.*-b=(\S+)} $output a modem]} {
+			lappend lModems "$modem $target"
+			
+		}
+	}
+}
+
+set lModems [lsort $lModems]
+#
+# update the workspace
+set lCommand "repo sync\n"
+sendSimple $lCommand $lPrompt [expr 60*60]
+
+set timeout [expr 20*60]
+set lCommand "repo forall -c \"git log $fromTag..$toTag\"\n"
+set lChanges [sendAndReturnOutput $lCommand $lPrompt $timeout]
+# remove the text highlights
+regsub -all {\[33m}  $lChanges "" lChanges
+regsub -all {\[m}  $lChanges "" lChanges
+set lines [split $lChanges "\u001b"]
+array unset commitText
+set lastCommit ""
+set lines [lreplace $lines 0 0]
+set lCRs [list]
+#
+# pull out the CRs fixed
+foreach {line text} $lines {
+	puts "line:\"$line\""
+	puts "text:\"$text\""
+	# split the text up by line, since there could be multiple CR lines
+	set crs [split $text "\r\n"]
+	if { [regexp -nocase {cr\'?s?.(fixed)?: *(.*)} $text a b theCR] } {
+		regsub -all {[ \r\t\n]+} $theCR "" theCR
+		foreach item [split $theCR ","] {
+        	regexp {^(\d{6}).*} $item a item2
+			if { [info exists item2]} {
+				lappend lCRs1 $item2
+			}	
+		}
+	}
+}
+# cleanup the CRs - remove non-digits
+if { [info exists lCRs1] } {
+	foreach item $lCRs1 {
+		regsub -all {\D*} $item "" item
+		lappend lCRs $item
+	}
+}
+set test 1
+set branch ""
+set commits [list]
+#
+# pull out the commit ID and the associated text
+foreach {line text} $lines {
+#puts "line: $line"
+	regexp  {^.*(Author:.*)} $text a text
+#puts "text: $text"
+	if { [regexp {commit (\w+).*} $line a theCommit] } {
+		lappend commits $theCommit
+		set lastCommit $theCommit
+	} 
+	#regsub -all {^..} $text "" text
+	set commitText($lastCommit) $text
+	if { $test && [regexp {.*Merge change \d+ into (\w+).*} $text a tb]  } {
+		set branch $tb
+		set test 0
+	}
+}
+set lCommand "psql -h review-android.quicinc.com -U gerrit2_ro -c \'SELECT * FROM patch_sets\' reviewdb\n"
+doGerritQuery $lCommand $lPrompt 220 lChanges
+regsub -all {\r\n} $lChanges "\r" lChanges
+
+set records [split $lChanges "\r"]
+set lsItems {}
+array unset lsSubmitItems
+set lsNotSubmitItems {}
+
+#
+# Make a table of all change ID and the associated commits IDs
+foreach rec $records {
+	regsub -all {[ \r\t\n]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	set  commitId  [lindex $fields 0]
+puts "commitId \"$commitId\""
+	set  changeId  [lindex $fields 3]
+puts "change $changeId"
+	if { [regexp { *(\d+)} $changeId a cId] } {
+puts "cId \"$cId\""
+		set lsSubmitItems($commitId) $cId
+	}
+}
+
+array unset changes
+set f [open "/tmp/changes.out" w]
+puts $f "Test results are located at: http://qshare2.qualcomm.com/qshare2/component/main?objectId=0b010025804f9628\n"
+puts $f "Release info can be seen at: http://qwiki.qualcomm.com/qct-linux/Android-Releases\n"
+puts $f "\nCRs fixed in the release:"
+foreach cr $lCRs {
+	puts $f "$cr"
+}
+puts $f "\nThis is a list of the modems in this release"
+foreach {modem} $lModems {
+	puts $f "$modem"
+}
+set lChanges [list]
+puts $f "\nThis is a list of the changes and commits in this release\n\n"
+foreach commit $commits {
+	if { [info exists lsSubmitItems($commit)] } {
+		if {! [info exists changes($commit)]} {
+			puts $f "Change Num: $lsSubmitItems($commit)\nCommit ID: $commit"
+			puts $f $commitText($commit)
+			set changes($commit) 1
+			lappend lChanges $lsSubmitItems($commit)
+		} else {
+			puts "$commit  1 not found"
+		}
+	} else {
+		puts "$commit not found"
+	}
+}
+close $f
+#
+# create the wiki page segment
+set f [open "/tmp/wiki.out" w]
+puts $f "\{| \{\{table\}\} border=\"5\""
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''Branch'''"
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''Tag'''"
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''Target'''"
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''Modem'''"
+foreach {modem} $lModems {
+	set color  [lindex $lColors [expr int (rand()* [llength $lColors])]]
+	puts $f "|- align=\"center\" style=\"background:$color;\""
+	set {target modem} [split $modem " "]
+	puts $f "|$branch||$toTag||$target||$modem"
+}
+puts $f "|\}"
+#
+# wiki changes
+puts $f "\n\n\{| \{\{table\}\} border=\"5\""
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''Changes since the Last AU'''"
+set chgs [join [lsort $lChanges] ,]
+set color  [lindex $lColors [expr int (rand()* [llength $lColors])]]
+	puts $f "|- align=\"center\" style=\"background:$color;\""
+	puts $f "|$chgs"
+puts $f "|\}"
+#
+#wiki CRs
+puts $f "\n\n\{| \{\{table\}\} border=\"5\""
+puts $f "| align=\"center\" style=\"background:#f0f0f0;\"|'''CRs fixed since the Last AU'''"
+set crs [join [lsort $lCRs] ,]
+set color  [lindex $lColors [expr int (rand()* [llength $lColors])]]
+	puts $f "|- align=\"center\" style=\"background:$color;\""
+	puts $f "|$crs"
+puts $f "|\}"
+close $f
+#
+# mail results to me
+set lCommand "mail $relUser  -s \
+	\"Release text for release $toTag\" \
+	< /tmp/changes.out\n"
+if {[sendSimple $lCommand $lPrompt 15]} {exit 1}
+set lCommand "mail $relUser  -s \
+	\"Wiki text for release $toTag\" \
+	< /tmp/wiki.out\n"
+#if {[sendSimple $lCommand $lPrompt 15]} {exit 1}

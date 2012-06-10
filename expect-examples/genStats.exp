@@ -1,0 +1,526 @@
+#!/usr/bin/expect
+#
+# This script generates Gerrit statistics that may or may not be of any use.
+#
+#log_user 0
+package require textutil::split
+source ~/bin/aLib.exp
+set timeout 3
+
+#
+# create a shell
+spawn bash
+puts "\n\n\n"
+#
+# set the prompt
+set lPrompt "uniQuePrompt#"
+set lCommand "export PS1=$lPrompt\n"
+if {[sendSimple $lCommand $lPrompt 5]} {exit}
+
+#
+# setup log files
+set fileName "/tmp/totals"
+set fileNameD "/tmp/daily"
+set fileNameM "/tmp/monthly"
+set fileNameMT "/tmp/monthlyTotals"
+set f [open $fileName w]
+set fd [open $fileNameD w]
+set fm [open $fileNameM w]
+set ft [open $fileNameMT w]
+
+
+#
+# get the currect time for reference
+set currTime [clock seconds]
+set currDate [clock format $currTime] 
+puts $currDate
+puts $f $currDate
+puts $fd $currDate
+puts $fm $currDate
+puts $ft $currDate
+regsub {\d{2}:\d{2}:\d{2}} $currDate "23:59:59" endDate
+regexp {\w+ (\w{3}) (\d+) .*(\d{4})$} $currDate a month day year
+set month [string toupper $month]
+append startDate "01-" $month "-" $year
+set sDate [clock scan $startDate]
+set eDate [clock scan $endDate]
+#
+# Check to see if 1 or 2 tags are supplied - if only one then calculate the prec tag
+if { [llength $argv] == 0 } {
+} elseif { [llength $argv] == 2 } {
+	set sDate [clock scan [lindex $argv 0]]
+	set eDate [clock scan [lindex $argv 1]]
+	puts $fm "start date: [clock format $sDate]"
+	set eDate [expr $eDate + (60*60*24)]
+	puts $fm "end date: [clock format $eDate]"
+} else {
+	puts "\n\nUsage: genStats.exp 28-JUL-2009 31-JUL-2009"
+	puts "Usage: genStats.exp  <start date> <end date>\n"
+	exit
+}
+set sDateTxt [clock format $sDate -format {%Y-%m-%d}]
+set eDateTxt [clock format $eDate -format {%Y-%m-%d}]
+puts "Start date: $sDateTxt"
+puts "End date  : $eDateTxt"
+set tDay [expr (60*60*24)]
+#
+#***** setup the report file *****
+set currTime [clock seconds]
+set startTest $currTime
+set dayLength [expr 60*60*24]
+set tomorrow [expr $sDate + $dayLength]
+
+proc pGetNextItem {insRE inaArray} {
+	upvar $inaArray arr
+
+	set lTemp [array names arr -regexp $insRE]
+	set tMax 0
+	foreach item $lTemp {
+		regexp  $insRE $item a num
+		if { $num > $tMax } {
+			set tMax $num
+		}
+	}
+	return [incr tMax]
+}
+#
+#***** procedure section *****
+proc pCalcArrayOccurrences {inaArray insItem } {
+	upvar 1 $inaArray arr
+	set cnt 0
+	foreach {key value} [array get arr] {
+		if { $value == $insItem } {
+			incr cnt
+		}
+	}
+	return $cnt
+}
+
+
+proc pPrintBranchInfo { insBranch inaArray infFH } {
+	upvar 1 $inaArray arr
+	puts $infFH "\n\n$insBranch Statistics"
+	puts $infFH "Total $insBranch changes: \
+		[array size arr] in Gerrit"
+	puts $infFH "Number of changes in review: \
+		[pCalcArrayOccurrences arr CRVW]"
+	puts $infFH "Number of changes waiting to be verified: \
+		[pCalcArrayOccurrences arr APPR]"
+	puts $infFH "Number of changes waiting to be submitted: \
+		[pCalcArrayOccurrences arr VRIF]"
+	puts $infFH "Number of changes submitted: [pCalcArrayOccurrences \
+		arr SUBM]"
+	puts $infFH "Number of changes that failed verification: \
+		[pCalcArrayOccurrences arr FVRF]" 
+}
+
+
+proc pUpdateState { insChangeId insState insTime inOutaBranch f} {
+	upvar $inOutaBranch arr
+	set aState(CRVW) 0
+	set aState(APPR) 1
+	set aState(VRIF) 2
+	set aState(SUBM) 3
+	set aState(FVRF) 4
+	regsub -all {[\s\t]} $insChangeId "" insChangeId
+	regsub -all {[\s\t]} $insState "" insState
+	#
+	# set the current state
+	if {[info exists arr($insChangeId-state)]} {
+		if { $aState($arr($insChangeId-state)) < $aState($insState)} {
+			set arr($insChangeId-state) $insState
+		}
+			
+	} else {
+		set arr($insChangeId-state) $insState
+	}
+	#
+	# store the state change time
+	if { [info exists arr($insChangeId-$insState-1)] } {
+		set RE "\^$insChangeId\-$insState-\(\\d\+\)"
+		set tMax [pGetNextItem $RE arr]
+		set arr($insChangeId-$insState-$tMax) $insTime
+	} else {
+		set arr($insChangeId-$insState-1) $insTime
+	}
+}
+log_user 1
+#
+#***** DB calls *****
+puts "reading the Gerrit DB"
+set lChanges [list]
+set lCommand "psql -h gitquic01 -U gerrit2_ro -c \"SELECT * FROM changes WHERE last_updated_on BETWEEN \'$sDateTxt\' AND \'$eDateTxt\'\" reviewdb\n"
+doGerritQuery $lCommand $lPrompt 1000 lChanges
+set changeRecords [split $lChanges "\r"]
+exit
+
+set lChanges [list]
+set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT * FROM patch_set_approvals\' reviewdb\n"
+doGerritQuery $lCommand $lPrompt 1000 lChanges
+set changeAppRecords [split $lChanges "\r"]
+
+set lChanges [list]
+set lCommand "psql -h gitquic01 -U gerrit2_ro -c \'SELECT change_id,change_id,written_on,message FROM change_messages\' reviewdb\n"
+doGerritQuery $lCommand $lPrompt 1000 lChanges
+set changeMessages [textutil::split::splitx $lChanges {\r\n\s+\d+ \|}]
+set sTotChanges 0
+#
+#
+#***** Get the # of failed verifies by lnxbuild  and the # of rebases *****
+puts "processing rebases and verifies"
+set totVerifiesPass 0
+set totVerifiesFail 0
+set totReviewFail 0
+set totRebases 0
+array unset mergedChanges
+foreach rec $changeMessages {
+	#regsub -all {[\s\t]+} $rec "" rec
+	set fields [split $rec "|"]
+	set  changeId  [lindex $fields 0]
+	regsub -all {[\s\t]+} $changeId "" changeId
+	set  time  [lindex $fields 1]
+	set  msg  [lindex $fields 2]
+	if { [regexp {(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})} \
+		$time a date time]}  {
+		set aTime ""
+		append aTime $date " " $time
+		set recTime [clock scan $aTime]
+
+		if {[info exists aChanges($changeId-msg-1)] } {
+			set RE "\^$changeId-msg-\(\\d\+\)"
+			set tMax [pGetNextItem $RE aChanges]
+			set aChanges($changeId-msg-$tMax) $recTime
+			
+		} else {
+			set aChanges($changeId-msg-1) $recTime
+		}
+		# look for comments by linux build service account (1000064)
+		if { [regexp {Patch Set \d+:\s+Fails.*Please find the automation job results here} $msg] } {
+			incr totVerifiesFail
+			if {[info exists aChanges($changeId-verifyfail-1)] } {
+				set RE "\^$changeId-verifyfail-\(\\d\+\)"
+				set tMax [pGetNextItem $RE aChanges]
+				set aChanges($changeId-verifyfail-$tMax) $recTime
+				
+			} else {
+				set aChanges($changeId-verifyfail-1) $recTime
+			}
+		
+		} elseif { [regexp {Patch Set \d+:\s+Verified.*Please find the automation job results here} $msg] } {
+			incr totVerifiesPass
+			if {[info exists aChanges($changeId-verifypass-1)] } {
+				set RE "\^$changeId-verifypass-\(\\d\+\)"
+				set tMax [pGetNextItem $RE aChanges]
+				set aChanges($changeId-verifypass-$tMax) $recTime
+				
+			} else {
+				set aChanges($changeId-verifypass-1) $recTime
+			}
+		
+		} elseif { [regexp {Please find the automation job results here} $msg] } {
+			incr totVerifiesFail
+			if {[info exists aChanges($changeId-verifyfail-1)] } {
+				set RE "\^$changeId-verifyfail-\(\\d\+\)"
+				set tMax [pGetNextItem $RE aChanges]
+				set aChanges($changeId-verifyfail-$tMax) $recTime
+				
+			} else {
+				set aChanges($changeId-verifyfail-1) $recTime
+			}
+		
+		} elseif { [regexp {I would prefer that you didn't submit this} $msg] } {
+			incr totReviewFail
+			if {[info exists aChanges($changeId-reviewfail-1)] } {
+				set RE "\^$changeId-reviewfail-\(\\d\+\)"
+				set tMax [pGetNextItem $RE aChanges]
+				set aChanges($changeId-reviewfail-$tMax) $recTime
+				
+			} else {
+				set aChanges($changeId-reviewfail-1) $recTime
+			}
+		
+		} elseif {[regexp \
+			{Your change could not be merged due to a path conflict} $msg] } {
+			incr totRebases
+			if {[info exists aChanges($changeId-rebase-1)] } {
+				set RE "\^$changeId-rebase-\(\\d\+\)"
+				set tMax [pGetNextItem $RE aChanges]
+				set aChanges($changeId-rebase-$tMax) $recTime
+				
+			} else {
+				set aChanges($changeId-rebase-1) $recTime
+			}
+			set aChanges($changeId-rebase-1) $recTime
+		}
+	}
+}
+puts "determining branch information"
+foreach rec $changeRecords {
+	regsub -all {[\s\t]+} $rec "" rec
+	regsub -all {refs/heads/} $rec "" rec
+	set fields [split $rec "|"]
+	set  time  [lindex $fields 0]
+	if { [regexp {(\d{4}-\d{2}-\d{2})(\d{2}:\d{2}:\d{2})} \
+		$time a date time]}  {
+		set aTime ""
+		append aTime $date " " $time
+		set recTime [clock scan $aTime]
+	}
+	set branch  [lindex $fields 5]
+	set changeId [lindex $fields 12]
+	regsub -all {[\s\t]} $changeId "" changeId
+	if {[regexp {\d+} $changeId]} { 
+		set aChanges($changeId-branch) $branch
+		set aChanges($changeId-upload) $recTime
+		#
+		# initialize the state to review with the creation date
+		set aChanges($changeId-state) CRVW
+		set aChanges($changeId-CRVW-1) $recTime
+	}
+}
+puts "processing state changes"
+foreach rec $changeAppRecords {
+	regsub -all {[\t\s]+} $rec "" rec
+	set fields [split $rec "|"]
+	set changeId [lindex $fields 4]
+	regsub -all {[\s\t]} $changeId "" changeId
+	set  time  [lindex $fields 1]
+	if { [regexp {\d+} $changeId]}  {
+		set state [lindex $fields 6]
+		set status [lindex $fields 0]
+		if { [regexp {(\d{4}-\d{2}-\d{2})(\d{2}:\d{2}:\d{2})} \
+			$time a date time]}  {
+			set aTime ""
+			append aTime $date " " $time
+			set recTime [clock scan $aTime]
+		}
+		set sPassState "CRVW"
+		if {$status == 2} { 
+			set sPassState "APPR"
+		} elseif { $status == -1 && $state == "VRIF" } {
+			set sPassState "FVRF"
+		} elseif { $status == 1 && $state == "VRIF" } {
+			set sPassState "VRIF"
+		} elseif { $status == 1 && $state == "SUBM" } {
+			set sPassState "SUBM"
+		}  
+		pUpdateState $changeId $sPassState $recTime aChanges $f
+
+	}
+}
+puts "creating reports"
+#
+# process total branch information
+set RE "\^\\d\+\-branch\$"
+foreach item [array names aChanges -regexp $RE] {
+	set tempBranch  $aChanges($item)
+	if { [info exists aTotals($tempBranch)]} {
+		incr aTotals($tempBranch)
+	} else {
+		set aTotals($tempBranch) 1
+	}
+}
+#
+# process state totals
+set RE "\^\\d\+\-state\$"
+foreach item [array names aChanges -regexp $RE] {
+	regexp {(\d+)\-.*} $item a changeId
+	set tempState $aChanges($item)
+	set tempBranch  $aChanges($changeId-branch)
+	if { [info exists aTotals($tempBranch-$tempState)]} {
+		incr aTotals($tempBranch-$tempState)
+	} else {
+		set aTotals($tempBranch-$tempState) 1
+	}
+}
+#
+#***** Output the total branch/change information *****
+puts $f "\n\n*****Total Changes per Branch*****"
+puts $f "\nStates:\nCRVW=Currently under review\nAPPR=Approved\nVRIF=Verified\nFVRF=Failed Verification\nSUBM=Submitted/merged\n"
+foreach {key value} [array get aTotals] {
+		lappend lTemp "$key : $value"
+}
+set lTemp [lsort $lTemp] 
+foreach item $lTemp {
+	if { [regexp {.*-APPR \:} $item] || 
+		[regexp {.*-CRVW \:} $item] ||
+		[regexp {.*-VRIF \:} $item] ||
+		[regexp {.*-FVRF \:} $item] ||
+		[regexp {.*-SUBM \:} $item] } {
+		puts $f $item
+	} else {
+		regexp {(.*) :} $item a tempBranch
+		puts $f "\nBranch: $tempBranch"
+		puts $f "$item"
+	}
+}
+#
+#***** Process the Daily Stats *****
+set totCrvw 0
+set totAppr 0
+set totVrif 0
+set totSubm 0
+set totDays 0
+puts "creating daily reports"
+set firstTime 1
+for { set j $eDate} { $j > $sDate} { incr j [expr -1 * $tDay]} {
+	set today [expr $j + 1]
+	array unset aDaily
+	incr totDays
+	#
+	# computes the number of transactions for the day
+	foreach {key value} [array get aChanges] {
+		if { [regexp {(\d+)\-APPR\-\d+} $key a changeId] || 
+			[regexp {(\d+)\-CRVW\-\d+} $key a changeId] ||
+			[regexp {(\d+)\-VRIF\-\d+} $key a changeId] ||
+			[regexp {(\d+)\-FVRF\-\d+} $key a changeId] ||
+			[regexp {(\d+)\-SUBM\-\d+} $key a changeId] } {
+			#set pDay [expr $today + $tDay]
+			set sDay [expr $today - $tDay]
+			#if { $value > $j && $value < $pDay  } 
+			if { $value < $today && $value > $sDay  } {
+				set aDaily($key) $aChanges($changeId-branch)
+			}
+		}
+	}
+	set lTemp [list]
+	foreach {key branch} [array get aDaily] {
+		regexp {(\d+)\-(.*)-\d+} $key a changeId state
+		if { [info exists aDaily($branch-$state)] } {
+			incr aDaily($branch-$state)
+		} else {
+			set aDaily($branch-$state) 1
+		}
+		lappend lTemp $changeId
+	}
+	set transToday  [llength $lTemp]	
+	#
+	# compute which changes have been modified today
+	set lchangesToday [list]
+	foreach item $lTemp {
+		if { -1 == [lsearch -exact $lchangesToday $item] } {
+			lappend lchangesToday $item
+		}
+	}
+	set changesToday [llength $lchangesToday]
+	set lTemp [list]
+	set dailySub 0
+	set dailyAppr 0
+	foreach {key value} [array get aDaily] {
+		if { [regexp {\d+-APPR} $key] || 
+			[regexp {\d+-CRVW} $key] ||
+			[regexp {\d+-VRIF} $key] ||
+			[regexp {\d+-FVRF} $key] ||
+			[regexp {\d+-SUBM} $key] } {
+		} else {
+			lappend lTemp "$key : $value"
+			if { [regexp {.*-SUBM} $key]} {
+				incr dailySub $value
+			} elseif { [regexp {.*-APPR} $key]} {
+				incr dailyAppr $value
+			}
+		}
+	}
+	puts $fm "\n\n\n******* Daily totals from [clock format $sDay] *******\n"
+	puts $fm "Changes submitted/merged today $dailySub"
+	puts $fm "Changes approved today $dailyAppr"
+	puts $fm "Gerrit transactions today $transToday"
+	puts $fm "Gerrit changes modified today [llength $lchangesToday]"
+	set lchangesToday [lsort -int $lchangesToday]
+	#puts $fm [join $lchangesToday ", "]
+	
+	#
+	# print the daily transactions and the states
+	set sTemp ""
+	set lTemp [lsort $lTemp]
+	puts $fm "\n\n\nThese are the branches and the number of transactions that occurred on the branches for this date."
+	puts $fm "\nTransaction definitions:\nCRVW - a review statement of some sort\nAPPR - a change was approved\nVRIF - a change was verified\nSUBM - a change was submitted or merged."
+	set fmt "%-35s %-10s %-10s %-10s %-10s"	
+	set output [format $fmt "Branch Name" "\#Reviewed" "\#Approved" \
+ 		"\#Verified" "\#Submitted"]
+	puts $fm $output
+	#
+	# get the daily totals and log them
+	foreach item $lTemp {
+		regexp {(.*)\-.*:.*} $item a branch
+		if { $branch != $sTemp } {
+			if { [info exists aDaily($branch-CRVW)] } {
+				set crvw $aDaily($branch-CRVW)
+			} else {
+				set crvw 0
+			}
+			if { [info exists aDaily($branch-APPR)] } {
+				set appr $aDaily($branch-APPR)
+			} else {
+				set appr 0
+			}
+			if { [info exists aDaily($branch-VRIF)] } {
+				set vrif $aDaily($branch-VRIF)
+			} else {
+				set vrif 0
+			}
+			if { [info exists aDaily($branch-SUBM)] } {
+				set subm $aDaily($branch-SUBM)
+			} else {
+				set subm 0
+			}
+			set output [format $fmt $branch $crvw $appr $vrif $subm]
+			puts $fm $output
+			set sTemp $branch
+			#
+			# keep a running total
+			incr totCrvw $crvw
+			incr totAppr $appr
+			incr totVrif $vrif
+			incr totSubm $subm
+		}
+		
+	}
+}
+#
+#***** Process the monthly totals and averages *****
+puts $ft "Total Reviews: $totCrvw"
+puts $ft "Total Approvals: $totAppr"
+puts $ft "Total Verifies: $totVrif"
+puts $ft "Total Submits: $totSubm"
+puts $ft "days: $totDays"
+puts $ft "\n\nAverage Daily Submits: [expr $totSubm/$totDays]"
+puts $ft "Average Daily Verifies: [expr $totSubm/$totDays]"
+
+#
+# process verify totals
+puts $f "\n\n"
+puts $f "Total Number of rebases on submit: $totRebases"
+puts $f "Total Successful Verifies: $totVerifiesPass"
+puts $f "Total Failed Verifies: $totVerifiesFail"
+puts $f "Total Failed Reviews: $totReviewFail"
+#
+# calculate the time it takes
+set stopTime [clock seconds]
+set totTime [expr ($stopTime - $startTest)/60.0]
+regexp {(\d+\.\d\d).*} $totTime a totTime
+puts $f "\n\nTest Time: $totTime minutes"
+puts "Test Time: $totTime minutes"
+close $f
+close $fd
+close $fm
+close $ft
+
+#
+# create all the reports for the web server
+set lCommand "~/bin/processHtmlReports.sh\n"
+sendSimple $lCommand $lPrompt 15
+#
+# mail results to me
+set lCommand "mail tmackall@qualcomm.com  -s \
+	\"ABAIT Statistics\" \
+	< $fileName\n"
+#sendSimple $lCommand $lPrompt 15
+set lCommand "mail tmackall@qualcomm.com  -s \
+	\"Daily ABAIT Statistics\" \
+	< $fileNameD\n"
+#sendSimple $lCommand $lPrompt 15
+set lCommand "mail tmackall@qualcomm.com  -s \
+	\"Monthly ABAIT Statistics\" \
+	< $fileNameM\n"
+sendSimple $lCommand $lPrompt 15

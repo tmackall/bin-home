@@ -1,0 +1,1 @@
+find . -name "*" -exec grep -H -n "$1" {} \;
