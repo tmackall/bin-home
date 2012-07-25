@@ -1,0 +1,6 @@
+net-snmp-config --default-mibdirs (this is used to get the MIB paths)
+# use this URL to get install information
+http://net-snmp.sourceforge.net/wiki/index.php/Net-Snmp_on_Ubuntu 
+ snmpwalk -Os -c public -v2c pps1 Pulizzi
+ add pps1 192.168.1.99 to /etc/hosts
+
