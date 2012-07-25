@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /home/tmackall/django_projects/mackallHouse
 
-TABLES=$(mysql -u tmackall --password=tmackall  mackallHouse  -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
+TABLES=$(mysql -u tmackall --password=dampob12  mackallHouse  -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
  
 for t in $TABLES
 do
