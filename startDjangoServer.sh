@@ -1,4 +1,6 @@
 #!/bin/sh
-cd ~/django_projects/mackallHouse
-python manage.py runserver 192.168.1.5:8000
+. $HOME/.bashrc
+nohup /home/tmackall/django_projects/mackallHouse/manage.py runserver 192.168.1.23:8000 > /home/tmackall/django.log 2>&1 &
+exit 0
+
 
