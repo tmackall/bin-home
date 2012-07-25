@@ -23,7 +23,7 @@ def Main():
         default='/media-mackall/av',
         help='--fs \'/media-mackall/av,/home/tmackall\'')
     parser.add_option('-l', '--logging-level', help='Logging Level',
-        default=logging.ERROR,dest='ll')
+        default='error',dest='ll')
 
     # process logging
     (options, args) = parser.parse_args()
@@ -33,6 +33,7 @@ def Main():
 
 
     whereToEmail=options.personToWarn
+    logging.debug('Email address input: %s' % whereToEmail) 
     warningPercentage=int(options.threshold)
     listFilers=options.fs.split(',')
     # spin the file systems to check
@@ -64,6 +65,13 @@ def Main():
             else:
                 logging.info ('%i%% is below the threshold of %i%% for %s' \
                     % (percentInUse,warningPercentage,filer))
+        else:
+            text='Could not read disk usage from device: %s' % i
+            logging.error(text)
+            if whereToEmail != "":
+                subject='ERROR: issues reading disk for %s' % machineName
+                emailMessage (whereToEmail, subject, text)
+
     exit(0)
 
 if __name__ == "__main__":
