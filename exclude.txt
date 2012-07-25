@@ -6,5 +6,10 @@
 /home/tmackall/media
 *.tgz
 /home/tmackall/.gvfs
+/home/tmackall/.mozilla
+/home/tmackall/.snmp/mibs/net-snmp
+/home/tmackall/.local
+/home/tmackall/.gnome2
+
 
 
