@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 import logging
-from libEmailTools import emailMessage
+from libPython.libEmailTools import emailMessage
 from optparse import OptionParser
 import pexpect
 import re
