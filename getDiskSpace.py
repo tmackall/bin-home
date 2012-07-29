@@ -25,8 +25,9 @@ def Main():
     parser.add_option('-l', '--logging-level', help='Logging Level',
         default='error',dest='ll')
 
-    # process logging
     (options, args) = parser.parse_args()
+
+    # process logging
     loggingLevel = LOGGING_LEVELS.get(options.ll,logging.NOTSET)
     logging.basicConfig(format='%(levelname)s - %(message)s',  \
         level=loggingLevel)
