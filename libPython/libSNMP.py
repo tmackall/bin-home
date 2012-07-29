@@ -21,13 +21,12 @@ def getValue (inOID):
     community='public'
     comm_data = cmdgen.CommunityData('server', community, 1) 
     myCmd = getattr(generator, 'getCmd')
-    #res = (errorIndication, errorStatus, errorIndex, varBinds)\
-    #    = myCmd(comm_data, transport, inOID)
     res = (errorIndication, errorStatus, errorIndex, varBinds)=\
         cmdgen.CommandGenerator().getCmd(comm_data, transport, inOID)
     
     if not errorIndication is None  or errorStatus is True:
-        logging.error("Error: %s %s %s %s" % res)
+        logging.error('Status of getCmd: %s' % str(res))
+        return 1,''
     else:
         logging.info( varBinds)
     return 0,varBinds[0][1]
@@ -39,9 +38,10 @@ def setValue (inOIDValue):
     res = (errorIndication, errorStatus, errorIndex, varBinds)=\
         cmdgen.CommandGenerator().setCmd(comm_data, transport, inOIDValue)
     if not errorIndication is None  or errorStatus is True:
-        logging.Error( "Error: %s %s %s %s" % res)
+        logging.error( 'Status of setCmd: %s' % str(res))
+        return 1
     else:
-        logging.info( "%s" % varBinds)
+        logging.info( '%s' % varBinds)
     return 0
 
 def setPortValue (inPort, inValue):
@@ -54,15 +54,17 @@ def setPortValue (inPort, inValue):
     inPort+=1 # command port interfaces are off by 1 (1=all on)
     oidValue=((1,3,6,1,4,1,20677,1,5,2,inPort,0),Integer(val))
     logging.info('oidValue: %s' % str(oidValue))
-    setValue(oidValue)
-    return 0
+    retStatus=setValue(oidValue)
+    return retStatus
 
 def getPortStatus (inPort):
     logging.debug('getPortValue inPort: %s' % inPort)
     if inPort < gPortMin or inPort > gPortMax:
-        return 2
+        return 2,''
     oidValue=(1,3,6,1,4,1,20677,1,5,3,inPort,0)
     retStatus,val=getValue(oidValue)
+    if retStatus != 0:
+        return retStatus,''
     return 0,val
 
 def getDeviceName (inPort):
