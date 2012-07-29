@@ -1,13 +1,6 @@
 #!/usr/bin/env python2.7
-from datetime import datetime as dt
 import logging
-from struct import pack, unpack
 from optparse import OptionParser
-from pysnmp.entity.rfc3413.oneliner import cmdgen
-from pysnmp.proto.rfc1902 import Integer, IpAddress, OctetString
-import os, sys
-import random
-import socket
 import time
 
 # local import
@@ -37,7 +30,6 @@ def Main():
 
     # process logging
     loggingLevel = LOGGING_LEVELS.get(options.ll,logging.NOTSET)
-    print loggingLevel
     logging.basicConfig(level=loggingLevel)
 
     # process input port
