@@ -30,7 +30,8 @@ def Main():
 
     # process logging
     loggingLevel = LOGGING_LEVELS.get(options.ll,logging.NOTSET)
-    logging.basicConfig(level=loggingLevel)
+    logging.basicConfig(format='%(levelname)s - %(message)s',\
+        level=loggingLevel)
 
     # process input port
     port=int(options.inPort)
