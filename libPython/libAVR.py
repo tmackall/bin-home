@@ -8,7 +8,6 @@ import logging
 
 AUDIO_SYSTEM_COMMANDS=[ ('1','On'), ('2','Off'), ('3','Reboot'),]
 INFO_TYPE=[ (0,'INFO'), (1,'ERROR'),(2,'WARNING')]
-gPPS='/home/tmackall/bin/managePPS.exp'
 gDenonScript='/home/tmackall/bin/sendAVCommand.sh'
 gDenonAV='192.168.1.4'
 
@@ -43,7 +42,7 @@ def execAVRCmd(inCmd):
         time.sleep(1)
     if status != 0:
         logging.error('Failed system cmd \(%s\) failed: %s' % \
-            (shellCmd,status))
+            (shellCommand,status))
         return 1,''
     status,output=readFile(fn)
     if status != 0:
