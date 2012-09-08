@@ -1,5 +1,5 @@
-from libPython.libAVR import *
-from libPython.libSNMP import getPortStatus,setPortValue
+from libAVR import *
+from libSNMP import getPortStatus,setPortValue
 import logging
 from subprocess import call
 import time
@@ -70,7 +70,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
             logging.info('Reboot- turning on now')
             execCmd = 1 # 'on' command
             #time.sleep(45)
-            time.sleep(10)
+            time.sleep(45)
             #
             # turn on/off AVR receiver
             retStatus=setPortValue(avrPPS, execCmd)
