@@ -15,10 +15,6 @@ def Main():
         dest='em',default='tmackall@qualcomm.com')
     parser.add_option('-l', help='Logging Level (e.g. info,warning,debug)',
         default='error',dest='ll')
-    parser.add_option('-p', help='Port Number (e.g. 1-8)',
-        default=9,dest='inPort')
-    parser.add_option('-v', help='Value (e.g. 1=on, 0=off)',
-        dest='inValue', default=3)
 
     # read input values
     (options, args) = parser.parse_args()
@@ -28,8 +24,23 @@ def Main():
     logging.basicConfig(format='%(levelname)s - %(message)s',\
         level=loggingLevel)
 
+    #execAVRCmd('NS9Y')
+    time.sleep(1)
+    execAVRCmd('NSE1')
+    time.sleep(1)
+    execAVRCmd('NSE1')
+    time.sleep(1)
+    execAVRCmd('NSE')
+    time.sleep(1)
+    execAVRCmd('Z2?')
+    exit(1)
+    time.sleep(1)
+    execAVRCmd('Z2?')
+    execAVRCmd('ZMOFF')
+    time.sleep(1)
+    execAVRCmd('NSA')
+    exit(0)
     # process input port
-    port=int(options.inPort)
     status,state,source,vol=getZone2Status()
     if status == 0:
         logging.debug('State:%s, Source:%s, Volume:%s' %\
