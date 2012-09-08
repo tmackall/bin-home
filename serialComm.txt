@@ -1,0 +1,4 @@
+sudo apt-get install minicom
+ minicom -s or
+ minicom -s -c on
+ export MINICOM="-m -c on"
