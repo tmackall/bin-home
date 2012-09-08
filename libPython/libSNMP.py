@@ -55,6 +55,7 @@ def setPortValue (inPort, inValue):
     oidValue=((1,3,6,1,4,1,20677,1,5,2,inPort,0),Integer(val))
     logging.info('oidValue: %s' % str(oidValue))
     retStatus=setValue(oidValue)
+    time.sleep(1)
     return retStatus
 
 def getPortStatus (inPort):
