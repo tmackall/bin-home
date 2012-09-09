@@ -37,6 +37,64 @@ class SNMP(object):
             logging.info(vsar_binds)
         return 0, vsar_binds[0][1]
 
+    def walk(self):
+        """
+        function: walk - all oid values
+        """
+        logging.debug('walk')
+        community = 'public'
+        comm_data = cmdgen.CommunityData('server', community, 1)
+        res = (error_indication, error_status, _error_index, vsar_binds) =\
+            self.generator.nextCmd(comm_data, self.transport, 
+            '1.3.6.1.4.1.20677.1')
+#errorIndication, :50,55s/^/#/
+#errorStatus, errorIndex, varBindTable = cmdGen.nextCmd(
+#    cmdgen.UsmUserData('usr-md5-none', 'authkey1'),
+#        cmdgen.UdpTransportTarget(('localhost', 161)),
+#            cmdgen.MibVariable('IF-MIB', ''),
+#                lookupValues=True
+
+        if not error_indication is None or error_status is True:
+            logging.error('Status of getNext: %s', str(res))
+            return 1, ''
+        else:
+            logging.info(vsar_binds)
+        return 0, vsar_binds
+        #return 0, vsar_binds[0][1]
+
+    def set_value(self, in_oid_value):
+        """
+        function: set_value - sets the value for a given OID
+        """
+        logging.debug('set_value in_oid_value:%s', str(in_oid_value))
+        community = 'private'
+        comm_data = cmdgen.CommunityData('server', community, 1)
+        res = (error_indication, error_status, _error_index, vsar_binds) =\
+            self.generator.setCmd(comm_data, self.transport, in_oid_value)
+        if not error_indication is None or error_status is True:
+            logging.error('Status of setCmd: %s', str(res))
+            return 1
+        else:
+            logging.info('%s', vsar_binds)
+        return 0
+
+
+    def set_value(self, in_oid_value):
+        """
+        function: set_value - sets the value for a given OID
+        """
+        logging.debug('set_value in_oid_value:%s', str(in_oid_value))
+        community = 'private'
+        comm_data = cmdgen.CommunityData('server', community, 1)
+        res = (error_indication, error_status, _error_index, vsar_binds) =\
+            self.generator.setCmd(comm_data, self.transport, in_oid_value)
+        if not error_indication is None or error_status is True:
+            logging.error('Status of setCmd: %s', str(res))
+            return 1
+        else:
+            logging.info('%s', vsar_binds)
+        return 0
+
     def set_value(self, in_oid_value):
         """
         function: set_value - sets the value for a given OID

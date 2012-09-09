@@ -26,6 +26,16 @@ class PPS (SNMP):
         self.port_max = port_max
         SNMP.__init__(self, self.ip_addr)
 
+    def get_oid_info(self, in_oid):
+        """
+        function: get_oid_info - gets PPS info for the oid
+        """
+        logging.debug('get_oid_info in_oid: %s', in_oid)
+        ret_status, val = SNMP.get_value(self, in_oid)
+        if ret_status != 0:
+            return ret_status, ''
+        return 0, val
+
     def set_port_value(self, in_port, in_value):
         """
         function: set_port_value - sets the port on/off value for the PPS
@@ -50,14 +60,11 @@ class PPS (SNMP):
         """
         function: get_port_status - gets on/off value of the port
         """
-        logging.debug('getPortValue in_port: %s', in_port)
         if in_port < self.port_min or in_port > self.port_max:
             return 2, ''
+        logging.debug('get_port_status in_port: %s', in_port)
         oid_value = (1, 3, 6, 1, 4, 1, 20677, 1, 5, 3, in_port, 0)
-        ret_status, val = SNMP.get_value(self, oid_value)
-        if ret_status != 0:
-            return ret_status, ''
-        return 0, val
+        return self.get_oid_info(oid_value)
 
     def get_device_name(self, in_port):
         """
@@ -87,3 +94,16 @@ class PPS (SNMP):
             time.sleep(1)
             loop_cnt += 1
         return 1
+
+    def get_pps_oids(self):
+        """
+        function: get_pps_oids - gets all the oids of the pps
+        """
+        logging.debug('get_pps_oids')
+        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 1, 5, 3, in_port, 0)
+        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 0, 0, 0, 0, 0)
+        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 1)
+        ret_status, val = SNMP.walk(self)
+        if ret_status != 0:
+            return ret_status, ''
+        return 0, val
