@@ -7,7 +7,7 @@ from optparse import OptionParser
 import time
 
 # local import
-from libPython.lib_pps import PPS
+from libPython.lib_pps import PPS, house_pps
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -69,16 +69,17 @@ def main():
     function: main - driver for managing the PPSes
     """
 
+    mackall_house = house_pps()
+    return(0)
     test = PPS('192.168.1.99')
-    print test.get_port_status(1)
     print test.get_pps_oids()
-    return 1
+    return(1)
     test = PPS('192.168.1.99')
-    for i in range(1, 8):
+    for i in xrange(8):
         print test.get_port_status(i)
         print test.get_device_name(i)
     test = PPS('192.168.1.98')
-    for i in range(1, 8):
+    for i in xrange(8):
         print test.get_port_status(i)
 
     

@@ -47,12 +47,6 @@ class SNMP(object):
         res = (error_indication, error_status, _error_index, vsar_binds) =\
             self.generator.nextCmd(comm_data, self.transport, 
             '1.3.6.1.4.1.20677.1')
-#errorIndication, :50,55s/^/#/
-#errorStatus, errorIndex, varBindTable = cmdGen.nextCmd(
-#    cmdgen.UsmUserData('usr-md5-none', 'authkey1'),
-#        cmdgen.UdpTransportTarget(('localhost', 161)),
-#            cmdgen.MibVariable('IF-MIB', ''),
-#                lookupValues=True
 
         if not error_indication is None or error_status is True:
             logging.error('Status of getNext: %s', str(res))
@@ -60,7 +54,6 @@ class SNMP(object):
         else:
             logging.info(vsar_binds)
         return 0, vsar_binds
-        #return 0, vsar_binds[0][1]
 
     def set_value(self, in_oid_value):
         """

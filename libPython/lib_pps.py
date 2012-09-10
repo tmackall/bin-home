@@ -100,10 +100,57 @@ class PPS (SNMP):
         function: get_pps_oids - gets all the oids of the pps
         """
         logging.debug('get_pps_oids')
-        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 1, 5, 3, in_port, 0)
-        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 0, 0, 0, 0, 0)
-        #oid_value = (1, 3, 6, 1, 4, 1, 20677, 1)
         ret_status, val = SNMP.walk(self)
         if ret_status != 0:
             return ret_status, ''
         return 0, val
+        
+
+class house_pps(object):
+    """
+    class: mackall_pps - class to manage house PPS units
+    """
+    # house global vars
+    ip_ppses = ['192.168.1.99','192.168.1.98']
+    ports_tot = 16
+    pps_port_map = {}
+
+    def __init__(self):
+        """
+        function: __init__ - get the port names and the initial condition
+            of them. Assert if these cannot be read.
+        """
+        logging.debug('enter __init__')
+        cnt_ports = 0
+        # initialize port mapping to IP addr and to port names
+        for ip in house_pps.ip_ppses:
+            pps_handle = PPS(ip)
+            # assumption is that PPS have same # ports
+            for i in xrange(house_pps.ports_tot/len(house_pps.ip_ppses)):
+                cnt_ports += 1  # total ports
+                value = pps_handle.get_device_name(i+1)
+                house_pps.pps_port_map[cnt_ports] = {'name': value[1],
+                    'state' : 'NA', 'handle': pps_handle}
+        print house_pps.pps_port_map
+
+    def get_name_values(self):
+        for i in xrange(house_pps.ports_tot):
+            print i
+            house_pps.port_value_map[i] = house_pps.pps_handle_map[i]
+    def get_port_status(self, in_port_list):
+        """
+        function: get_port_status - given a list of ports, 
+            the function returns the port and value
+        """
+        
+    def reboot_ports(self):
+        """
+        function: reboot_ports - given a list of ports, 
+            reboots the ports
+        """
+
+    def set_ports(self):
+        """
+        function: set_ports - given a list of ports,
+            sets the ports to value
+        """
