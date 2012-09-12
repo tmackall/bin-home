@@ -69,7 +69,11 @@ def main():
     function: main - driver for managing the PPSes
     """
 
-    mackall_house = house_pps()
+    ports = 16
+    ips = ['192.168.1.99', '192.168.1.98']
+    mackall_house = house_pps(ports, ips)
+    status, name_values = mackall_house.get_name_values()
+    print name_values
     return(0)
     test = PPS('192.168.1.99')
     print test.get_pps_oids()
