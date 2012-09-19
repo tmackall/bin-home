@@ -23,23 +23,23 @@ def resetVC():
         retStatus=1
     return retStatus
 
-def hwAudio (avrPPS, ampPPS, avrIP, command):
-    execCmd=command #used to handle command = 3(reboot)
-    retStatus=0
+def hwAudio(avrPPS, ampPPS, avrIP, command):
+    execCmd = command #used to handle command = 3(reboot)
+    retStatus = 0
     # get the AVR port status
-    status,avState=getPortStatus (avrPPS)
-    if status !=0:
-        logging.error('getPortStatus returned: %s' % status)
-    logging.debug ('AVR Current State: %s' % gAudioCommands[avState])
+    status, avState = getPortStatus(avrPPS)
+    if status != 0:
+        logging.error('getPortStatus returned: %s', status)
+    logging.debug ('AVR Current State: %s', gAudioCommands[avState])
     # get the knoll port status
     status,ampState=getPortStatus (ampPPS)
     if status !=0:
-        logging.error('getPortStatus returned: %s' % status)
-    logging.debug ('Amp Current State: %s' % gAudioCommands[ampState])
-    logging.debug ('Command to exectute: %s' % gAudioCommands[command])
+        logging.error('getPortStatus returned: %s', status)
+    logging.debug ('Amp Current State: %s', gAudioCommands[ampState])
+    logging.debug ('Command to exectute: %s', gAudioCommands[command])
     logging.debug ( '%s %s %s' % (str(ampState),str(avState),str(command)))
 
-    
+
     #
     # see if the AMP and receiver are already in the requested state
     # return immediately if so unless we are rebooting
@@ -60,7 +60,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         retStatus=setPortValue(ampPPS, execCmd)
         if 0 != retStatus:
             logging.warning('setPortValue failed: %s' % retStatus)
-        
+
         # reset the Volume controls if turning the system off
         if gAudioCommands[command] == 'Off':
             resetVC()
@@ -87,7 +87,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
             resetVC()
         logging.info ('Already in the same state')
         return retStatus
-        
+
     #
     # system is turned on, so we need to wait
     if command == 1 or command ==3:
@@ -96,15 +96,15 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         # ping the AV server until it responds or times out
         iterations=6
         maxTime=60
-        cnt=iterations    
+        cnt=iterations
         while True:
-            shellCommand =  'ping -c 1  ' + avrIP 
+            shellCommand =  'ping -c 1  ' + avrIP
             retStatus = call(shellCommand, shell=True)
-            if retStatus == 0: 
+            if retStatus == 0:
                 break
             time.sleep(maxTime/iterations)
             cnt -= 1
-            if cnt  == 0: 
+            if cnt  == 0:
                 retStatus=127
                 logging.error ('Timeout waiting for AV receiver to come up: %s' % retStatus)
                 break
@@ -118,7 +118,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         logging.info ('Turning main zone off')
         if retStatus != 0:
             logging.warning('ZMOFF failed: %s ' % retStatus)
-        
+
         #
         # turn the volume down for Zone 2
         retStatus,retOutput=execAVRCmd('Z230')
@@ -134,7 +134,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
 #            logging.warning('setPortValue failed: %s' % retStatus)
     else:
         #
-        # for off, delay 1 min        
+        # for off, delay 1 min
         logging.info ('Sleeping for 1 min on off')
         time.sleep(30)
         logging.debug ('Done Sleeping')

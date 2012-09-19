@@ -1,11 +1,11 @@
 #!/bin/bash
-cd /home/tmackall/django_projects/mackallHouse
+cd ~/django/mackallHouse
 
-TABLES=$(mysql -u tmackall --password=dampob12  mackallHouse  -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
+TABLES=$(mysql -u root --password=dampob12  django_db  -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
  
 for t in $TABLES
 do
 	echo "Deleting $t table from mackallHouse database..."
-	mysql -u tmackall --password=tmackall  mackallHouse -e "drop table $t"
+	mysql -u root --password=dampob12  django_db -e "drop table $t"
 done
 python manage.py syncdb

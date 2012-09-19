@@ -9,7 +9,7 @@ import logging
 AUDIO_SYSTEM_COMMANDS=[ ('1','On'), ('2','Off'), ('3','Reboot'),]
 INFO_TYPE=[ (0,'INFO'), (1,'ERROR'),(2,'WARNING')]
 gDenonScript='/home/tmackall/bin/sendAVCommand.sh'
-gDenonAV='192.168.1.4'
+gDenonAV='192.168.1.24'
 
 def readFile (inFile):
     text=''
@@ -31,6 +31,7 @@ def execAVRCmd(inCmd):
     logging.debug('execAVRCmd: %s' % inCmd)
     fn='/tmp/t'
     shellCommand='%s %s %s %s' % (gDenonScript,gDenonAV,inCmd,fn)
+    print shellCommand
     for i in range(5):
         try:
             status = check_call(shellCommand,shell=True)
@@ -64,7 +65,7 @@ def getZone2Status():
     output=''
     for i in lText:
         logging.debug(i)
-        m = re.search(r'.*# (.*)$', i)    
+        m = re.search(r'.*# (.*)$', i)
         if m:
             output+=m.group(1)
             logging.debug(output)
@@ -89,4 +90,4 @@ def convertVolToDB(inVol):
         return 1,retDB
 
     return 0,str(realDB)
-    
+
