@@ -4,7 +4,6 @@ module: manage_pps
 """
 import logging
 from optparse import OptionParser
-import time
 
 # local import
 from libPython.lib_pps import PPS, house_pps
@@ -86,7 +85,7 @@ def main():
     for i in xrange(8):
         print test.get_port_status(i)
 
-    
+
     return(0)
 
 if __name__ == "__main__":

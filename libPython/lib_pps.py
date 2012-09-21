@@ -107,7 +107,7 @@ class PPS (SNMP):
         if ret_status != 0:
             return ret_status, ''
         return 0, val
-        
+
 
 class house_pps(object):
     """
@@ -154,13 +154,13 @@ class house_pps(object):
 
     def get_port_status(self, in_port_list):
         """
-        function: get_port_status - given a list of ports, 
+        function: get_port_status - given a list of ports,
             the function returns the port and value
         """
-        
+
     def reboot_ports(self):
         """
-        function: reboot_ports - given a list of ports, 
+        function: reboot_ports - given a list of ports,
             reboots the ports
         """
 
@@ -168,4 +168,9 @@ class house_pps(object):
         """
         function: set_ports - given a list of ports,
             sets the ports to value
+        """
+
+    def set_port(self, port_id):
+        """
+        function: set_port - given a port ID, set the value
         """

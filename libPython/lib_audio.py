@@ -1,5 +1,9 @@
+#!/usr/bin/env python2.7
+"""
+Library for Django Audio Menu
+"""
 from libAVR import *
-from libSNMP import getPortStatus,setPortValue
+from lib_snmp import getPortStatus,setPortValue
 import logging
 from subprocess import call
 import time
@@ -8,8 +12,9 @@ gAudioCommands={1:'On', 2:'Off', 3:'Reboot'}
 INFO_TYPE=[ (0,'INFO'), (1,'ERROR'),(2,'WARNING')]
 gVolumeControlPort=5
 
+
 # reset off the volume controls in the house
-def resetVC():
+def reset_vc():
     retStatus=0
     # turn power off
     retStatus=setPortValue(gVolumeControlPort,0)
@@ -39,7 +44,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
     logging.debug ('Command to exectute: %s' % gAudioCommands[command])
     logging.debug ( '%s %s %s' % (str(ampState),str(avState),str(command)))
 
-    
+
     #
     # see if the AMP and receiver are already in the requested state
     # return immediately if so unless we are rebooting
@@ -60,10 +65,10 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         retStatus=setPortValue(ampPPS, execCmd)
         if 0 != retStatus:
             logging.warning('setPortValue failed: %s' % retStatus)
-        
+
         # reset the Volume controls if turning the system off
         if gAudioCommands[command] == 'Off':
-            resetVC()
+            reset_vc()
         #
         # Reboot - turn on after waiting
         if command == 3:
@@ -84,10 +89,10 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
     else: #return immediately since it is already in reqeusted state
         # reset the Volume controls if turning the system off
         if gAudioCommands[command] == 'Off':
-            resetVC()
+            reset_vc()
         logging.info ('Already in the same state')
         return retStatus
-        
+
     #
     # system is turned on, so we need to wait
     if command == 1 or command ==3:
@@ -96,15 +101,15 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         # ping the AV server until it responds or times out
         iterations=6
         maxTime=60
-        cnt=iterations    
+        cnt=iterations
         while True:
-            shellCommand =  'ping -c 1  ' + avrIP 
+            shellCommand =  'ping -c 1  ' + avrIP
             retStatus = call(shellCommand, shell=True)
-            if retStatus == 0: 
+            if retStatus == 0:
                 break
             time.sleep(maxTime/iterations)
             cnt -= 1
-            if cnt  == 0: 
+            if cnt  == 0:
                 retStatus=127
                 logging.error ('Timeout waiting for AV receiver to come up: %s' % retStatus)
                 break
@@ -118,7 +123,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
         logging.info ('Turning main zone off')
         if retStatus != 0:
             logging.warning('ZMOFF failed: %s ' % retStatus)
-        
+
         #
         # turn the volume down for Zone 2
         retStatus,retOutput=execAVRCmd('Z230')
@@ -134,7 +139,7 @@ def hwAudio (avrPPS, ampPPS, avrIP, command):
 #            logging.warning('setPortValue failed: %s' % retStatus)
     else:
         #
-        # for off, delay 1 min        
+        # for off, delay 1 min
         logging.info ('Sleeping for 1 min on off')
         time.sleep(30)
         logging.debug ('Done Sleeping')
