@@ -4,9 +4,12 @@ module: manage_pps
 """
 import logging
 from optparse import OptionParser
+from pysnmp.proto.rfc1902 import Integer
 
 # local import
 from libPython.lib_pps import PPS, house_pps
+from libPython.libSNMP import setPortValue
+from libPython.lib_snmp import SNMP
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -68,11 +71,26 @@ def main():
     function: main - driver for managing the PPSes
     """
 
-    ports = 16
-    ips = ['192.168.1.99', '192.168.1.98']
-    mackall_house = house_pps(ports, ips)
-    status, name_values = mackall_house.get_name_values()
-    print name_values
+    logging.basicConfig(format='%(levelname)s - %(message)s',  \
+                    level=logging.WARN)
+
+    #setPortValue(5, 1)
+    #snmp = SNMP('192.168.1.99')
+    #in_value = 1
+    #oid_value = ((1, 3, 6, 1, 4, 1, 20677, 1, 5, 2, 6, 0),
+    #          Integer(in_value))
+    #snmp.set_value(oid_value)
+    mackall_house = house_pps()
+    #status, name_values = mackall_house.get_name_values()
+    status = mackall_house.set_port('Volume Control Power', 1)
+    if status != 0:
+        print 'not found'
+        return(1)
+    status, state = mackall_house.get_port_status('Volume Control Power')
+    if status == 0:
+        print state
+    else:
+        print 'not found'
     return(0)
     test = PPS('192.168.1.99')
     print test.get_pps_oids()
