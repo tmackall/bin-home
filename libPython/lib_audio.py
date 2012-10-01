@@ -36,72 +36,27 @@ class LIB_AUDIO(object):
         exec_cmd = LIB_AUDIO.audio_commands[self.cmd] #used to handle command = 3(reboot)
         print 'exec cmd: %s' %  exec_cmd
         ret_status = 0
-        # get the AVR port status
-        status, av_state = self.pps.get_port_status(LIB_AUDIO.avr)
-        if status != 0:
-            logging.error('self.pps.get_port_status returned: %s', status)
-        logging.debug('AVR Current State: %s',
-                LIB_AUDIO.audio_commands[av_state])
-        # get the knoll port status
-        status, amp_state = self.pps.get_port_status(LIB_AUDIO.amp)
-        if status !=0:
-            logging.error('self.pps.get_port_status returned: %s', status)
-        logging.debug('Amp Current State: %s',
-                LIB_AUDIO.audio_commands[amp_state])
-        logging.debug('Command to exectute: %s',
-                LIB_AUDIO.audio_commands[self.cmd])
-        logging.debug( '%s %s %s', (amp_state, av_state, self.cmd))
-
         #
-        # see if the AMP and receiver are already in the requested state
-        # return immediately if so unless we are rebooting
-        if av_state != self.cmd or amp_state != self.cmd or self.cmd == 3:
+        # turn on/off AV receiver
+        ret_status = self.pps.set_port(LIB_AUDIO.avr, exec_cmd)
+        if 0 != ret_status:
+            logging.warning('set_port failed: %s', ret_status)
+        #
+        # turn on/off Knoll amp
+        ret_status = self.pps.set_port(LIB_AUDIO.amp, exec_cmd)
+        if 0 != ret_status:
+            logging.warning('set_port failed: %s', ret_status)
 
-            #
-            # Reboot - turn off
-            if self.cmd == 3:
-                exec_cmd = 0 # set to turn off
-                logging.info('processing force off')
-            #
-            # turn on/off AV receiver
-            ret_status = self.pps.set_port(LIB_AUDIO.avr, exec_cmd)
+        # reset the Volume controls if turning the system off
+        if exec_cmd == 2:
+            ret_status = self.pps.set_port(LIB_AUDIO.vol_control, 3)
             if 0 != ret_status:
-                logging.warning('set_port failed: %s', ret_status)
-            #
-            # turn on/off Knoll amp
-            ret_status = self.pps.set_port(LIB_AUDIO.amp, exec_cmd)
-            if 0 != ret_status:
-                logging.warning('set_port failed: %s', ret_status)
-
-            # reset the Volume controls if turning the system off
-            if LIB_AUDIO.audio_commands[self.cmd] == 'Off':
-                reset_vc()
-            #
-            # Reboot - turn on after waiting
-            if self.cmd == 3:
-                logging.info('Reboot- turning on now')
-                exec_cmd = 1 # 'on' command
-                time.sleep(45)
-                #
-                # turn on/off AVR receiver
-                ret_status = self.pps.set_port(LIB_AUDIO.avr, exec_cmd)
-                if 0 != ret_status:
-                    logging.error('set_port failed: %s', ret_status)
-                #
-                # turn on/off Knoll amp
-                ret_status=self.pps.set_port(LIB_AUDIO.amp, exec_cmd)
-                if 0 != ret_status:
-                    logging.error('set_port failed: %s', ret_status)
-        else: #return immediately since it is already in reqeusted state
-            # reset the Volume controls if turning the system off
-            if audio_commands.cmds[self.cmd] == 'Off':
-                reset_vc()
-            logging.info ('Already in the same state')
-            return ret_status
+                logging.error('volume control reset failed: %s',
+                        ret_status)
 
         #
         # system is turned on, so we need to wait
-        if self.cmd == 1 or self.cmd ==3:
+        if exec_cmd == 1 or exec_cmd ==3:
             logging.info ('Wait for receiver to come back up')
             #
             # ping the AV server until it responds or times out
