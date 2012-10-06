@@ -32,6 +32,30 @@ class LIB_AUDIO(object):
             logging.error('set_port failed: %s', ret_status)
         return ret_status
 
+    def get_state(self):
+        '''
+        function: get_state - gets the state of the AVR and AMP and
+        returns On or Off
+        '''
+        # get AVR state
+        status, avr_state = self.pps.get_port_status(LIB_AUDIO.avr)
+        if 0 != status:
+            logging.warning('get_port_status failed: %s', status)
+            return status
+
+        # get AMP state
+        status, amp_state = self.pps.get_port_status(LIB_AUDIO.amp)
+        if 0 != status:
+            logging.warning('get_port_status failed: %s', status)
+            return status
+
+        print 'States: %s %s' % (avr_state, amp_state)
+        if amp_state != avr_state:
+            return status, 'Off'
+
+        return status, LIB_AUDIO.audio_commands[avr_state]
+
+
     def hw_audio(self):
         exec_cmd = LIB_AUDIO.audio_commands[self.cmd] #used to handle command = 3(reboot)
         print 'exec cmd: %s' %  exec_cmd
