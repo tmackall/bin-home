@@ -1,0 +1,17 @@
+django_src
+Desktop
+Music
+Pictures
+Videos
+media
+*.tgz
+.gvfs
+.mozilla
+.snmp/mibs/net-snmp
+.local
+.gnome2
+.pulse
+.gconf
+.mission-control
+
+
