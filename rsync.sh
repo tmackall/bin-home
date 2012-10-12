@@ -9,5 +9,11 @@ FROM=$1
 TO=$2
 CMD="rsync -avz  ${FROM} ${TO}"
 #CMD="rsync -avz --exclude-from /Users/tmackall/bin/rsyn-exclude-list.txt ${FROM} ${TO}"
-echo "$CMD"
-$CMD
+TEMP_FILE=$(mktemp /tmp/XXXX)
+echo "${CMD}" > ${TEMP_FILE}
+OUTPUT=$(eval "${CMD}")
+echo "${OUTPUT}" >> ${TEMP_FILE}
+#echo "${OUTPUT}"
+SUBJECT="Home Computer Sync Finished."
+~/bin/email_msg.py -e tmackall@qualcomm.com -m ${TEMP_FILE} -s "${SUBJECT}"
+rm ${TEMP_FILE}
