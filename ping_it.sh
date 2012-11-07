@@ -14,7 +14,7 @@
     # -------------------------------------------------------------------------
      
     # add ip / hostname separated by white space
-    HOSTS="192.168.1.75"
+    HOSTS="192.168.1.75 192.168.1.18"
      
     # no ping request
     COUNT=1
@@ -29,6 +29,9 @@
       if [ $count -eq 0 ]; then
     # 100% failed
         echo "Host : $myHost is down (ping failed) at $(date)" > ${TEMP_FILE}
+        echo "Rebooting POE switch" >> ${TEMP_FILE}
         ~/bin/email_msg.py -e $EMAILID -s "$SUBJECT" -m ${TEMP_FILE}
+        ~/bin/reboot_3com.sh
+
       fi
     done
