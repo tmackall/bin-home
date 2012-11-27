@@ -12,26 +12,28 @@
     # See URL for more info:
     # http://www.cyberciti.biz/tips/simple-linux-and-unix-system-monitoring-with-ping-command-and-scripts.html
     # -------------------------------------------------------------------------
-     
-    # add ip / hostname separated by white space
-    HOSTS="192.168.1.15 192.168.1.18"
-     
-    # no ping request
-    COUNT=1
-     
-    # email report when
-    SUBJECT="Ping failed"
-    EMAILID="tmackall@qualcomm.com"
-    TEMP_FILE="/tmp/m"
-    for myHost in $HOSTS
-    do
-      count=$(ping -c $COUNT $myHost | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
-      if [ $count -eq 0 ]; then
-    # 100% failed
-        echo "Host : $myHost is down (ping failed) at $(date)" > ${TEMP_FILE}
-        echo "Rebooting POE switch" >> ${TEMP_FILE}
-        ~/bin/email_msg.py -e $EMAILID -s "$SUBJECT" -m ${TEMP_FILE}
-        ~/bin/reboot_3com.sh
-
-      fi
-    done
+if [ "$#" -lt 1 ]; then
+    echo "Please provide a device to ping."
+    exit 1
+fi
+args=("$@")
+HOST="${args[0]}"
+# add ip / hostname separated by white space
+ 
+# no ping request
+COUNT=1
+ 
+# email report when
+SUBJECT="Ping failed"
+EMAILID="tmackall@qualcomm.com"
+TEMP_FILE="/tmp/m"
+count=$(ping -c $COUNT "$HOST" | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
+if [ $count -eq 0 ]; then
+# 100% failed
+    echo "Host : "$HOST" is down (ping failed) at $(date)" > ${TEMP_FILE}
+    echo "Rebooting POE switch" >> ${TEMP_FILE}
+    ~/bin/email_msg.py -e $EMAILID -s "$SUBJECT" -m ${TEMP_FILE}
+    ~/bin/reboot_3com.sh
+    exit 2
+fi
+exit 0
