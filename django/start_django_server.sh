@@ -23,7 +23,7 @@ function valid_ip()
     return $stat
 }
 
-. $HOME/.bashrc
+. /home/tmackall/.bashrc
 SERVER=192.168.1.18:8000 
 if [[ $# > 0 ]]; then
     SERVER="$1"
