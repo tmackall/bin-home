@@ -25,6 +25,7 @@ function valid_ip()
 
 . /home/tmackall/.bashrc
 SERVER=192.168.1.18:8000 
+#SERVER=mackall:8000
 if [[ $# > 0 ]]; then
     SERVER="$1"
     IP=$(echo $1 | sed 's/\(.*\)\:[0-9]\{1,6\}$/\1/')
@@ -35,7 +36,29 @@ if [[ $# > 0 ]]; then
     fi
     echo "$IP"
 fi
-nohup /home/tmackall/django/mackallHouse/manage.py runserver "$SERVER" > /home/tmackall/django.log 2>&1 &
+#
+# get the # of processess that exist
+django_processes=$(./get_django_process_id.sh)
+cnt=0
+for i in $django_processes; do
+    let cnt=$cnt+1
+done
+if [[ $cnt -eq 0 ]]; then
+    echo "Django not running, starting it now...."
+    nohup /usr/bin/python /home/tmackall/django/mackallHouse/manage.py\
+        runserver "$SERVER" > /home/tmackall/django.log 2>&1 &
+    sleep 5
+fi
+django_processes=$(./get_django_process_id.sh)
+cnt=0
+for i in $django_processes; do
+    let cnt=$cnt+1
+done
+if [[ $cnt -gt 1 ]]; then
+    pid=$(echo $django_processes | sed 's/^ *\([0-9]\+\) .*$/\1/')
+    echo "killing: $pid"
+    kill -9 $pid
+fi
 exit 0
 
 
