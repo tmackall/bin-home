@@ -1,4 +1,5 @@
 #!/bin/bash
+. /home/tmackall/.bashrc
 # Test an IP address for validity:
 # Usage:
 #      valid_ip IP_ADDRESS
@@ -23,7 +24,6 @@ function valid_ip()
     return $stat
 }
 
-. /home/tmackall/.bashrc
 SERVER=192.168.1.18:8000 
 #SERVER=mackall:8000
 if [[ $# > 0 ]]; then
@@ -49,7 +49,7 @@ if [[ $cnt -eq 0 ]]; then
         runserver "$SERVER" > /home/tmackall/django.log 2>&1 &
     sleep 5
 fi
-django_processes=$(./get_django_process_id.sh)
+django_processes=$(~/bin/django/get_django_process_id.sh)
 cnt=0
 for i in $django_processes; do
     let cnt=$cnt+1
