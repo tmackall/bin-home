@@ -38,7 +38,7 @@ if [[ $# > 0 ]]; then
 fi
 #
 # get the # of processess that exist
-django_processes=$(./get_django_process_id.sh)
+django_processes=$(~/bin/django/get_django_process_id.sh)
 cnt=0
 for i in $django_processes; do
     let cnt=$cnt+1
