@@ -49,16 +49,16 @@ if [[ $cnt -eq 0 ]]; then
         runserver "$SERVER" > /home/tmackall/django.log 2>&1 &
     sleep 5
 fi
-django_processes=$(~/bin/django/get_django_process_id.sh)
-cnt=0
-for i in $django_processes; do
-    let cnt=$cnt+1
-done
-if [[ $cnt -gt 1 ]]; then
-    pid=$(echo $django_processes | sed 's/^ *\([0-9]\+\) .*$/\1/')
-    echo "killing: $pid"
-    kill -9 $pid
-fi
+#django_processes=$(~/bin/django/get_django_process_id.sh)
+#cnt=0
+#for i in $django_processes; do
+#    let cnt=$cnt+1
+#done
+#if [[ $cnt -gt 1 ]]; then
+#    pid=$(echo $django_processes | sed 's/^ *\([0-9]\+\) .*$/\1/')
+#    echo "killing: $pid"
+#    kill -9 $pid
+#fi
 exit 0
 
 
