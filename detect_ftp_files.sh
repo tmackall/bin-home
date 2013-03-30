@@ -73,8 +73,10 @@ if [[ $status -eq 0 ]]; then
 
     # get some ftp dir info
     echo -e "$(pwd)\n" > $email_text_file
-    echo -e "$(ls -l)\n" >> $email_text_file
-    df -a . >> $email_text_file
+    echo -e "$(ls -lrt | \
+        sed 's/.* \+\(... \+[0-9]\+ \+[0-9]\{2\}:.*\)/\1/')\n" >> \
+        $email_text_file
+    echo -e "Use: $(df -a . | grep -Po "\d+%" )\n" >> $email_text_file
     
     # for txt email only
     echo -e $motion_subject > $email_msg_body
