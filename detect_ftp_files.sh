@@ -7,6 +7,7 @@ email1=mackall.tom@gmail.com
 email_text_file=/tmp/email_text_file.txt
 email_msg_only=3032411300@txt.att.net
 email_msg_body=/tmp/temp_email_body.txt
+sample_pic=/tmp/sample.jpg
 ftp_dir=~/ftp
 tar_file="$ftp_dir/detected_files.$$.tgz"
 max_per_period=3
@@ -16,10 +17,8 @@ rm $zip_file
 
 # see how many tgz files have been created in the last hour. Quit
 # sending if more than 3
-#echo $(find "$ftp_dir" -mmin -${period}  -name "*.tgz")
 tgz_cnt=$(find "$ftp_dir" -mmin -${period}  -name "*.tgz" | wc | \
-    sed 's/\([0-9]\+\) .*/\1/' )
-#echo $tgz_cnt
+    sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/' )
 
 # any jpg files here mean they are new since we tar them up
 file_list=$(find "${ftp_dir}" -name "*.jpg" )
@@ -29,6 +28,16 @@ if [[ $status -ne 0 ]]; then
     echo $fail_text
     mutt $email1 -s "$fail_text" < /dev/null
 fi
+#file_cnt=$(echo $file_list | wc | sed 's/\([0-9]\+\) .*/\1/' )
+file_cnt=$(echo $file_list | wc | sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/')
+#echo $file_list
+a_files=($file_list)
+middle=$(($file_cnt / 2))
+temp_jpg="${a_files[$middle]}"
+cp $temp_jpg $sample_pic
+
+#echo "file cnt: $file_cnt"
+#exit
 
 
 f_kitchen=0
@@ -86,7 +95,8 @@ if [[ $status -eq 0 ]]; then
         echo -e "\nHalted sending pics due to freqency: $tgz_cnt per $period mins" >> $email_text_file
         mutt $email1 -s "$motion_subject"  < $email_text_file
     else
-        mutt $email1 -s "$motion_subject" -a $zip_file < $email_text_file
+        mutt $email1 -s "$motion_subject" -a $sample_pic -a $zip_file \
+            < $email_text_file
     fi
     echo $?
 else
