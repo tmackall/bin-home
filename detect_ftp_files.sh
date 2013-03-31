@@ -4,6 +4,7 @@ source ~/.bashrc
 zip_file=/tmp/detected_files.zip
 prev_files=/tmp/ftp_file_list.txt
 email1="mackall.tom@gmail.com,Malamack@gmail.com"
+email1="mackall.tom@gmail.com"
 email_text_file=/tmp/email_text_file.txt
 email_msg_only=3032411300@txt.att.net
 email_msg_body=/tmp/temp_email_body.txt
@@ -13,7 +14,7 @@ tar_file="$ftp_dir/detected_files.$$.tgz"
 max_per_period=3
 period=60
 
-rm $zip_file
+rm $zip_file >& /dev/null
 
 # see how many tgz files have been created in the last hour. Quit
 # sending if more than 3
@@ -29,6 +30,8 @@ if [[ $status -ne 0 ]]; then
     mutt $email1 -s "$fail_text" < /dev/null
 fi
 
+#
+# grab a single jpeg in the middle to send as a sample
 file_cnt=$(echo $file_list | wc | sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/')
 a_files=($file_list)
 middle=$(($file_cnt / 2))
@@ -39,8 +42,15 @@ f_kitchen=0
 f_basement=0
 #
 # zip files to put in an email
-for file in ${file_list}; do
+cd "${ftp_dir}"
+for file_and_path in ${file_list}; do
+
+    # remove the path so that the extraction is cleaner
+    file=$(echo $file_and_path | sed 's/.*\///')
+
+    # zip the files
     zip -g $zip_file ${file}
+
     # check to see what camera detected motion
     if [[ $file =~ kitchen ]]; then
         f_kitchen=1
@@ -76,14 +86,17 @@ if [[ $status -eq 0 ]]; then
     rm ${ftp_dir}/*.jpg
 
     # get some ftp dir info
-    echo -e "$(pwd)\n" > $email_text_file
+    echo -e "Numer of image files: $file_cnt\n" > $email_text_file
+    echo -e "$(pwd)\n" >> $email_text_file
     echo -e "$(ls -lrt | \
         sed 's/.* \+\(... \+[0-9]\+ \+[0-9]\{2\}:.*\)/\1/')\n" >> \
         $email_text_file
-    echo -e "Use: $(df -a . | grep -Po "\d+%" )\n" >> $email_text_file
+    disk_use=$(df -a . | grep -Po "\d+%" )
+    echo -e "Use: $disk_use\n" >> $email_text_file
     
     # for txt email only
     echo -e $motion_subject > $email_msg_body
+    echo -e "disk use: $disk_use, Num imgs: $file_cnt" >> $email_msg_body
     mutt $email_msg_only -s "Motion detection alert!"  < $email_msg_body
     # send the zipped jpg files
     if [[ $tgz_cnt -gt 2 ]]; then
