@@ -3,9 +3,9 @@ source ~/.bashrc
 
 zip_file=/tmp/detected_files.zip
 prev_files=/tmp/ftp_file_list.txt
-email1=mackall.tom@gmail.com
+email1="mackall.tom@gmail.com,Malamack@gmail.com"
 email_text_file=/tmp/email_text_file.txt
-email_msg_only="3032411300@txt.att.net,Malamack@gmail.com"
+email_msg_only=3032411300@txt.att.net
 email_msg_body=/tmp/temp_email_body.txt
 sample_pic=/tmp/sample.jpg
 ftp_dir=~/ftp
@@ -28,17 +28,12 @@ if [[ $status -ne 0 ]]; then
     echo $fail_text
     mutt $email1 -s "$fail_text" < /dev/null
 fi
-#file_cnt=$(echo $file_list | wc | sed 's/\([0-9]\+\) .*/\1/' )
+
 file_cnt=$(echo $file_list | wc | sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/')
-#echo $file_list
 a_files=($file_list)
 middle=$(($file_cnt / 2))
 temp_jpg="${a_files[$middle]}"
 cp $temp_jpg $sample_pic
-
-#echo "file cnt: $file_cnt"
-#exit
-
 
 f_kitchen=0
 f_basement=0
