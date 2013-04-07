@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~/.bashrc
 
 TEMP_FILE=$(mktemp /tmp/XXXX)
 host_name=$(hostname)
@@ -18,7 +17,6 @@ netstat -a >> ${NETSTAT_FILE}
 echo -e "\n\npstree Info: " >> ${TEMP_FILE}
 pstree >> ${TEMP_FILE}
 
-#~/develop/email_msg.py -e tmackall@qualcomm.com -m ${TEMP_FILE} -s "${SUBJECT}"
 mutt tmackall@qualcomm.com -a /proc/meminfo -a /proc/cpuinfo -a ${NETSTAT_FILE}  -s "${SUBJECT}" < ${TEMP_FILE} 
 
 
