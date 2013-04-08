@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~tmackall/.bashrc
 
 script=$0
 fs="$1"
