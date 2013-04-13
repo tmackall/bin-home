@@ -15,5 +15,5 @@ OUTPUT=$(eval "${CMD}")
 echo "${OUTPUT}" >> ${TEMP_FILE}
 #echo "${OUTPUT}"
 SUBJECT="Home Computer Sync Finished."
-~/bin/email_msg.py -e tmackall@qualcomm.com -m ${TEMP_FILE} -s "${SUBJECT}"
+~/bin/email_msg.py -e tmackall@quicinc.com -m ${TEMP_FILE} -s "${SUBJECT}"
 rm ${TEMP_FILE}
