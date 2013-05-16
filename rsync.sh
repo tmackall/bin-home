@@ -13,7 +13,6 @@ TEMP_FILE=$(mktemp /tmp/XXXX)
 echo "${CMD}" > ${TEMP_FILE}
 OUTPUT=$(eval "${CMD}")
 echo "${OUTPUT}" >> ${TEMP_FILE}
-#echo "${OUTPUT}"
 SUBJECT="Home Computer Sync Finished."
-~/bin/email_msg.py -e tmackall@quicinc.com -m ${TEMP_FILE} -s "${SUBJECT}"
+mutt tmackall@qti.qualcomm.com -s "${SUBJECT}" < ${TEMP_FILE}
 rm ${TEMP_FILE}
