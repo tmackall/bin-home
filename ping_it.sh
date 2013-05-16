@@ -32,7 +32,7 @@ if [ $count -eq 0 ]; then
 # 100% failed
     echo "Host : "$HOST" is down (ping failed) at $(date)" > ${TEMP_FILE}
     echo "Rebooting POE switch" >> ${TEMP_FILE}
-    ~/bin/email_msg.py -e $EMAILID -s "$SUBJECT" -m ${TEMP_FILE}
+    mutt $EMAILID -s "$SUBJECT" < ${TEMP_FILE}
     ~/bin/reboot_3com.sh
     exit 2
 fi
