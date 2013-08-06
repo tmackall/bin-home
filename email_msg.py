@@ -30,7 +30,7 @@ def main():
     # command-line parsing
     parser = OptionParser()
     parser.add_option('-e', help='email address',
-            default='tmackall@qualcomm.com')
+            default='mackall.tom@gmail.com')
     parser.add_option('-m', help='Message/File to email', default='')
     parser.add_option('-s', help='Email subject', default='')
 

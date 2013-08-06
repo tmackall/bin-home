@@ -12,12 +12,12 @@ LOGGING_LEVELS = {'critical': logging.CRITICAL,
                   'info': logging.INFO,
                   'debug': logging.DEBUG}
 
-    
+
 def main():
     # define input parameters
     parser = OptionParser()
     parser.add_option('-e', help='Email address to send warnings',
-        dest='em', default='tmackall@qualcomm.com')
+        dest='em', default='mackall.tom@gmail.com')
     parser.add_option('-l', help='Logging Level (e.g. info,warning,debug)',
         default='error', dest='ll')
     parser.add_option('-p', help='Port Number (e.g. 1-16)',
@@ -47,14 +47,14 @@ def main():
 
     # process person to email
     whereToEmail = options.em
-    logging.debug('Email address input: %s', whereToEmail) 
+    logging.debug('Email address input: %s', whereToEmail)
 
     #=============================================
     setPortValue(port, value)
     status = verifyState(port,value)
     if status != 0:
         logging.error('State did not change')
-        
+
     for i in range(1, 9):
         status,value=getDeviceName(i)
         if status == 0:
@@ -63,7 +63,7 @@ def main():
             if state == 1:
                 theState = 'On'
             logging.info '%s is %s' % (value,theState)
-        
+
 
 
 

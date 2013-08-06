@@ -12,7 +12,7 @@ def Main():
     # define input parameters
     parser = OptionParser()
     parser.add_option('-e', help='Email address to send warnings',
-        dest='em',default='tmackall@qualcomm.com')
+        dest='em',default='mackall.tom@gmail.com')
     parser.add_option('-l', help='Logging Level (e.g. info,warning,debug)',
         default='error',dest='ll')
 
