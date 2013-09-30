@@ -105,11 +105,17 @@ class LIB_AUDIO(object):
 
             #
             # turn the main zone off
-            ret_status, retOutput = execAVRCmd('ZMOFF')
-            logging.info('Turning main zone off')
-            if ret_status != 0:
-                logging.warning('ZMOFF failed: %s ', ret_status)
+            #ret_status, retOutput = execAVRCmd('ZMOFF')
+            #logging.info('Turning main zone off')
+            #if ret_status != 0:
+            #    logging.warning('ZMOFF failed: %s ', ret_status)
 
+            #
+            # turn the volume down for the Main Zone
+            ret_status, retOutput = execAVRCmd('MV00')
+            logging.info('Setting Main Zone volume.')
+            if ret_status != 0:
+                logging.warning('Volume set failed')
             #
             # turn the volume down for Zone 2
             ret_status, retOutput = execAVRCmd('Z230')
@@ -117,10 +123,25 @@ class LIB_AUDIO(object):
             if ret_status != 0:
                 logging.warning('Volume set failed')
 
+            #
+            # turn on iradio
+            time.sleep(5)
+            ret_status, retOutput = execAVRCmd('SIIRADIO')
+            logging.info('Turn on IRadio.')
+            if ret_status != 0:
+                logging.warning('Failed to turn on IRadio')
+
+            #
+            # turn on iradio
+            time.sleep(1)
+            ret_status, retOutput = execAVRCmd('NSP2')
+            logging.info('Turn on IRadio.')
+            if ret_status != 0:
+                logging.warning('Failed to turn on IRadio')
         else:
             #
             # for off, delay 1 min
-            logging.info ('Sleeping for 1 min on off')
+            logging.info ('Sleeping for 30 secs on off')
             time.sleep(30)
             logging.debug ('Done Sleeping')
         return ret_status
