@@ -23,7 +23,11 @@ def Main():
     loggingLevel = LOGGING_LEVELS.get(options.ll,logging.NOTSET)
     logging.basicConfig(format='%(levelname)s - %(message)s',\
         level=loggingLevel)
-
+    status=execAVRCmd('Z2?')
+    print status
+    return(0)
+    execAVRCmd('Z2ON')
+    time.sleep(3)
     #execAVRCmd('NS9Y')
     time.sleep(1)
     execAVRCmd('NSE1')
