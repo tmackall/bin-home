@@ -12,7 +12,7 @@ sample_pic=/tmp/sample.jpg
 ftp_dir=~/ftp
 epoch_secs=$(date +%d-%b-%Y-%s)
 tar_file="$ftp_dir/tgz-d-files/detected_files.$epoch_secs.tgz"
-max_per_period=3
+max_size=10000000
 period=60
 
 rm $zip_file >& /dev/null
@@ -21,6 +21,16 @@ rm $zip_file >& /dev/null
 # sending if more than 3
 tgz_cnt=$(find "$ftp_dir" -mmin -${period}  -name "*.tgz" | wc | \
     sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/' )
+
+tot_size=0
+#
+# get the size of the tgz files in the past hour
+if [[ $tgz_cnt -gt 0 ]]; then
+    tgz_files=$(find "$ftp_dir" -mmin -${period}  -name "*.tgz" )
+    tot_size=$(du -cb $tgz_files | grep total$ |\
+        sed -e 's/\([0-9]\+\)\s\+total/\1/')
+    echo $tot_size
+fi
 
 # any jpg files here mean they are new since we tar them up
 file_list=$(find "${ftp_dir}" -name "*.jpg" )
@@ -77,11 +87,11 @@ if [[ $f_511a_01 -eq 1 ]] && [[ $f_c210a_01 -eq 1 ]] &&\
     [[ $f_sno1080_01 -eq 1 ]]; then
     motion_subject="Motion was detected on all cameras"
 elif [[ $f_511a_01 -eq 1 ]]; then
-    motion_subject="Motion was detected in the kitchen"
+    motion_subject="Motion was detected in the 511-01"
 elif [[ $f_sno1080_01 -eq 1 ]]; then
-    motion_subject="Motion was detected on the samsung camera"
+    motion_subject="Motion was detected on the sno1080-01 camera"
 else
-    motion_subject="Motion was detected in the basement"
+    motion_subject="Motion was detected on the 210-01 camera"
 fi
 
 
@@ -115,8 +125,9 @@ if [[ $status -eq 0 ]]; then
     echo -e "disk use: $disk_use, Num imgs: $file_cnt" >> $email_msg_body
     mutt $email_msg_only -s "Motion detection alert!"  < $email_msg_body
     # send the zipped jpg files
-    if [[ $tgz_cnt -gt 2 ]]; then
-        echo -e "\nHalted sending pics due to freqency: $tgz_cnt per $period mins" >> $email_text_file
+    if [[ $tot_size -ge $max_size ]]; then
+        echo -e "\nHalted sending pics due to size: $tot_size"\
+            >> $email_text_file
         mutt $email1 -s "$motion_subject"  < $email_text_file
     else
         mutt $email1 -s "$motion_subject" -a $sample_pic -a $zip_file \
