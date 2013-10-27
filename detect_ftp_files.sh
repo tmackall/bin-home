@@ -3,13 +3,15 @@ source ~/.bashrc
 
 zip_file=/tmp/detected_files.zip
 prev_files=/tmp/ftp_file_list.txt
-email1="mackall.tom@gmail.com,Malamack@gmail.com"
+#email1="mackall.tom@gmail.com,Malamack@gmail.com"
+email1="mackall.tom@gmail.com"
 email_text_file=/tmp/email_text_file.txt
 email_msg_only=3032411300@txt.att.net
 email_msg_body=/tmp/temp_email_body.txt
 sample_pic=/tmp/sample.jpg
 ftp_dir=~/ftp
-tar_file="$ftp_dir/detected_files.$$.tgz"
+epoch_secs=$(date +%d-%b-%Y-%s)
+tar_file="$ftp_dir/tgz-d-files/detected_files.$epoch_secs.tgz"
 max_per_period=3
 period=60
 
@@ -29,6 +31,11 @@ if [[ $status -ne 0 ]]; then
     mutt $email1 -s "$fail_text" < /dev/null
 fi
 
+# bail if there are no new .jpg's
+if [[ $file_list == "" ]]; then
+    echo "no files"
+    exit 0
+fi
 #
 # grab a single jpeg in the middle to send as a sample
 file_cnt=$(echo $file_list | wc | sed 's/[0-9]\+ \+\([0-9]\+\) .*/\1/')
@@ -37,8 +44,9 @@ middle=$(($file_cnt / 2))
 temp_jpg="${a_files[$middle]}"
 cp $temp_jpg $sample_pic
 
-f_kitchen=0
-f_basement=0
+f_511a_01=0
+f_c210a_01=0
+f_sno1080_01=0
 #
 # zip files to put in an email
 cd "${ftp_dir}"
@@ -48,48 +56,57 @@ for file_and_path in ${file_list}; do
     file=$(echo $file_and_path | sed 's/.*\///')
 
     # zip the files
-    zip -g $zip_file ${file}
+    zip -g $zip_file ${file_and_path}
 
     # check to see what camera detected motion
-    if [[ $file =~ kitchen ]]; then
-        f_kitchen=1
-    elif [[ $file =~ basement ]]; then
-        f_basement=1
+    if [[ $file_and_path =~ 511a ]]; then
+        f_511a_01=1
+    elif [[ $file_and_path =~ c210a ]]; then
+        f_c210a_01=1
+    elif [[ $file_and_path =~ sno1080 ]]; then
+        f_sno1080_01=1
     fi
 done
 
 
 #
 # message subject line
-echo "Camera count: $(($f_kitchen + $f_basement))"
+echo "Camera count: $(($f_511a_01 + $f_c210a_01 + $f_sno1080_01))"
 motion_subject=""
-if [[ $f_kitchen -eq 1 ]] && [[ $f_basement -eq 1 ]]; then
-    motion_subject="Motion was detected in the kitchen and basement"
-elif [[ $f_kitchen -eq 1 ]]; then
+if [[ $f_511a_01 -eq 1 ]] && [[ $f_c210a_01 -eq 1 ]] &&\
+    [[ $f_sno1080_01 -eq 1 ]]; then
+    motion_subject="Motion was detected on all cameras"
+elif [[ $f_511a_01 -eq 1 ]]; then
     motion_subject="Motion was detected in the kitchen"
+elif [[ $f_sno1080_01 -eq 1 ]]; then
+    motion_subject="Motion was detected on the samsung camera"
 else
     motion_subject="Motion was detected in the basement"
 fi
 
 
 # tar up the files in the ftp dir to reduce space and clutter.
-cd ${ftp_dir}
-tar -czf ${tar_file} *.jpg >& /dev/null
+#cd ${ftp_dir}
+echo $file_list
+tar -czf ${tar_file} $file_list >& /dev/null
 status=$?
 echo "tar: $status"
+
 
 #
 # only send email if there are new jpgs - tar will return 2 if there
 # are no jpegs
 if [[ $status -eq 0 ]]; then
-    rm ${ftp_dir}/*.jpg
+    rm $file_list
+    status=$?
+    echo "rm: $status"
 
     # get some ftp dir info
     echo -e "Numer of image files: $file_cnt\n" > $email_text_file
-    echo -e "$(pwd)\n" >> $email_text_file
-    echo -e "$(ls -lrt | \
-        sed 's/.* \+\(... \+[0-9]\+ \+[0-9]\{2\}:.*\)/\1/')\n" >> \
-        $email_text_file
+    #echo -e "$(pwd)\n" >> $email_text_file
+    #echo -e "$(ls -lrt | \
+    #    sed 's/.* \+\(... \+[0-9]\+ \+[0-9]\{2\}:.*\)/\1/')\n" >> \
+    #    $email_text_file
     disk_use=$(df -a . | grep -Po "\d+%" )
     echo -e "Use: $disk_use\n" >> $email_text_file
     
