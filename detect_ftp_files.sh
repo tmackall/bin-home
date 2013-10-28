@@ -86,7 +86,7 @@ if [[ $f_511a_01 -eq 1 ]] && [[ $f_c210a_01 -eq 1 ]] &&\
     [[ $f_sno1080_01 -eq 1 ]]; then
     motion_subject="Motion was detected on all cameras"
 elif [[ $f_511a_01 -eq 1 ]]; then
-    motion_subject="Motion was detected in the 511-01"
+    motion_subject="Motion was detected on the 511-01 camera"
 elif [[ $f_sno1080_01 -eq 1 ]]; then
     motion_subject="Motion was detected on the sno1080-01 camera"
 else
