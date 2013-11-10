@@ -18,7 +18,7 @@ cam_name=$2
 #
 # rstp cmd - create the unique portion of this
 if { [[ "$cam_name" =~ ^ps ]] || [[ "$cam_name" =~ ^PS ]]; } then
-    rstp_cmd="rtsp://${cam_ip}/nphMpeg4/g726-320x240 --rtsp-user=tmackall --rtsp-pwd=templeAve1"
+    rstp_cmd="rtsp://${cam_ip}/nphMpeg4/g726-640x480 --rtsp-user=tmackall --rtsp-pwd=templeAve1"
 else
     rstp_cmd="rtsp://${cam_ip}/H.264/media.smp --rtsp-user=admin --rtsp-pwd=dampob12" 
 fi
