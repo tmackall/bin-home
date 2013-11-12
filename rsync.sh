@@ -7,8 +7,8 @@ if [ $# -lt 2 ]; then
 fi
 FROM=$1
 TO=$2
-CMD="rsync -avz  ${FROM} ${TO}"
-#CMD="rsync -avz --exclude-from /Users/tmackall/bin/rsyn-exclude-list.txt ${FROM} ${TO}"
+#CMD="rsync -avz  -X ~/bin/rsync_exclude.txt ${FROM} ${TO}"
+CMD="rsync -avz --exclude-from /home/tmackall/bin/rsync-exclude.txt ${FROM} ${TO}"
 TEMP_FILE=$(mktemp /tmp/XXXX)
 echo "${CMD}" > ${TEMP_FILE}
 OUTPUT=$(eval "${CMD}")
