@@ -6,9 +6,9 @@ email_addrs=mackall.tom@gmail.com
 
 # key-value pairs for filesystems
 declare -A fsArr
-fsArr["/"]=60
+fsArr["/"]=70
 fsArr["/disk1"]=85
-fsArr["/disk2"]=10
+fsArr["/disk2"]=60
 fsArr["/disk3"]=98
 
 # spin the file system array
