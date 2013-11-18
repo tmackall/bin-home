@@ -19,7 +19,6 @@ DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.50,
 def disk_get_amount_to_cleanup(info_fs):
     amount_to_cleanup = 0
     disk_percent_used = info_fs['pused']
-    print disk_percent_used
     disk_tot = info_fs['tot']
     if disk_percent_used > info_fs['th_clean_pc']:
         #print "%s: %.2f" % (info_fs, disk_percent_used)
@@ -37,8 +36,6 @@ def main(argv):
         dir = i['dir']
         fs_info.append(i)
         fs_info[index].update(path_get_size(dir))
-        print fs_info
-        #fs_info[index].update({'dir':dir})
         # get the bytes to delete based on THRESHOLD_CLEAN
         bytes_to_delete = int(disk_get_amount_to_cleanup(fs_info[index]))
         #
