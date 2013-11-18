@@ -26,7 +26,7 @@ fi
 printf "${time_secs} $rstp_cmd\n"
 
 name="${date_name}_${cam_name}.mp4"
-cmd="cvlc --run-time ${time_secs}  $rstp_cmd --sout=\"#duplicate{dst=standard{access=file,dst='/home/tmackall/video/${name}',mux=mp4}\" vlc://quit"
+cmd="cvlc --run-time ${time_secs}  $rstp_cmd --sout=\"#duplicate{dst=standard{access=file,dst='/disk2/camera_video_backups/${name}',mux=mp4}\" vlc://quit"
 echo "$cmd"
 eval $cmd
 
