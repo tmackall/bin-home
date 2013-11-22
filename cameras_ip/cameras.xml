@@ -8,6 +8,7 @@
   <rtsp_loc>H.264/media.smp</rtsp_loc>
   <user>admin</user>
   <passwd>dampob12</passwd>
+  <disk_location>/disk2/camera_video_backups</disk_location>
  </camera>
  <camera id="ps01">
   <mfgr>Panasonic</mfgr>  
@@ -17,5 +18,6 @@
   <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
   <user>tmackall</user>
   <passwd>templeAve1</passwd>
+  <disk_location>/disk2/camera_video_backups</disk_location>
  </camera>
 </cameras>
