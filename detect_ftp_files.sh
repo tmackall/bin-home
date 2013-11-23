@@ -15,7 +15,6 @@ max_size=10000000
 period=60
 
 CAMERA_XML="$HOME/bin/cameras_ip/cameras.xml"
-CAMERA_XML="$HOME/develop/cameras_ip/cameras.xml"
 #
 # grab the unique camera IDs from the XML
 ids=$(xmlstarlet sel -t -m "//camera" -v "@id" -o " " ${CAMERA_XML})
