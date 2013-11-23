@@ -14,6 +14,11 @@ tar_file="$ftp_dir/tgz-d-files/detected_files.$epoch_secs.tgz"
 max_size=10000000
 period=60
 
+CAMERA_XML="$HOME/bin/cameras_ip/cameras.xml"
+CAMERA_XML="$HOME/develop/cameras_ip/cameras.xml"
+#
+# grab the unique camera IDs from the XML
+ids=$(xmlstarlet sel -t -m "//camera" -v "@id" -o " " ${CAMERA_XML})
 rm $zip_file >& /dev/null
 
 # see how many tgz files have been created in the last hour. Quit
@@ -53,9 +58,7 @@ middle=$(($file_cnt / 2))
 temp_jpg="${a_files[$middle]}"
 cp $temp_jpg $sample_pic
 
-f_511a_01=0
-f_c210a_01=0
-f_sno1080_01=0
+motion_string=""
 #
 # zip files to put in an email
 cd "${ftp_dir}"
@@ -68,31 +71,17 @@ for file_and_path in ${file_list}; do
     zip -g $zip_file ${file_and_path}
 
     # check to see what camera detected motion
-    if [[ $file_and_path =~ 511a ]]; then
-        f_511a_01=1
-    elif [[ $file_and_path =~ c210a ]]; then
-        f_c210a_01=1
-    elif [[ $file_and_path =~ sno1080 ]]; then
-        f_sno1080_01=1
-    fi
+    for i in $ids; do
+        if [[ $file_and_path =~ $i ]]; then
+            motion_string="$motion_string $i"
+        fi
+    done
 done
 
 
 #
 # message subject line
-echo "Camera count: $(($f_511a_01 + $f_c210a_01 + $f_sno1080_01))"
-motion_subject=""
-if [[ $f_511a_01 -eq 1 ]] && [[ $f_c210a_01 -eq 1 ]] &&\
-    [[ $f_sno1080_01 -eq 1 ]]; then
-    motion_subject="Motion was detected on all cameras"
-elif [[ $f_511a_01 -eq 1 ]]; then
-    motion_subject="Motion was detected on the 511-01 camera"
-elif [[ $f_sno1080_01 -eq 1 ]]; then
-    motion_subject="Motion was detected on the sno1080-01 camera"
-else
-    motion_subject="Motion was detected on the 210-01 camera"
-fi
-
+motion_subject="Motion was detected on the following cameras: $motion_string"
 
 # tar up the files in the ftp dir to reduce space and clutter.
 #cd ${ftp_dir}
