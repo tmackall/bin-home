@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="yes"?>
+<cameras>
+ <camera id="ss01">
+  <mfgr>Samsung</mfgr>  
+  <model>SNO-1080</model>
+  <ip_address>192.168.1.15</ip_address>
+  <port>2002</port>
+  <rtsp_loc>H.264/media.smp</rtsp_loc>
+  <user>admin</user>
+  <passwd>dampob12</passwd>
+  <disk_location>/disk2/camera_video_backups</disk_location>
+ </camera>
+ <camera id="ps01">
+  <mfgr>Panasonic</mfgr>  
+  <model>511a</model>
+  <ip_address>192.168.1.44</ip_address>
+  <port>2001</port>
+  <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
+  <user>tmackall</user>
+  <passwd>templeAve1</passwd>
+  <disk_location>/disk2/camera_video_backups</disk_location>
+ </camera>
+</cameras>
