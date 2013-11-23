@@ -9,6 +9,18 @@
   <user>admin</user>
   <passwd>dampob12</passwd>
   <disk_location>/disk2/camera_video_backups</disk_location>
+  <ftp_loc>ftp</ftp_loc>
+ </camera>
+ <camera id="ss02">
+  <mfgr>Samsung</mfgr>  
+  <model>SNO-6011r</model>
+  <ip_address>192.168.1.19</ip_address>
+  <port>80</port>
+  <rtsp_loc>H.264/media.smp</rtsp_loc>
+  <user>admin</user>
+  <passwd>dampob12</passwd>
+  <ftp_loc>ftp</ftp_loc>
+  <disk_location>/disk2/camera_video_backups</disk_location>
  </camera>
  <camera id="ps01">
   <mfgr>Panasonic</mfgr>  
@@ -18,6 +30,7 @@
   <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
   <user>tmackall</user>
   <passwd>templeAve1</passwd>
+  <ftp_loc>ftp</ftp_loc>
   <disk_location>/disk2/camera_video_backups</disk_location>
  </camera>
 </cameras>
