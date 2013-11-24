@@ -34,43 +34,48 @@ def main(argv):
     # get the file system info
     index = 0
     files_unchanged = []
+    status_re = re.compile("online",re.IGNORECASE)
     for i in cam_info:
-        dir = i['disk_location']
-        number_of_cams = len(cam_info)
-        cam_regex = re.compile
-        file_re = ".*%s\.m.*" % i['id']
-        f_re = re.compile(file_re)
-        # used in file size comparison
-        file_before = ""
-        file_after = ""
-        # get an initial snapshot of the file sizes
-        file_info_first = files_get_info(dir)
-        for j in sorted(file_info_first,
-                key=itemgetter('name'),
-                reverse=True):
-            if f_re.match(j['name']):
-                file_before = j
-                break
-        # delay some time so that the files can grow
-        time.sleep(2)
-        file_info_last = files_get_info(dir)
-        for j in sorted(file_info_last,
-                key=itemgetter('time_mod'),
-                reverse=True):
-            if j['name'] == file_before['name']:
-                file_after = j
-                break
-        # list of dead camera files
-        if file_before['size'] == file_after['size']:
-            files_unchanged.append(file_after)
+        status = i['status']
+
+        if status_re.match(status):
+            dir = i['disk_location']
+            number_of_cams = len(cam_info)
+            file_re = ".*%s\.m.*" % i['id']
+            f_re = re.compile(file_re)
+            # used in file size comparison
+            file_before = ""
+            file_after = ""
+            # get an initial snapshot of the file sizes
+            file_info_first = files_get_info(dir)
+            for j in sorted(file_info_first,
+                    key=itemgetter('name'),
+                    reverse=True):
+                if f_re.match(j['name']):
+                    file_before = j
+                    break
+            # delay some time so that the files can grow
+            time.sleep(2)
+            file_info_last = files_get_info(dir)
+            for j in sorted(file_info_last,
+                    key=itemgetter('time_mod'),
+                    reverse=True):
+                if j['name'] == file_before['name']:
+                    file_after = j
+                    break
+            # list of dead camera files
+            if file_before['size'] == file_after['size']:
+                files_unchanged.append(file_after)
+        else:
+            print "%s is offline" % i['id']
     # file names - pull these out for the email text
     file_names = ""
     for k in files_unchanged:
         file_names = "%s\n%s" % (file_names, k['name'])
     if len(file_names) > 0:
-            subject = "Warning: cameras may not be storing data"
-            text = "Camera files:\n%s" % file_names
-            emailMessage("mackall.tom@gmail.com", subject, text)
+        subject = "Warning: cameras may not be storing data"
+        text = "Camera files:\n%s" % file_names
+        emailMessage("mackall.tom@gmail.com", subject, text)
     return 0
 
 if __name__ == "__main__":

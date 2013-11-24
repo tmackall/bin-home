@@ -6,7 +6,7 @@ from xml.dom import minidom, Node
 
 # what % of the file system remains before deleting files
 # amount that we will cleanup relative to the filesystem total
-CAMERA_XML_FILE = "/home/tmackall/bin/cameras_ip/cameras.xml"
+CAMERA_XML_FILE = "../cameras_ip/cameras.xml"
 
 
 def cameras_get_info():
@@ -35,5 +35,11 @@ def cameras_get_info():
         cameras_info[i].update({'disk_location':a[0].firstChild.data})
         a=itemlist[i].getElementsByTagName('mfgr')
         cameras_info[i].update({'mfgr':a[0].firstChild.data})
+        a=itemlist[i].getElementsByTagName('ftp_loc')
+        cameras_info[i].update({'ftp_loc':a[0].firstChild.data})
+        a=itemlist[i].getElementsByTagName('status')
+        cameras_info[i].update({'status':a[0].firstChild.data})
+        a=itemlist[i].getElementsByTagName('location')
+        cameras_info[i].update({'location':a[0].firstChild.data})
     return status, cameras_info
 

@@ -10,6 +10,8 @@
   <passwd>dampob12</passwd>
   <disk_location>/disk2/camera_video_backups</disk_location>
   <ftp_loc>ftp</ftp_loc>
+  <status>offline</status>
+  <location>tbd</location>
  </camera>
  <camera id="ss02">
   <mfgr>Samsung</mfgr>  
@@ -21,6 +23,8 @@
   <passwd>dampob12</passwd>
   <ftp_loc>ftp</ftp_loc>
   <disk_location>/disk2/camera_video_backups</disk_location>
+  <status>online</status>
+  <location>basement</location>
  </camera>
  <camera id="ps01">
   <mfgr>Panasonic</mfgr>  
@@ -32,5 +36,7 @@
   <passwd>templeAve1</passwd>
   <ftp_loc>ftp</ftp_loc>
   <disk_location>/disk2/camera_video_backups</disk_location>
+  <status>online</status>
+  <location>kitchen</location>
  </camera>
 </cameras>
