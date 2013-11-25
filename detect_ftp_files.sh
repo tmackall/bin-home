@@ -58,6 +58,9 @@ temp_jpg="${a_files[$middle]}"
 cp $temp_jpg $sample_pic
 
 motion_string=""
+temp_file="/tmp/detect_ftp_files.tmp"
+rm $temp_file
+touch $temp_file
 #
 # zip files to put in an email
 cd "${ftp_dir}"
@@ -72,12 +75,12 @@ for file_and_path in ${file_list}; do
     # check to see what camera detected motion
     for i in $ids; do
         if [[ $file_and_path =~ $i ]]; then
-            motion_string="$motion_string $i"
+            echo -e $i >> $temp_file
         fi
     done
 done
 
-
+motion_string=$(cat $temp_file | sort | uniq)
 #
 # message subject line
 motion_subject="Motion was detected on the following cameras: $motion_string"
