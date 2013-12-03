@@ -8,7 +8,7 @@ email_addrs=mackall.tom@gmail.com
 declare -A fsArr
 fsArr["/"]=35
 fsArr["/disk1"]=85
-fsArr["/disk2"]=60
+fsArr["/disk2"]=95
 fsArr["/disk3"]=98
 
 # spin the file system array
