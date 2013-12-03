@@ -42,7 +42,7 @@ eval $cmd
 status=$?
 echo "Status:$status from command: \"$cmd\"" > /tmp/t
 if [[ $status -ne 0 ]]; then
-    mutt mackall.tom@gmail.com -s "Video capture failed for: ${name}"\
+    mutt mackall.house@gmail.com -s "Video capture failed for: ${name}"\
         < /tmp/t
 fi
 exit 0

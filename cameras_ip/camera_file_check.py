@@ -60,7 +60,7 @@ def main(argv):
             subject = ("%s has reached it''s threshold and files "
                 "will be deleted. %s bytes will be deleted." %
                 (dir, bytes_to_delete))
-            emailMessage("mackall.tom@gmail.com", subject, text)
+            emailMessage("mackall.house@gmail.com", subject, text)
 
         index += 1
     return 0
