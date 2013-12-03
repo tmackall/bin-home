@@ -1,6 +1,6 @@
 #!/bin/bash
 script=$0
-email_addrs=mackall.tom@gmail.com
+email_addrs=mackall.house@gmail.com
 
 # these are the filesystem we are concerned with
 

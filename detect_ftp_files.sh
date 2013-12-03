@@ -3,7 +3,7 @@ source ~/.bashrc
 
 zip_file=/tmp/detected_files.zip
 prev_files=/tmp/ftp_file_list.txt
-email1="mackall.tom@gmail.com,Malamack@gmail.com"
+email1="mackall.house@gmail.com,Malamack@gmail.com"
 email_text_file=/tmp/email_text_file.txt
 email_msg_only=3032411300@txt.att.net
 email_msg_body=/tmp/temp_email_body.txt

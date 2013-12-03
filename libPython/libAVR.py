@@ -29,9 +29,8 @@ def readFile (inFile):
 
 def execAVRCmd(inCmd):
     logging.debug('execAVRCmd: %s' % inCmd)
-    #fn='/tmp/t'
-    output = ""
-    shellCommand='%s %s %s' % (gDenonScript,gDenonAV,inCmd)
+    fn='/tmp/t'
+    shellCommand='%s %s %s %s' % (gDenonScript,gDenonAV,inCmd,fn)
     print shellCommand
     for i in range(5):
         try:
@@ -46,12 +45,12 @@ def execAVRCmd(inCmd):
         logging.error('Failed system cmd \(%s\) failed: %s' % \
             (shellCommand,status))
         return 1,''
-    #status,output=readFile(fn)
-    #if status != 0:
-    #    logging.error('readFile returned: %s' % status)
-    #    return 1,''
-    #os.unlink(fn)
-    #logging.info ('Command Status: %s' % output)
+    status,output=readFile(fn)
+    if status != 0:
+        logging.error('readFile returned: %s' % status)
+        return 1,''
+    os.unlink(fn)
+    logging.info ('Command Status: %s' % output)
     return 0,output
 
 def getZone2Status():

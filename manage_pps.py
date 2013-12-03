@@ -29,7 +29,7 @@ def process_input():
     # define input parameters
     parser = OptionParser()
     parser.add_option('-e', help='Email address to send warnings',
-        dest='em', default='mackall.tom@gmail.com')
+        dest='em', default='mackall.house@gmail.com')
     parser.add_option('-l', help='Logging Level (e.g. info,warning,debug)',
         default='error', dest='ll')
     parser.add_option('-p', help='Port Number (e.g. 1-16)',
