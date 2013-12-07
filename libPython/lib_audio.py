@@ -13,8 +13,8 @@ class LIB_AUDIO(object):
     """
     class LIB_AUDIO: class to handle Django Audio requests
     """
-    audio_commands = {1: 'On', 2: 'Off', 3: 'Reboot', 'On': 1, 'Off': 2,
-            'Reboot': 3, '1': 'On', '2': 'Off', '3': 'Reboot'}
+    audio_commands = {1:'On', 2:'Off', 3:'Reboot', 'On':1, 'Off':2,
+            'Reboot':3, '1':'On', '2':'Off', '3':'Reboot'}
     avr = 'Denon 1912'
     amp = 'Knoll Amp'
     vol_control = 'Volume Control Power'
@@ -57,7 +57,8 @@ class LIB_AUDIO(object):
 
 
     def hw_audio(self):
-        exec_cmd = LIB_AUDIO.audio_commands[self.cmd] #used to handle command = 3(reboot)
+        exec_cmd = LIB_AUDIO.audio_commands[self.cmd] #used to handle
+                                                    #command = 3(reboot)
         print 'exec cmd: %s' %  exec_cmd
         ret_status = 0
         #
