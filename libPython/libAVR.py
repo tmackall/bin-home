@@ -29,7 +29,8 @@ def readFile (inFile):
 
 def execAVRCmd(inCmd):
     logging.debug('execAVRCmd: %s' % inCmd)
-    shellCommand='%s %s %s' % (gDenonScript,gDenonAV,inCmd)
+    fn='/tmp/t'
+    shellCommand='%s %s %s %s' % (gDenonScript,gDenonAV,inCmd,fn)
     print shellCommand
     for i in range(5):
         try:
@@ -43,18 +44,42 @@ def execAVRCmd(inCmd):
     if status != 0:
         logging.error('Failed system cmd \(%s\) failed: %s' % \
             (shellCommand,status))
-        return 1
-    return 0
+        return 1,''
+    status,output=readFile(fn)
+    if status != 0:
+        logging.error('readFile returned: %s' % status)
+        return 1,''
+    os.unlink(fn)
+    logging.info ('Command Status: %s' % output)
+    return 0,output
 
 def getZone2Status():
     logging.debug('getZone2Status' )
     retState=''
     retVol=''
     retSource=''
-    status=execAVRCmd('Z2?')
+    status,text=execAVRCmd('Z2?')
     if status != 0:
         logging.error('execAVRCmd returned: %s' % status)
-    return 0
+    lText=text.split('\n')
+    output=''
+    for i in lText:
+        logging.debug(i)
+        m = re.search(r'.*# (.*)$', i)
+        if m:
+            output+=m.group(1)
+            logging.debug(output)
+    if output == '':
+        logging.warning('No output received from receiver')
+        return 1,retState,retSource,retVol
+    lOutput=output.split('.')
+    m=re.search(r'Z2(.*)',lOutput[1])
+    retState=m.group(1)
+    m=re.search(r'Z2(.*)',lOutput[2])
+    retSource=m.group(1)
+    m=re.search(r'Z2(.*)',lOutput[3])
+    retVol=m.group(1)
+    return 0,retState,retSource,retVol
 
 def convertVolToDB(inVol):
     logging.debug('convertVolToDB: %s' % inVol)

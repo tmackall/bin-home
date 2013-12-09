@@ -7,7 +7,7 @@ import sys
 
 # what % of the file system remains before deleting files
 # amount that we will cleanup relative to the filesystem total
-DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.95,
+DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.85
     'clean_pc':0.05},
     {'dir':"/home/tmackall/ftp/tgz-d-files", 'th_clean_pc':0.30,
         'clean_pc':1.0},
@@ -36,8 +36,10 @@ def main(argv):
         dir = i['dir']
         fs_info.append(i)
         fs_info[index].update(path_get_size(dir))
+        print fs_info[index]
         # get the bytes to delete based on THRESHOLD_CLEAN
         bytes_to_delete = int(disk_get_amount_to_cleanup(fs_info[index]))
+        print bytes_to_delete
         #
         # cleanup?
         if bytes_to_delete > 0:

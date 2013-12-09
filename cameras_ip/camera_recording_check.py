@@ -75,7 +75,7 @@ def main(argv):
     if len(file_names) > 0:
         subject = "Warning: cameras may not be storing data"
         text = "Camera files:\n%s" % file_names
-        emailMessage("mackall.house@gmail.com", subject, text)
+        emailMessage("mackall.tom@gmail.com", subject, text)
     return 0
 
 if __name__ == "__main__":
