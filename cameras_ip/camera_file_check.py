@@ -7,7 +7,7 @@ import sys
 
 # what % of the file system remains before deleting files
 # amount that we will cleanup relative to the filesystem total
-DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.85
+DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.85,
     'clean_pc':0.05},
     {'dir':"/home/tmackall/ftp/tgz-d-files", 'th_clean_pc':0.30,
         'clean_pc':1.0},
