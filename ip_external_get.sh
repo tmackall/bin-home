@@ -1,6 +1,7 @@
 #!/bin/bash
 ip_file="/tmp/ip_external.txt"
-ip_now=$(curl -s icanhazip.com )
+#ip_now=$(curl -s icanhazip.com )
+ip_now=$(dig +short myip.opendns.com @resolver1.opendns.com)
 echo $ip_now
 ip_external=$(cat $ip_file)
 if [[ "$ip_now" != "$ip_external" ]]; then
