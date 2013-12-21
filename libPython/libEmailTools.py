@@ -18,7 +18,6 @@ def emailMessage (to, subject, text):
   msg['From'] = "mackall-thomas@comcast.net"
   msg['To'] = to
 
-  #s = smtplib.SMTP('smtphost.qualcomm.com')
   s = smtplib.SMTP('smtp.comcast.net',587)
   s.login("mackall-thomas", "dampob12")
   s.sendmail(msg['From'], msg['To'], msg.as_string())
