@@ -5,8 +5,8 @@
 '''
 from cameras_info import cameras_get_info
 from disk_manage import files_get_info, path_get_size
-from operator import itemgetter
 from libEmailTools import emailMessage
+from operator import itemgetter
 import os
 import re
 import sys
