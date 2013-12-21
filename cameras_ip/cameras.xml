@@ -16,8 +16,8 @@
  <camera id="ss02">
   <mfgr>Samsung</mfgr>  
   <model>SNO-6011r</model>
-  <ip_address>192.168.1.19:3003</ip_address>
-  <port>80</port>
+  <ip_address>192.168.1.19:3019</ip_address>
+  <port>8019</port>
   <rtsp_loc>H.264/media.smp</rtsp_loc>
   <user>admin</user>
   <passwd>dampob12</passwd>
@@ -29,8 +29,8 @@
  <camera id="ss03">
   <mfgr>Samsung</mfgr>  
   <model>SNO-6011r</model>
-  <ip_address>192.168.1.25:3005</ip_address>
-  <port>80</port>
+  <ip_address>192.168.1.25:3025</ip_address>
+  <port>8025</port>
   <rtsp_loc>H.264/media.smp</rtsp_loc>
   <user>admin</user>
   <passwd>dampob12</passwd>
@@ -42,8 +42,8 @@
  <camera id="ps01">
   <mfgr>Panasonic</mfgr>  
   <model>511a</model>
-  <ip_address>192.168.1.44:3004</ip_address>
-  <port>2001</port>
+  <ip_address>192.168.1.44:3044</ip_address>
+  <port>8044</port>
   <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
   <user>tmackall</user>
   <passwd>templeAve1</passwd>
