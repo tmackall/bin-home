@@ -25,7 +25,7 @@ COUNT=1
  
 # email report when
 SUBJECT="Ping failed"
-EMAILID="mackall.house@gmail.com"
+EMAILID="mackall.tom@gmail.com"
 TEMP_FILE="/tmp/m"
 count=$(ping -c $COUNT "$HOST" | grep 'received' | awk -F',' '{ print $2 }' | awk '{ print $1 }')
 if [ $count -eq 0 ]; then
