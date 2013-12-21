@@ -57,7 +57,8 @@ class LIB_AUDIO(object):
 
 
     def hw_audio(self):
-        exec_cmd = LIB_AUDIO.audio_commands[self.cmd] #used to handle command = 3(reboot)
+        #used to handle command = 3(reboot)
+        exec_cmd = LIB_AUDIO.audio_commands[self.cmd]
         print 'exec cmd: %s' %  exec_cmd
         ret_status = 0
         #
