@@ -118,7 +118,7 @@ if [[ $status -eq 0 ]]; then
     # for txt email only
     echo -e $motion_subject > $email_msg_body
     echo -e "disk use: $disk_use, Num imgs: $file_cnt" >> $email_msg_body
-    mutt $email_msg_only -s "Motion detection alert!"  < $email_msg_body
+#    mutt $email_msg_only -s "Motion detection alert!"  < $email_msg_body
     # send the zipped jpg files
     if [[ $tot_size -ge $max_size ]]; then
         echo -e "\nHalted sending pics due to size: $tot_size"\
