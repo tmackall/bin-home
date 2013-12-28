@@ -17,3 +17,8 @@ git clone ssh://mackall-home/disk1/github-mackall/bin.git bin
 sudo apt-get install vim python-dev python-setuptools nginx supervisor
 sudo apt-get install python-pip
 sudo pip install virtualenv virtualenvwrapper
+# install dig for finding DNS entries
+sudo apt-get install dnsutils
+# ftp server
+sudo apt-get install vsftpd
+sudo apt-get install sysstat
