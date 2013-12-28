@@ -2,6 +2,8 @@
 
 sudo adduser tmackall
 sudo adduser tmackall sudo
+# timezone
+sudo dpkg-reconfigure tzdata
 ssh-keygen -t dsa
 sudo apt-get install vim
 ssh-keygen -t dsa
@@ -22,3 +24,4 @@ sudo apt-get install dnsutils
 # ftp server
 sudo apt-get install vsftpd
 sudo apt-get install sysstat
+sudo apt-get install zip
