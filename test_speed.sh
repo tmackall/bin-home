@@ -3,7 +3,7 @@ file_output="/tmp/speedtest.out"
 rm "$file_output"
 
 # execute the broadbad/internet speed test
-speedtest > "$file_output" 2>&1
+speedtest-cli > "$file_output" 2>&1
 
 if [[ $? != 0 ]]; then
     echo "Failed speed test"
@@ -11,5 +11,6 @@ if [[ $? != 0 ]]; then
 fi
 DL_SPEED=$(cat $file_output | grep -i "^Download")
 UL_SPEED=$(cat $file_output | grep -i "^Upload")
-mutt mackall.tom@gmail.com -s "$DL_SPEED, $UL_SPEED" < "$file_output"
+PROVIDER=$(cat $file_output | grep "Testing from" | sed 's/Testing from //' | sed 's/\.\.\.//')
+mutt mackall.tom@gmail.com -s "$PROVIDER: $DL_SPEED, $UL_SPEED" < "$file_output"
 exit 0
