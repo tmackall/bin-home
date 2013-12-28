@@ -17,7 +17,7 @@ netstat -a >> ${NETSTAT_FILE}
 echo -e "\n\npstree Info: " >> ${TEMP_FILE}
 pstree >> ${TEMP_FILE}
 
-mutt tmackall@qti.qualcomm.com -a /proc/meminfo -a /proc/cpuinfo -a ${NETSTAT_FILE}  -s "${SUBJECT}" < ${TEMP_FILE} 
+mutt mackall.tom@gmail.com -a /proc/meminfo -a /proc/cpuinfo -a ${NETSTAT_FILE}  -s "${SUBJECT}" < ${TEMP_FILE} 
 
 
 rm ${NETSTAT_FILE}
