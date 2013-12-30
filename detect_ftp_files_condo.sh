@@ -1,7 +1,7 @@
 #!/bin/bash
 source ~/.bashrc
 
-email_list="mackall.tom@gmail.com"
+email_list="mackall.tom@gmail.com, malamack@gmail.com"
 email_text_file=/tmp/email_text_file.txt
 email_msg_body=/tmp/temp_email_body.txt
 ftp_dir=/home/tmackall/ftp
@@ -61,7 +61,8 @@ disk_use=$(df -a . | grep -Po "\d+%" )
 # for txt email only
 echo -e $motion_subject > $email_msg_body
 echo -e "disk use: $disk_use, Num imgs: $file_cnt" >> $email_msg_body
-echo -e "location: $disk_home_server, file:$zip_file" >> $email_msg_body
+filen=$(echo "$zip_file" | sed "s/.*\(detect.*\)/\1/")
+echo -e "file: $filen" >> $email_msg_body
 
 # email notification
 cmd="mutt $email_list -s "${motion_subject}" -a $pics < $email_msg_body"
