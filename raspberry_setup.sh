@@ -9,7 +9,6 @@ sudo raspi-config
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install vim
-scp ~/.ssh/id_dsa.pub <xxxxx>:.ssh/authorized_keys2
 sudo apt-get install git
 cd /home
 sudo mv tmackall tmackall.bck
@@ -21,7 +20,9 @@ sudo chmod 775 tmackall
 sudo rm -rf tmackall.bck
 sudo reboot
 cd tmackall
+# ssh keys
 ssh-keygen -t rsa
+scp ~/.ssh/id_dsa.pub <xxxxx>:.ssh/authorized_keys2
 git clone ssh://mackall-home/disk1/github-mackall/bin.git bin
 sudo apt-get install vim python-dev python-setuptools nginx supervisor
 sudo apt-get install python-pip
