@@ -2,6 +2,8 @@
 
 sudo adduser tmackall
 sudo adduser tmackall sudo
+# raspberry config
+sudo raspi-config
 # timezone
 sudo dpkg-reconfigure tzdata
 ssh-keygen -t dsa
