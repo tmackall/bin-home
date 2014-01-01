@@ -4,11 +4,13 @@ sudo adduser tmackall
 sudo adduser tmackall sudo
 # raspberry config
 sudo raspi-config
+# get current os updates
+sudo apt-get update
+sudo apt-get upgrade
 # timezone
 sudo dpkg-reconfigure tzdata
-ssh-keygen -t dsa
+ssh-keygen -t rsa
 sudo apt-get install vim
-ssh-keygen -t dsa
 scp ~/.ssh/id_dsa.pub <xxxxx>:.ssh/authorized_keys2
 sudo apt-get install git
 cd /home
