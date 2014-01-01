@@ -38,11 +38,11 @@ done
 echo $cams_dead
 
 for cam_id in $cams_dead; do
+    #
+    # KILL could be multiple processes
     cam_id_re="_${cam_id}\."
     pid_to_kill=$(ps -eaf | grep -i vlc | grep "${cam_id_re}" | \
         sed  's/^[^  ]\+ \+\([0-9]\+\).*/\1/')
-    #
-    # could be multiple processes
     for i in $pid_to_kill; do
         if [[ $i =~ ^[0-9]+$ ]]; then
             kill -9 $i
@@ -50,15 +50,15 @@ for cam_id in $cams_dead; do
             echo "Error: could not find vlc process: $pid_to_kill"
         fi
     done
-    # compute the time until the next hour
+
+    # TIME - compute the time until the next hour
     hour_curr=$(date +%k)
     num_secs_until_hour=$(($(date -d ${hour_curr}:59:59 +%s) - \
         $(date +%s) + 1))
     echo "Num seconds until the top of the hour: $num_secs_until_hour"
     
     mutt mackall.tom@gmail.com -s "restarting camera: $cam_id" < /dev/null
-    status=$(${CAMERA_HOME}/camera_capture.sh $cam_id \
-        $num_secs_until_hour)
+    status=$(nohup ${CAMERA_HOME}/camera_capture.sh $cam_id $num_secs_until_hour > /dev/null&)
     echo "status: $status"
 done
 exit 0
