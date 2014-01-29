@@ -12,7 +12,7 @@ fi
 output=$(df $1)
 status=$?
 if [[ $status -ne 0 ]]; then
-    echo -e "\nFile System: $1 is likely invalid\n"
+    echo -e "\nFile System: $1 is likely invalid: ${status}\n"
     exit 3
 fi
 
