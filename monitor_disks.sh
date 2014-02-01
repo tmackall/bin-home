@@ -14,12 +14,7 @@ fsArr["/disk3"]=98
 # spin the file system array
 for fs in ${!fsArr[@]}; do
     th=${fsArr[${fs}]}
-    gd=$(which get_disk_space_pcent.sh)
-    if [[ $gd == "" ]]; then
-        subject="get_disk_space_pcent.sh not found"
-        mutt -s "$subject" $email_addrs < /dev/null
-        continue
-    fi
+    gd="/home/tmackall/bin/get_disk_space_pcent.sh"
     output=$(eval "$gd $fs")
     status=$?
     if [[ $status -ne 0 ]]; then
