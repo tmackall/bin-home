@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir_base=/home/tmackall/dev
+dir_base=/home/tmackall/bin
 prev_files=/tmp/ftp_file_list.txt
 file_camera_xml=${dir_base}/cameras_ip/cameras.xml
 file_camera_xml_tmp=/tmp/cameras.xml
