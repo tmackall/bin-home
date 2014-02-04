@@ -12,6 +12,7 @@
   <ftp_loc>ftp</ftp_loc>
   <status>offline</status>
   <location>tbd</location>
+  <notifications_email>off</notifications_email>
  </camera>
  <camera id="ss02">
   <mfgr>Samsung</mfgr>  
@@ -25,6 +26,7 @@
   <disk_location>/disk2/camera_video_backups</disk_location>
   <status>online</status>
   <location>basement</location>
+  <notifications_email>off</notifications_email>
  </camera>
  <camera id="ss03">
   <mfgr>Samsung</mfgr>  
@@ -38,6 +40,7 @@
   <disk_location>/disk2/camera_video_backups</disk_location>
   <status>online</status>
   <location>living room</location>
+  <notifications_email>off</notifications_email>
  </camera>
  <camera id="ps01">
   <mfgr>Panasonic</mfgr>  
@@ -51,5 +54,6 @@
   <disk_location>/disk2/camera_video_backups</disk_location>
   <status>online</status>
   <location>kitchen</location>
+  <notifications_email>off</notifications_email>
  </camera>
 </cameras>
