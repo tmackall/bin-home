@@ -21,8 +21,7 @@ elif [[ "$difference" != "" ]]; then
     cp $file_camera_xml $file_camera_xml_tmp
 fi
 
-email1="mackall.tom@gmail.com,Malamack@gmail.com"
-email="mackall.tom@gmail.com"
+email="mackall.tom@gmail.com,Malamack@gmail.com"
 email_text_file=/tmp/email_text_file.txt
 ftp_dir=/home/tmackall/ftp/
 
@@ -33,7 +32,6 @@ notifs=$(xmlstarlet sel  -t -m  "//camera" -v "@id" -o ":" -v notifications_emai
 
 #
 # delete the zip file
-rm $zip_file >& /dev/null
 # case insensitive regex
 shopt -s nocasematch;
 
@@ -41,7 +39,7 @@ shopt -s nocasematch;
 # main loop
 pics=""
 camera_list=""
-touch "$email_text_file"; rm "$email_text_file"
+rm "$email_text_file" >& /dev/null
 for i in $notifs; do
     camera=$(echo $i | sed 's/:.*//')
     dir=$ftp_dir
@@ -54,6 +52,7 @@ for i in $notifs; do
     if [[ $pics_num -gt 0 ]]; then
         echo "${camera}, ${date_fmt}" >> "$logfile_motion"
     fi
+    echo $pics_num
     # check xml - do we send notifications?
     if [[ $i =~ :on ]]; then
         middle=$(($pics_num / 2))
@@ -91,6 +90,6 @@ for i in $file_list; do
     rm -rf "$i"
 done
 if [[ $filesize -lt $max_size ]]; then
-    rm "$zip_file"
+    rm "$zip_file" >& /dev/null
 fi
 
