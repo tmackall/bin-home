@@ -1,59 +1,59 @@
 <?xml version="1.0" standalone="yes"?>
 <cameras>
- <camera id="ss01">
-  <mfgr>Samsung</mfgr>  
-  <model>SNO-1080</model>
-  <ip_address>192.168.1.15</ip_address>
-  <port>2002</port>
-  <rtsp_loc>H.264/media.smp</rtsp_loc>
-  <user>admin</user>
-  <passwd>dampob12</passwd>
-  <disk_location>/disk2/camera_video_backups</disk_location>
-  <ftp_loc>ftp</ftp_loc>
-  <status>offline</status>
-  <location>tbd</location>
-  <notifications_email>off</notifications_email>
- </camera>
- <camera id="ss02">
-  <mfgr>Samsung</mfgr>  
-  <model>SNO-6011r</model>
-  <ip_address>192.168.1.19:3019</ip_address>
-  <port>8019</port>
-  <rtsp_loc>H.264/media.smp</rtsp_loc>
-  <user>admin</user>
-  <passwd>dampob12</passwd>
-  <ftp_loc>ftp</ftp_loc>
-  <disk_location>/disk2/camera_video_backups</disk_location>
-  <status>online</status>
-  <location>basement</location>
-  <notifications_email>off</notifications_email>
- </camera>
- <camera id="ss03">
-  <mfgr>Samsung</mfgr>  
-  <model>SNO-6011r</model>
-  <ip_address>192.168.1.25:3025</ip_address>
-  <port>8025</port>
-  <rtsp_loc>H.264/media.smp</rtsp_loc>
-  <user>admin</user>
-  <passwd>dampob12</passwd>
-  <ftp_loc>ftp</ftp_loc>
-  <disk_location>/disk2/camera_video_backups</disk_location>
-  <status>online</status>
-  <location>living room</location>
-  <notifications_email>off</notifications_email>
- </camera>
- <camera id="ps01">
-  <mfgr>Panasonic</mfgr>  
-  <model>511a</model>
-  <ip_address>192.168.1.44:3044</ip_address>
-  <port>8044</port>
-  <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
-  <user>tmackall</user>
-  <passwd>templeAve1</passwd>
-  <ftp_loc>ftp</ftp_loc>
-  <disk_location>/disk2/camera_video_backups</disk_location>
-  <status>online</status>
-  <location>kitchen</location>
-  <notifications_email>off</notifications_email>
- </camera>
+  <camera id="ss01">
+    <mfgr>Samsung</mfgr>
+    <model>SNO-1080</model>
+    <ip_address>192.168.1.15</ip_address>
+    <port>2002</port>
+    <rtsp_loc>H.264/media.smp</rtsp_loc>
+    <user>admin</user>
+    <passwd>dampob12</passwd>
+    <disk_location>/disk2/camera_video_backups</disk_location>
+    <ftp_loc>ftp</ftp_loc>
+    <status>offline</status>
+    <location>tbd</location>
+    <notifications_email>off</notifications_email>
+  </camera>
+  <camera id="ss02">
+    <mfgr>Samsung</mfgr>
+    <model>SNO-6011r</model>
+    <ip_address>192.168.1.19:3019</ip_address>
+    <port>8019</port>
+    <rtsp_loc>H.264/media.smp</rtsp_loc>
+    <user>admin</user>
+    <passwd>dampob12</passwd>
+    <ftp_loc>ftp</ftp_loc>
+    <disk_location>/disk2/camera_video_backups</disk_location>
+    <status>online</status>
+    <location>basement</location>
+    <notifications_email>off</notifications_email>
+  </camera>
+  <camera id="ss03">
+    <mfgr>Samsung</mfgr>
+    <model>SNO-6011r</model>
+    <ip_address>192.168.1.25:3025</ip_address>
+    <port>8025</port>
+    <rtsp_loc>H.264/media.smp</rtsp_loc>
+    <user>admin</user>
+    <passwd>dampob12</passwd>
+    <ftp_loc>ftp</ftp_loc>
+    <disk_location>/disk2/camera_video_backups</disk_location>
+    <status>online</status>
+    <location>living room</location>
+    <notifications_email>off</notifications_email>
+  </camera>
+  <camera id="ps01">
+    <mfgr>Panasonic</mfgr>
+    <model>511a</model>
+    <ip_address>192.168.1.44:3044</ip_address>
+    <port>8044</port>
+    <rtsp_loc>nphMpeg4/g726-640x480</rtsp_loc>
+    <user>tmackall</user>
+    <passwd>templeAve1</passwd>
+    <ftp_loc>ftp</ftp_loc>
+    <disk_location>/disk2/camera_video_backups</disk_location>
+    <status>online</status>
+    <location>kitchen</location>
+    <notifications_email>off</notifications_email>
+  </camera>
 </cameras>
