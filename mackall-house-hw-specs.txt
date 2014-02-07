@@ -1,0 +1,586 @@
+home-lnx.mackall.net
+    description: Rack Mount Chassis
+    product: ProLiant DL360 G5 ()
+    vendor: HP
+    width: 64 bits
+    capabilities: smbios-2.4 dmi-2.4 vsyscall32
+    configuration: boot=hardware-failure-fw chassis=rackmount family=ProLiant
+  *-core
+       description: Motherboard
+       physical id: 0
+     *-firmware
+          description: BIOS
+          vendor: HP
+          physical id: 0
+          version: P58
+          date: 10/25/2010
+          size: 64KiB
+          capacity: 4032KiB
+          capabilities: pci pnp upgrade shadowing escd cdboot bootselect edd int13floppy360 int13floppy1200 int13floppy720 int5printscreen int9keyboard int14serial int17printer int10video acpi usb biosbootspecification netboot
+     *-cpu:0
+          description: CPU
+          product: Intel(R) Xeon(R) CPU           X5355  @ 2.66GHz
+          vendor: Intel Corp.
+          physical id: 400
+          bus info: cpu@0
+          slot: Proc 1
+          size: 2666MHz
+          width: 64 bits
+          clock: 1333MHz
+          capabilities: x86-64 fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx constant_tsc arch_perfmon pebs bts rep_good nopl aperfmperf pni dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm dca lahf_lm dtherm tpr_shadow vnmi flexpriority
+          configuration: cores=4 enabledcores=4 threads=4
+        *-cache:0
+             description: L1 cache
+             physical id: 710
+             slot: Processor 1 Internal L1 Cache
+             size: 128KiB
+             capacity: 128KiB
+             capabilities: burst internal write-back data
+        *-cache:1
+             description: L2 cache
+             physical id: 720
+             slot: Processor 1 Internal L2 Cache
+             size: 8MiB
+             capacity: 16MiB
+             capabilities: burst internal write-back
+     *-cpu:1
+          description: CPU
+          product: Intel(R) Xeon(R) CPU           X5355  @ 2.66GHz
+          vendor: Intel Corp.
+          physical id: 406
+          bus info: cpu@1
+          slot: Proc 2
+          size: 2666MHz
+          width: 64 bits
+          clock: 1333MHz
+          capabilities: x86-64 fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx constant_tsc arch_perfmon pebs bts rep_good nopl aperfmperf pni dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm dca lahf_lm dtherm tpr_shadow vnmi flexpriority
+          configuration: cores=4 enabledcores=4 threads=4
+        *-cache:0
+             description: L1 cache
+             physical id: 716
+             slot: Processor 2 Internal L1 Cache
+             size: 128KiB
+             capacity: 128KiB
+             capabilities: burst internal write-back data
+        *-cache:1
+             description: L2 cache
+             physical id: 726
+             slot: Processor 2 Internal L2 Cache
+             size: 8MiB
+             capacity: 16MiB
+             capabilities: burst internal write-back
+     *-memory
+          description: System Memory
+          physical id: 1000
+          slot: System board or motherboard
+          size: 16GiB
+        *-bank:0
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 0
+             slot: DIMM 1A
+             size: 2GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:1
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 1
+             slot: DIMM 2C
+             size: 4GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:2
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 2
+             slot: DIMM 3A
+             size: 2GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:3
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 3
+             slot: DIMM 4C
+             size: 4GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:4
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 4
+             slot: DIMM 5B
+             size: 2GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:5
+             description: FB-DIMM DDR2 FB-DIMM Synchronous [empty]
+             physical id: 5
+             slot: DIMM 6D
+             width: 64 bits
+        *-bank:6
+             description: FB-DIMM DDR2 FB-DIMM Synchronous 667 MHz (1.5 ns)
+             physical id: 6
+             slot: DIMM 7B
+             size: 2GiB
+             width: 64 bits
+             clock: 667MHz (1.5ns)
+        *-bank:7
+             description: FB-DIMM DDR2 FB-DIMM Synchronous [empty]
+             physical id: 7
+             slot: DIMM 8D
+             width: 64 bits
+     *-pci:0
+          description: Host bridge
+          product: 5000P Chipset Memory Controller Hub
+          vendor: Intel Corporation
+          physical id: 100
+          bus info: pci@0000:00:00.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+        *-pci:0
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x4 Port 2
+             vendor: Intel Corporation
+             physical id: 2
+             bus info: pci@0000:00:02.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 memory:fdf00000-fdffffff
+           *-pci:0
+                description: PCI bridge
+                product: 6311ESB/6321ESB PCI Express Upstream Port
+                vendor: Intel Corporation
+                physical id: 0
+                bus info: pci@0000:09:00.0
+                version: 01
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pci pciexpress pm normal_decode bus_master cap_list
+                configuration: driver=pcieport
+                resources: irq:0
+              *-pci:0
+                   description: PCI bridge
+                   product: 6311ESB/6321ESB PCI Express Downstream Port E1
+                   vendor: Intel Corporation
+                   physical id: 0
+                   bus info: pci@0000:0a:00.0
+                   version: 01
+                   width: 32 bits
+                   clock: 33MHz
+                   capabilities: pci pciexpress msi pm normal_decode bus_master cap_list
+                   configuration: driver=pcieport
+                   resources: irq:16
+              *-pci:1
+                   description: PCI bridge
+                   product: 6311ESB/6321ESB PCI Express Downstream Port E2
+                   vendor: Intel Corporation
+                   physical id: 1
+                   bus info: pci@0000:0a:01.0
+                   version: 01
+                   width: 32 bits
+                   clock: 33MHz
+                   capabilities: pci pciexpress msi pm normal_decode bus_master cap_list
+                   configuration: driver=pcieport
+                   resources: irq:17
+              *-pci:2
+                   description: PCI bridge
+                   product: 6311ESB/6321ESB PCI Express Downstream Port E3
+                   vendor: Intel Corporation
+                   physical id: 2
+                   bus info: pci@0000:0a:02.0
+                   version: 01
+                   width: 32 bits
+                   clock: 33MHz
+                   capabilities: pci pciexpress msi pm normal_decode bus_master cap_list
+                   configuration: driver=pcieport
+                   resources: irq:18
+           *-pci:1
+                description: PCI bridge
+                product: 6311ESB/6321ESB PCI Express to PCI-X Bridge
+                vendor: Intel Corporation
+                physical id: 0.3
+                bus info: pci@0000:09:00.3
+                version: 01
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pci pciexpress pm pcix normal_decode bus_master cap_list
+        *-pci:1
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x4 Port 3
+             vendor: Intel Corporation
+             physical id: 3
+             bus info: pci@0000:00:03.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 ioport:4000(size=4096) memory:fde00000-fdefffff ioport:d0000000(size=1048576)
+           *-pci
+                description: PCI bridge
+                product: EPB PCI-Express to PCI-X Bridge
+                vendor: Broadcom
+                physical id: 0
+                bus info: pci@0000:06:00.0
+                version: b4
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pci pciexpress pcix pm normal_decode bus_master cap_list
+                resources: ioport:4000(size=4096) memory:fde00000-fdefffff ioport:d0000000(size=1048576)
+              *-pci
+                   description: PCI bridge
+                   product: BCM5785 [HT1000] PCI/PCI-X Bridge
+                   vendor: Broadcom
+                   physical id: 4
+                   bus info: pci@0000:07:04.0
+                   version: b2
+                   width: 32 bits
+                   clock: 66MHz
+                   capabilities: pci pcix normal_decode bus_master cap_list
+              *-storage
+                   description: RAID bus controller
+                   product: Smart Array E200i (SAS Controller)
+                   vendor: Hewlett-Packard Company
+                   physical id: 8
+                   bus info: pci@0000:07:08.0
+                   logical name: scsi2
+                   version: 00
+                   width: 64 bits
+                   clock: 33MHz
+                   capabilities: storage pm msi pcix bus_master cap_list rom scsi-host
+                   configuration: driver=cciss latency=64
+                   resources: irq:64 memory:fde80000-fdefffff ioport:4000(size=256) memory:fde70000-fde77fff memory:d0000000-d0003fff
+        *-pci:2
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x8 Port 4-5
+             vendor: Intel Corporation
+             physical id: 4
+             bus info: pci@0000:00:04.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0
+        *-pci:3
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x4 Port 5
+             vendor: Intel Corporation
+             physical id: 5
+             bus info: pci@0000:00:05.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0
+        *-pci:4
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x4 Port 6
+             vendor: Intel Corporation
+             physical id: 6
+             bus info: pci@0000:00:06.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 memory:f8000000-f9ffffff ioport:d0100000(size=1048576)
+           *-pci
+                description: PCI bridge
+                product: EPB PCI-Express to PCI-X Bridge
+                vendor: Broadcom
+                physical id: 0
+                bus info: pci@0000:02:00.0
+                version: c3
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pci pciexpress pcix pm normal_decode bus_master cap_list
+                resources: memory:f8000000-f9ffffff ioport:d0100000(size=1048576)
+              *-network
+                   description: Ethernet interface
+                   product: NetXtreme II BCM5708 Gigabit Ethernet
+                   vendor: Broadcom Corporation
+                   physical id: 0
+                   bus info: pci@0000:03:00.0
+                   logical name: eth0
+                   version: 12
+                   serial: 00:1c:c4:a9:c7:64
+                   size: 1Gbit/s
+                   capacity: 1Gbit/s
+                   width: 64 bits
+                   clock: 66MHz
+                   capabilities: pcix pm vpd msi bus_master cap_list rom ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+                   configuration: autonegotiation=on broadcast=yes driver=bnx2 driverversion=2.2.3 duplex=full firmware=bc 1.9.6 ip=192.168.1.18 latency=64 link=yes mingnt=64 multicast=yes port=twisted pair speed=1Gbit/s
+                   resources: irq:65 memory:f8000000-f9ffffff memory:d0100000-d01007ff
+        *-pci:5
+             description: PCI bridge
+             product: 5000 Series Chipset PCI Express x4 Port 7
+             vendor: Intel Corporation
+             physical id: 7
+             bus info: pci@0000:00:07.0
+             version: b1
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 memory:fa000000-fbffffff ioport:d0200000(size=1048576)
+           *-pci
+                description: PCI bridge
+                product: EPB PCI-Express to PCI-X Bridge
+                vendor: Broadcom
+                physical id: 0
+                bus info: pci@0000:04:00.0
+                version: c3
+                width: 64 bits
+                clock: 33MHz
+                capabilities: pci pciexpress pcix pm normal_decode bus_master cap_list
+                resources: iomemory:220001f10-220001f0f memory:fa000000-fbffffff ioport:d0200000(size=1048576)
+              *-network
+                   description: Ethernet interface
+                   product: NetXtreme II BCM5708 Gigabit Ethernet
+                   vendor: Broadcom Corporation
+                   physical id: 0
+                   bus info: pci@0000:05:00.0
+                   logical name: eth1
+                   version: 12
+                   serial: 00:1c:c4:a9:b7:80
+                   capacity: 1Gbit/s
+                   width: 64 bits
+                   clock: 66MHz
+                   capabilities: pcix pm vpd msi bus_master cap_list rom ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+                   configuration: autonegotiation=on broadcast=yes driver=bnx2 driverversion=2.2.3 firmware=bc 1.9.6 latency=64 link=no mingnt=64 multicast=yes port=twisted pair
+                   resources: irq:66 memory:fa000000-fbffffff memory:d0200000-d02007ff
+        *-usb:0
+             description: USB controller
+             product: 631xESB/632xESB/3100 Chipset UHCI USB Controller #1
+             vendor: Intel Corporation
+             physical id: 1d
+             bus info: pci@0000:00:1d.0
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:16 ioport:1000(size=32)
+        *-usb:1
+             description: USB controller
+             product: 631xESB/632xESB/3100 Chipset UHCI USB Controller #2
+             vendor: Intel Corporation
+             physical id: 1d.1
+             bus info: pci@0000:00:1d.1
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:17 ioport:1020(size=32)
+        *-usb:2
+             description: USB controller
+             product: 631xESB/632xESB/3100 Chipset UHCI USB Controller #3
+             vendor: Intel Corporation
+             physical id: 1d.2
+             bus info: pci@0000:00:1d.2
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:18 ioport:1040(size=32)
+        *-usb:3
+             description: USB controller
+             product: 631xESB/632xESB/3100 Chipset UHCI USB Controller #4
+             vendor: Intel Corporation
+             physical id: 1d.3
+             bus info: pci@0000:00:1d.3
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:19 ioport:1060(size=32)
+        *-usb:4
+             description: USB controller
+             product: 631xESB/632xESB/3100 Chipset EHCI USB2 Controller
+             vendor: Intel Corporation
+             physical id: 1d.7
+             bus info: pci@0000:00:1d.7
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm debug ehci bus_master cap_list
+             configuration: driver=ehci-pci latency=0
+             resources: irq:16 memory:f7df0000-f7df03ff
+        *-pci:6
+             description: PCI bridge
+             product: 82801 PCI Bridge
+             vendor: Intel Corporation
+             physical id: 1e
+             bus info: pci@0000:00:1e.0
+             version: d9
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci subtractive_decode bus_master cap_list
+             resources: ioport:2000(size=8192) memory:f7e00000-f7ffffff ioport:d8000000(size=134217728)
+           *-display
+                description: VGA compatible controller
+                product: ES1000
+                vendor: Advanced Micro Devices, Inc. [AMD/ATI]
+                physical id: 3
+                bus info: pci@0000:01:03.0
+                version: 02
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm vga_controller bus_master cap_list rom
+                configuration: driver=radeon latency=64 mingnt=8
+                resources: irq:23 memory:d8000000-dfffffff ioport:3000(size=256) memory:f7ff0000-f7ffffff memory:f7e00000-f7e1ffff
+           *-generic:0
+                description: System peripheral
+                product: Integrated Lights Out Controller
+                vendor: Compaq Computer Corporation
+                physical id: 4
+                bus info: pci@0000:01:04.0
+                version: 03
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm cap_list
+                configuration: driver=hpwdt latency=0
+                resources: irq:21 ioport:2800(size=256) memory:f7fe0000-f7fe01ff
+           *-generic:1
+                description: System peripheral
+                product: Integrated Lights Out  Processor
+                vendor: Compaq Computer Corporation
+                physical id: 4.2
+                bus info: pci@0000:01:04.2
+                version: 03
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm bus_master cap_list rom
+                configuration: driver=hpilo latency=64
+                resources: irq:22 ioport:3400(size=256) memory:f7fd0000-f7fd07ff memory:f7fc0000-f7fc3fff memory:f7f00000-f7f7ffff memory:f7e20000-f7e2ffff
+           *-usb
+                description: USB controller
+                product: Integrated Lights-Out Standard Virtual USB Controller
+                vendor: Hewlett-Packard Company
+                physical id: 4.4
+                bus info: pci@0000:01:04.4
+                version: 00
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm uhci bus_master cap_list
+                configuration: driver=uhci_hcd latency=64
+                resources: irq:22 ioport:3800(size=32)
+           *-serial
+                description: IPMI SMIC interface
+                product: Integrated Lights-Out Standard KCS Interface
+                vendor: Hewlett-Packard Company
+                physical id: 4.6
+                bus info: pci@0000:01:04.6
+                version: 00
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm cap_list
+                configuration: driver=ipmi_si latency=0
+                resources: irq:21 memory:f7ef0000-f7ef00ff
+        *-isa
+             description: ISA bridge
+             product: 631xESB/632xESB/3100 Chipset LPC Interface Controller
+             vendor: Intel Corporation
+             physical id: 1f
+             bus info: pci@0000:00:1f.0
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: isa bus_master
+             configuration: driver=lpc_ich latency=0
+             resources: irq:0
+        *-ide
+             description: IDE interface
+             product: 631xESB/632xESB IDE Controller
+             vendor: Intel Corporation
+             physical id: 1f.1
+             bus info: pci@0000:00:1f.1
+             version: 09
+             width: 32 bits
+             clock: 33MHz
+             capabilities: ide bus_master
+             configuration: driver=ata_piix latency=0
+             resources: irq:17 ioport:1f0(size=8) ioport:3f6 ioport:170(size=8) ioport:376 ioport:500(size=16)
+     *-pci:1
+          description: Host bridge
+          product: 5000 Series Chipset FSB Registers
+          vendor: Intel Corporation
+          physical id: 101
+          bus info: pci@0000:00:10.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+          configuration: driver=i5000_edac
+          resources: irq:0
+     *-pci:2
+          description: Host bridge
+          product: 5000 Series Chipset FSB Registers
+          vendor: Intel Corporation
+          physical id: 102
+          bus info: pci@0000:00:10.1
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-pci:3
+          description: Host bridge
+          product: 5000 Series Chipset FSB Registers
+          vendor: Intel Corporation
+          physical id: 103
+          bus info: pci@0000:00:10.2
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-pci:4
+          description: Host bridge
+          product: 5000 Series Chipset Reserved Registers
+          vendor: Intel Corporation
+          physical id: 104
+          bus info: pci@0000:00:11.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-pci:5
+          description: Host bridge
+          product: 5000 Series Chipset Reserved Registers
+          vendor: Intel Corporation
+          physical id: 105
+          bus info: pci@0000:00:13.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-pci:6
+          description: Host bridge
+          product: 5000 Series Chipset FBD Registers
+          vendor: Intel Corporation
+          physical id: 106
+          bus info: pci@0000:00:15.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-pci:7
+          description: Host bridge
+          product: 5000 Series Chipset FBD Registers
+          vendor: Intel Corporation
+          physical id: 107
+          bus info: pci@0000:00:16.0
+          version: b1
+          width: 32 bits
+          clock: 33MHz
+     *-scsi
+          physical id: 1
+          logical name: scsi0
+          capabilities: emulated
+        *-cdrom
+             description: DVD reader
+             physical id: 0.0.0
+             bus info: scsi@0:0.0.0
+             logical name: /dev/cdrom
+             logical name: /dev/sr0
+             capabilities: audio dvd
+             configuration: status=nodisc
