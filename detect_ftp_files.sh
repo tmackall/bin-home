@@ -35,7 +35,7 @@ notifs=$(xmlstarlet sel  -t -m  "//camera" -v "@id" -o ":" -v notifications_emai
 status=$?
 if [[ $status -ne 0 ]]; then
     echo "Error reading ${CAMERA_XML}, try to recover"
-    git co -- $file_camera_xml 
+    git checkout -- $file_camera_xml 
 fi
 
 #
