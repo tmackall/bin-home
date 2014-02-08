@@ -8,9 +8,14 @@ file_camera_xml=${dir_base}/cameras_ip/cameras.xml
 file_camera_xml_tmp=/tmp/cameras.xml
 logfile_motion=/disk2/camera_log_motion/log.txt
 max_size=$((10 ** 7)) # 10M
+email="mackall.tom@gmail.com,Malamack@gmail.com"
+email_text_file=/tmp/email_text_file.txt
+ftp_dir=/home/tmackall/ftp/
+
 
 #
-# working XML file - create it if it is not there
+# xml - create it if it is not there
+#---------------------------------------------------------------
 difference=$(diff $file_camera_xml $file_camera_xml_tmp)
 if [[ $? -eq 2 ]]; then
     echo File does not exist
@@ -21,22 +26,25 @@ elif [[ "$difference" != "" ]]; then
     cp $file_camera_xml $file_camera_xml_tmp
 fi
 
-email="mackall.tom@gmail.com,Malamack@gmail.com"
-email_text_file=/tmp/email_text_file.txt
-ftp_dir=/home/tmackall/ftp/
 
-#
-# XML - read camera xml file
+# camera xml file - read it
 CAMERA_XML=$file_camera_xml_tmp
 notifs=$(xmlstarlet sel  -t -m  "//camera" -v "@id" -o ":" -v notifications_email -o " " ${CAMERA_XML})
+#
+# xml parse error - take it from git and pray that that works
+status=$?
+if [[ $status -ne 0 ]]; then
+    echo "Error reading ${CAMERA_XML}, try to recover"
+    git co -- $file_camera_xml 
+fi
 
 #
-# delete the zip file
 # case insensitive regex
 shopt -s nocasematch;
 
 #
 # main loop
+#---------------------------------------------------------------
 pics=""
 camera_list=""
 rm "$email_text_file" >& /dev/null
@@ -67,7 +75,8 @@ for i in $notifs; do
 done
 
 #
-# if no pics, then no email
+# movement check - no pics, no movement
+#---------------------------------------------------------------
 if [[ ! $pics == "" ]]; then
     motion_subject="\"Motion was detected on the following cameras: $camera_list\""
     filesize=$(stat -c%s "$zip_file")
@@ -80,11 +89,14 @@ if [[ ! $pics == "" ]]; then
             < $email_text_file"
     fi
     
+    #
+    # email - send it
     output=$(eval $cmd)
 fi
 
 #
 # cleanup
+#---------------------------------------------------------------
 file_list=$(find $ftp_dir -name "*.jpg")
 for i in $file_list; do
     rm -rf "$i"
