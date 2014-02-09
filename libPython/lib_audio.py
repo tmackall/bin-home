@@ -89,7 +89,7 @@ class LIB_AUDIO(object):
             max_time = 60
             cnt = iterations
             while True:
-                shell_command =  'ping -c 1 avr '
+                shell_command =  'ping -c 1 mackall-avr '
                 ret_status = call(shell_command, shell=True)
                 if ret_status == 0:
                     break
