@@ -63,7 +63,7 @@ fi
 #
 # inits
 #------------------------------------------------------------------
-DIR_BASE=/home/tmackall/dev
+DIR_BASE=/home/tmackall/bin
 FILE_CAMERA_XML=${DIR_BASE}/cameras_ip/cameras.xml
 FILE_CAMERA_XML_TMP=/tmp/cameras.$$.xml
 
