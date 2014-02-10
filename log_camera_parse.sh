@@ -11,8 +11,6 @@ dir_video_storage=/disk3/video_storage
 #
 # video files 
 #------------------------------------------------------------
-file_videos_tmp="/tmp/file_videos_tmp.$$.txt"
-echo "" > $file_videos_tmp
 pushd "$dir_video"
 for i in $(ls); do
     # time - last modified. The filename is a creation time.
@@ -22,16 +20,9 @@ for i in $(ls); do
     camera=$(echo $i | sed s/.*_// | sed 's/\..*//')
     time=$(echo $i | sed s/_.*//)
     time_epoch=$(date -d "$time_fmt" +%s)
-    #echo "$camera:$time_epoch:v" >> $file_videos_tmp
     videos_tmp+="$camera:$time_epoch;$i "
 done
 popd "$dir_video"
-
-
-#
-# sorted list - store locallaly to to be used later
-#videos_sort=$(cat $file_videos_tmp | sort)
-
 
 #
 # hash on video - bash4 dependency
@@ -44,19 +35,14 @@ for i in $videos_tmp; do
     video_array[$key]=$value
 done
 
-
-
 #
 # data triggers from log
 #------------------------------------------------------------
-file_data_tmp="/tmp/file_data_tmp.$$.txt"
-echo "" > $file_data_tmp
 for i in $data; do
     camera=$(echo $i | sed s/,.*//)
     time=$(echo $i | sed s/.*,//)
     time_fmt=$(echo $time | sed 's/-\(..:.*\)$/ \1/') 
     time_epoch=$(date -d "$time_fmt" +%s)
-    #echo "$camera:$time_epoch:l" >> $file_data_tmp
     log_trig_temp+="$camera:$time_epoch "
 done
 
@@ -80,16 +66,18 @@ for i in $log_trig_temp; do
 done
 
 #
-# move the files to perm storage
-#------------------------------------------------------------
-for i in $video_move_list; do
-    mv "$dir_video/$i" "$dir_video_storage"
-done
-
-#
-# cleanup
+# update the log file
 #------------------------------------------------------------
 tail  "${dir_log}/log.txt" > /tmp/log.txt
 mv /tmp/log.txt "${dir_log}/log.txt"
+
+#
+# move the files to perm storage
+#------------------------------------------------------------
+for i in $video_move_list; do
+    echo moving $i
+    mv "$dir_video/$i" "$dir_video_storage"
+done
+
 exit 0
 
