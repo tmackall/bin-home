@@ -9,8 +9,8 @@ import sys
 # amount that we will cleanup relative to the filesystem total
 DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.85,
     'clean_pc':0.15},
-    {'dir':"/home/tmackall/ftp/tgz-d-files", 'th_clean_pc':0.30,
-        'clean_pc':1.0}]
+    {'dir':"/disk3/video_storage", 'th_clean_pc':0.95,
+        'clean_pc':0.08}]
 
 #
 # see how much space is available on all storage areas
