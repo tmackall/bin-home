@@ -21,7 +21,6 @@ This script run the test1 or test2 over a machine.
 
 OPTIONS:
    -h      help
-   -a      all camera
    -c      camera list "SS01 SS02" - must supply a value
    -y      camera on
    -n      camera off
