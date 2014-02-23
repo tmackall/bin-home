@@ -4,6 +4,7 @@ sudo adduser tmackall
 sudo adduser tmackall sudo
 # raspberry config
 # set timezone, disk, over-clock etc
+#-----------------------------------------------------------------
 sudo raspi-config
 # get current os updates
 sudo apt-get update
@@ -34,3 +35,18 @@ sudo apt-get install vsftpd
 sudo apt-get install sysstat
 sudo apt-get install zip
 sudo apt-get install vlc
+#
+# wifi setup 
+#----------------------------------------------------------------------
+sudo vim /etc/network/interfaces
+# added these lines
+
+allow-hotplug wlan0
+auto wlan0
+iface wlan0 inet dhcp
+wpa-ssid "ssid"
+wpa-psk "password"
+
+Go to /etc/ifplugd/action.d/ and rename the ifupdown file to ifupdown.original
+Then do: cp /etc/wpa_supplicant/ifupdown.sh ./ifupdown
+    Finally: sudo reboot
