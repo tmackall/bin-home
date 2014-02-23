@@ -18,6 +18,8 @@ sudo vim /etc/hosts
 sudo chmod 777 .
 git clone ssh://mackall-home/disk1/github-mackall/homedir.git tmackall
 sudo chmod 775 tmackall
+sudo chgrp -R tmackall tmackall
+sudo chown -R tmackall tmackall
 sudo rm -rf tmackall.bck
 sudo reboot
 cd tmackall
