@@ -37,6 +37,7 @@ sudo apt-get install vsftpd
 sudo apt-get install sysstat
 sudo apt-get install zip
 sudo apt-get install vlc
+sudo apt-get install tzdata
 #
 # wifi setup 
 #----------------------------------------------------------------------
