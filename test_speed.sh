@@ -1,6 +1,8 @@
 #!/bin/bash
 file_output="/tmp/speedtest.out"
-rm "$file_output"
+if [[ -e "$file_output" ]]; then
+    rm "$file_output"
+fi
 
 # execute the broadbad/internet speed test
 speedtest-cli > "$file_output" 2>&1
