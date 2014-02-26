@@ -60,7 +60,9 @@ def convert_to_temp(data, places):
   # 1008      275    3.25
   # 1023      280    3.30
 
-    temp = ((data * 330)/1023)-50
+    #temp = ((data * 330)/1023)-50
+    # adjusting this temporarily
+    temp = ((data * 330)/1023)-45
     temp = round(temp, places)
     return temp
 
