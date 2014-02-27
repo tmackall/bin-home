@@ -32,7 +32,7 @@ def convert_volts(data,places):
     Function to convert data to voltage level,
     rounded to specified number of decimal places.
     '''
-    volts = (data * 3.3) / 1023
+    volts = (data * 3.3) / 1023.0
     volts = round(volts,places)
     return volts
 
@@ -62,8 +62,8 @@ def convert_to_temp(data, places):
 
     #temp = ((data * 330)/1023)-50
     # adjusting this temporarily
-    temp = ((data * 330)/1023)-45
-    temp = round(temp, places)
+    temp = ((data * 330.0)/1023)-46.0
+    #temp = round(temp, places)
     return temp
 
 # Define sensor channels
@@ -86,7 +86,7 @@ temp_c = convert_to_temp(temp_level,2)
 temp_f = convert_c_to_f(temp_c)
 
 # Print out results
-print("Temp    : %s (%sV) %s deg C, %s deg F" %
+print("Temp    : %s (%.3fV) %.2f deg C, %.2f deg F" %
     (temp_level, temp_volts, temp_c, temp_f))
 
 
