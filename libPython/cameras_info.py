@@ -6,7 +6,7 @@ from xml.dom import minidom, Node
 
 # what % of the file system remains before deleting files
 # amount that we will cleanup relative to the filesystem total
-CAMERA_XML_FILE = "../cameras_ip/cameras.xml"
+CAMERA_XML_FILE = "/tmp/cameras.xml"
 
 
 def cameras_get_info():

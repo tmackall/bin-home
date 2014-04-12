@@ -5,12 +5,12 @@ usage()
 cat << EOF
 usage: $0 options
 
-This script run the test1 or test2 over a machine.
+This script uses a web app to send a text message.
 
 OPTIONS:
    -h      help
    -m      message
-   -n      numnber (3032411300)
+   -n      number (3032411300)
 EOF
 }
 
