@@ -71,7 +71,7 @@ class SensorTemp():
 
     def get(self, farenheit_flag=True):
         '''
-        function: temp_f_get() - function to get temp in
+        function: get() - function to get temp in
         '''
         temp_ret = 0xFF
         temp_level = self.read_channel()
