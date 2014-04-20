@@ -59,24 +59,27 @@ def convert_c_to_f(temp_c_in):
     return (temp_c_in * 9/5) + 32
 
 
-class sensorTemp():
+class SensorTemp():
     '''
     class: sensorTemp() - used to read adc via spi bus.
     '''
-    def __init__(self, channel):
+    def __init__(self, channel=0):
         # Open SPI bus
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)
         self.channel = channel
 
-    def get_temp_f(self):
+    def get(self, farenheit_flag=True):
         '''
-        function: get_temp_f() - function to get temp in
+        function: temp_f_get() - function to get temp in
         '''
+        temp_ret = 0xFF
         temp_level = self.read_channel()
-        temp_c = convert_to_temp(temp_level, 2)
-        temp_f = convert_c_to_f(temp_c)
-        return temp_f
+        temp_ret = convert_to_temp(temp_level, 2)
+        if farenheit_flag is True:
+            temp_ret = convert_c_to_f(temp_ret)
+
+        return temp_ret
 
     def read_channel(self):
         '''
