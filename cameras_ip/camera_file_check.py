@@ -9,7 +9,7 @@ import sys
 # amount that we will cleanup relative to the filesystem total
 DIRS_CAMERA = [{'dir':"/disk2/camera_video_backups",'th_clean_pc':0.85,
     'clean_pc':0.15},
-    {'dir':"/disk3/video_storage", 'th_clean_pc':0.95,
+    {'dir':"/disk1/video_storage", 'th_clean_pc':0.95,
         'clean_pc':0.08}]
 
 #
