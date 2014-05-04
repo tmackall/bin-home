@@ -2,6 +2,7 @@
 
 if [[ $# -lt 2 ]]; then 
     echo "Usage: $0 <upper limit> <lower limit>"
+    exit 1
 fi
 
 UL=$1
@@ -11,7 +12,7 @@ echo "$UL $LL"
 
 
 export PATH=~/bin:$PATH
-TEMP_STRING=$(curl --data "test=false" http://mackall-rp04:8000/sensor_temp/)
+TEMP_STRING=$(curl http://mackall-rp04/sensor_temp/)
 
 TEMP_FMT=$(echo "$TEMP_STRING" | sed 's/.*) *//')
 TEMP=$(echo "$TEMP_FMT" | sed 's/ *F//')
