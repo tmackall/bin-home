@@ -6,7 +6,7 @@
 dir_log=/disk2/camera_log_motion
 data=$(cat ${dir_log}/log.txt | sed 's/ *//g')
 dir_video=/disk2/camera_video_backups
-dir_video_storage=/disk3/video_storage
+dir_video_storage=/disk1/video_storage
 
 #
 # video files 
