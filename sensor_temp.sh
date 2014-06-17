@@ -15,7 +15,10 @@ export PATH=~/bin:$PATH
 TEMP_STRING=$(curl http://mackall-rp04/sensor_temp/)
 
 TEMP_FMT=$(echo "$TEMP_STRING" | sed 's/.*) *//')
-TEMP=$(echo "$TEMP_FMT" | sed 's/ *F//')
+TEMP=$(echo "$TEMP_FMT" | sed 's/ *F//' | sed 's/\([0-9]\+\...\).*/\1/')
+echo "$TEMP"
+exit
+#TEMP=$(echo "$TEMP_FMT" | sed 's/ *F//')
 RESULT1=$(echo "$TEMP > $UL" | bc)
 RESULT2=$(echo "$TEMP < $LL" | bc)
 echo -e "\n${TEMP}F\n"
