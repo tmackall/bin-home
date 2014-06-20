@@ -1,1 +1,0 @@
-ls | xargs du -hs | sort -n -r 

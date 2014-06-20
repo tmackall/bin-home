@@ -1,1 +1,0 @@
-find . -name "*.[ch]" -exec grep -H -n "$1" {} \;
