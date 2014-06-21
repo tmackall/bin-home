@@ -1,3 +1,0 @@
-#!/bin/sh
-p4 changes -t -m1 //$1/...
-
