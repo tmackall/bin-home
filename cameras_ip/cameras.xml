@@ -68,6 +68,6 @@
     <disk_location>~/videos</disk_location>
     <status>online</status>
     <location>condo</location>
-    <notifications_email>off</notifications_email>
+    <notifications_email>on</notifications_email>
   </camera>
 </cameras>
