@@ -10,7 +10,7 @@ MINS_VIDEO=$1
 dir_log=/disk2/camera_log_motion
 DATA=$(cat ${dir_log}/log.txt | sed 's/ *//g')
 dir_video=/disk2/camera_video_backups
-dir_video_storage=/disk1/video_storage
+dir_video_storage=/disk2/video_storage
 #SECS_VIDEO_LEN=$(($MINS_VIDEO*60*60))
 
 

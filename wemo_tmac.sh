@@ -14,14 +14,14 @@ if [[ $val =~ off ]]; then
 fi
 wemo clear
 MAX_TRIES=5
-for i in {1..5}; do
+for i in {1..12}; do
     echo $i
     wemo -f switch "$device" "$val"
     on_off=$(wemo status | grep "$device" | awk  '{ print $NF }')
+    sleep 10
     if [[ $exp_val -eq $on_off ]]; then
         echo "correct state: $on_off"
         exit 0
     fi
-    sleep 3
 done
 exit 1

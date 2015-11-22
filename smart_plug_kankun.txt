@@ -1,0 +1,19 @@
+/etc/config/wireless
+ssh root@192.168.1.253
+config wifi-iface
+    option device 'radio0'
+    option network 'wwan'
+    option ssid 'scout'
+    option mode 'sta'
+    option encryption 'psk-mixed'
+    option key 'tmackall'
+
+config wifi-iface
+    option device 'radio0'
+    option key 'tmackall'
+    option ssid 'scout'
+    option encryption 'psk-mixed'
+    option mode 'ap'
+    option network 'lan'
+
+

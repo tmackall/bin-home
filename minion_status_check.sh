@@ -50,7 +50,7 @@ fi
 #
 # minion status - filter out
 # --------------------------------------------
-STATUS_MINION=$(salt/salt_minion_status.sh)
+STATUS_MINION=$(/home/tmackall/bin/salt/salt_minion_status.sh)
 STATUS_UP=$(echo $STATUS_MINION | sed 's/.*up://')
 STATUS_DOWN=$(echo $STATUS_MINION | sed 's/up:.*//' | sed 's/.*down: *//')
 FILE_TMP="/tmp/$$.txt"

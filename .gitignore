@@ -3,4 +3,6 @@ t
 *.swp
 nohup.out
 .ropeproject
+*.gz
+*xml
 
