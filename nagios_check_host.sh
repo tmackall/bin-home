@@ -31,4 +31,5 @@ if [[ $status -ne 0 ]]; then
     fi
     exit 3
 fi
+echo "OK"
 exit 0
