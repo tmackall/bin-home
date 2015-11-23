@@ -12,9 +12,17 @@ NOTE_FILE="/tmp/$HN"
 NOTE_DELAY=30
 
 #
-# nagios - ping the host
-name=$(check_by_ssh -H $HN "hostname")
-status=$?
+# nagios - ping the host (10 chances)
+for i in {1..10}; do
+    echo $i
+    name=$(check_by_ssh -H $HN "hostname")
+    status=$?
+    if [[ $status -eq 0 ]]; then
+        break
+    fi
+    sleep 6
+done
+echo $status
 
 #
 # nagios status - non-0 if fails
