@@ -88,10 +88,11 @@ if [[ ! $pics == "" ]]; then
         cmd="mutt $email -s "${motion_subject}" $pics -a ${zip_file} \
             < $email_text_file"
     fi
-    
+
     #
     # email - send it
     output=$(eval $cmd)
+    echo "$output"
 fi
 
 #

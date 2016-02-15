@@ -23,8 +23,8 @@ def switch_get(env, list_switches):
     ret_list = []
     for switch in list_switches:
         s = env.get_switch(switch)
-        state = s.basicevent.GetBinaryState()
-        state = int(state['BinaryState']) & 0x9
+        state = s.get_state()
+        state = int(state) & 0x9
         if state > 0:
             state = 1
         ret_list.append({switch: state})
@@ -83,8 +83,8 @@ def main():
     return {'status': 0, 'msg': 'switch(es):%s val:%s' % (switches, flag_on_off)}
 
 if __name__ == '__main__':
+
     status = main()
     if status['status'] == 0:
         dumps(status)
     exit(status)
-

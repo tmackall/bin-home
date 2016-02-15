@@ -6,7 +6,7 @@ email_addrs=mackall.tom@gmail.com
 
 # key-value pairs for filesystems
 declare -A fsArr
-fsArr["/"]=45
+fsArr["/"]=75
 #fsArr["/disk1"]=85
 fsArr["/disk2"]=95
 

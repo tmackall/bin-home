@@ -26,7 +26,7 @@
     <disk_location>/disk2/camera_video_backups</disk_location>
     <status>online</status>
     <location>kitchen</location>
-    <notifications_email>off</notifications_email>
+    <notifications_email>on</notifications_email>
   </camera>
   <camera id="ss02">
     <mfgr>Samsung</mfgr>
@@ -54,7 +54,7 @@
     <disk_location>/disk2/camera_video_backups</disk_location>
     <status>online</status>
     <location>living room</location>
-    <notifications_email>off</notifications_email>
+    <notifications_email>on</notifications_email>
   </camera>
   <camera id="ps01">
     <mfgr>Panasonic</mfgr>

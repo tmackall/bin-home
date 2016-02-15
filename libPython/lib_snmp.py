@@ -17,9 +17,8 @@ class SNMP(object):
         """
         self.ip_addr = ip_addr
         self.transport = cmdgen.UdpTransportTarget((self.ip_addr, 161))
-        #self.generator = cmdgen.CommandGenerator()
-        #print 'init generator: %s' % self.generator
-
+        # self.generator = cmdgen.CommandGenerator()
+        # print 'init generator: %s' % self.generator
 
     def walk(self):
         """
@@ -69,10 +68,9 @@ class SNMP(object):
         generator = cmdgen.CommandGenerator()
         res = (error_indication, error_status, _error_index, var_binds) =\
             generator.setCmd(comm_data, self.transport, in_oid)
-        if not error_indication is None or error_status is True:
+        if error_indication is not None or error_status is True:
             logging.error('Status of setCmd: %s', str(res))
             return 1
         else:
             logging.info('%s', var_binds)
         return 0
-

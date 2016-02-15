@@ -26,7 +26,7 @@ cams_dead=""
 for i in $cams_online; do
     disk_loc=$(xmlstarlet sel -t -m "//camera[@id='$i']" \
         -v "disk_location" ${CAMERA_XML})
-    file_re="${disk_loc}/.*_${i}\.mp4"        
+    file_re="${disk_loc}/.*_${i}\.mp4"
     active_file=$(find $disk_loc -newer $test_file | grep "$file_re")
     if [[ $active_file =~ ^\ *$ ]]; then
         cams_dead="$cams_dead $i"
@@ -56,7 +56,7 @@ for cam_id in $cams_dead; do
     num_secs_until_hour=$(($(date -d ${hour_curr}:59:59 +%s) - \
         $(date +%s) + 1))
     echo "Num seconds until the top of the hour: $num_secs_until_hour"
-    
+
     mutt mackall.tom@gmail.com -s "restarting camera: $cam_id" < /dev/null
     status=$(nohup ${CAMERA_HOME}/camera_capture.sh $cam_id $num_secs_until_hour > /dev/null&)
     echo "status: $status"
