@@ -1,9 +1,15 @@
 #!/bin/bash
+# =======================================================
+#
+# script to capture video via real
+# time streaming protocol (rtsp)
+#
+# =======================================================
 date_name=$(date +"%Y-%m-%d-%H:%M:%S")
 time_secs=$((60 * 60))
 
 if [[ $# -ne 2 ]]; then
-    echo "Usage: $0 <camera id> <time>\n"
+    echo "Usage: $0 <camera id> <time (in secs)>\n"
     exit 2
 fi
 
@@ -27,6 +33,9 @@ if [[ $match -eq 0 ]]; then
     echo "$cam_id not found."
     exit 3
 fi
+#
+# xml - get rtsp info for the camera
+# ------------------------------------------------------------
 cam_ip=$(xmlstarlet sel -t -m "//camera[@id='$cam_id']" \
     -v "ip_address" ${CAMERA_XML})
 cam_url=$(xmlstarlet sel -t -m "//camera[@id='$cam_id']" \
@@ -37,7 +46,8 @@ cam_pass=$(xmlstarlet sel -t -m "//camera[@id='$cam_id']" \
     -v "passwd" ${CAMERA_XML})
 rstp_cmd="rtsp://${cam_ip}/${cam_url} --rtsp-user=${cam_user} --rtsp-pwd=${cam_pass}"
 name="${date_name}_${cam_id}.mp4"
-cmd="cvlc --run-time ${time_secs}  $rstp_cmd --sout=\"#duplicate{dst=standard{access=file,dst='/disk2/camera_video_backups/${name}',mux=mp4}\" vlc://quit"
+cmd="cvlc --run-time ${time_secs} --rtsp-tcp  $rstp_cmd --sout=\"#duplicate{dst=standard{access=file,dst='/disk2/camera_video_backups/${name}',mux=mp4}\" vlc://quit"
+echo "$cmd"
 eval $cmd
 status=$?
 echo "Status:$status from command: \"$cmd\"" > /tmp/t
