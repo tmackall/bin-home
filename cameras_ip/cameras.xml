@@ -81,7 +81,7 @@
     <ftp_loc>ftp</ftp_loc>
     <disk_location>~/videos</disk_location>
     <status>online</status>
-    <location>condo</location>
+    <location>sd_apartment</location>
     <notifications_email>on</notifications_email>
   </camera>
 </cameras>
