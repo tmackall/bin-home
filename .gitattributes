@@ -1,1 +1,1 @@
-bin/cameras_ip/cameras.xml filter=git-crypt diff=git-crypt
+cameras_ip/cameras.xml filter=git-crypt diff=git-crypt
