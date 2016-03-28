@@ -2,15 +2,15 @@
 <cameras>
   <camera id="ss011">
     <mfgr>Samsung</mfgr>
-    <model>SNO-1080</model>
-    <ip_address>192.168.1.15</ip_address>
-    <port>2002</port>
+    <model>SNO-1080r</model>
+    <ip_address>192.168.1.38:3038</ip_address>
+    <port>8038</port>
     <rtsp_loc>H.264/media.smp</rtsp_loc>
     <user>admin</user>
     <passwd>dampob12</passwd>
     <disk_location>/disk2/camera_video_backups</disk_location>
     <ftp_loc>ftp</ftp_loc>
-    <status>offline</status>
+    <status>online</status>
     <location>tbd</location>
     <notifications_email>off</notifications_email>
   </camera>
