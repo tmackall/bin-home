@@ -54,9 +54,19 @@ cam_user=$(xmlstarlet sel -t -m "//camera[@id='$cam_id']" \
     -v "user" ${CAMERA_XML})
 cam_pass=$(xmlstarlet sel -t -m "//camera[@id='$cam_id']" \
     -v "passwd" ${CAMERA_XML})
-rstp_cmd="rtsp://${cam_ip}/${cam_url} --rtsp-user=${cam_user} --rtsp-pwd=${cam_pass}"
+
+#
+# rtsp command - piece it together
+# ------------------------------------------------------------
+rtsp_cmd="rtsp://${cam_ip}/${cam_url} --rtsp-user=${cam_user} --rtsp-pwd=${cam_pass}"
+rtsp_cmd="rtsp://${cam_user}:${cam_pass}@${cam_ip}/${cam_url}"
 name="${date_name}_${cam_id}.mp4"
-cmd="cvlc --run-time ${time_secs} --rtsp-tcp  $rstp_cmd --sout=\"#duplicate{dst=standard{access=file,dst='${ROOT}/camera_video_backups/${name}',mux=mp4}\" vlc://quit"
+rtsp_sout="'#standard{access=file,mux=mp4,dst=${ROOT}/camera_video_backups/${name}' :demux=h264"
+
+#
+# vlc call - use vlc to issue a command using rtsp
+# -------------------------------------------------------------------------------------
+cmd="cvlc --stop-time ${time_secs} -I dummy ${rtsp_cmd} --sout ${rtsp_sout} vlc://quit"
 echo "$cmd"
 eval $cmd
 status=$?
