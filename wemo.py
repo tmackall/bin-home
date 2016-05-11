@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
+from json import dumps
 from optparse import OptionParser
 from ouimeaux.environment import Environment
-from json import dumps
 ON = 1
 OFF = 0
 
@@ -78,7 +78,6 @@ def main():
 
     #
     # switch - on/off
-    print switches
     switch_set(env, switches, flag_on_off)
     return {'status': 0, 'msg': 'switch(es):%s val:%s' % (switches, flag_on_off)}
 
@@ -86,5 +85,5 @@ if __name__ == '__main__':
 
     status = main()
     if status['status'] == 0:
-        dumps(status)
-    exit(status)
+        print dumps(status['msg'])
+    exit(status['status'])
