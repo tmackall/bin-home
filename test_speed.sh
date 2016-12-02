@@ -6,7 +6,7 @@ echo $FILE_OUT
 speedtest-cli > "$FILE_OUT" 2>&1
 STATUS=$?
 
-echo $(whoami)
+cat $FILE_OUT
 if [[ $STATUS != 0 ]]; then
     echo "Failed speed test: $STATUS"
     rm $FILE_OUT
