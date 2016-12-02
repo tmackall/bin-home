@@ -6,9 +6,11 @@ fi
 
 # execute the broadbad/internet speed test
 speedtest-cli > "$file_output" 2>&1
+STATUS=$?
 
-if [[ $? != 0 ]]; then
-    echo "Failed speed test"
+echo $(whoami)
+if [[ $STATUS != 0 ]]; then
+    echo "Failed speed test: $STATUS"
     exit 2
 fi
 DL_SPEED=$(cat $file_output | grep -i "^Download")
