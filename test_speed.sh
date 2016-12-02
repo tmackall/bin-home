@@ -1,20 +1,20 @@
 #!/bin/bash
-file_output="/tmp/speedtest.out"
-if [[ -e "$file_output" ]]; then
-    rm "$file_output"
-fi
+FILE_OUT=$(mktemp)
+echo $FILE_OUT
 
 # execute the broadbad/internet speed test
-speedtest-cli > "$file_output" 2>&1
+speedtest-cli > "$FILE_OUT" 2>&1
 STATUS=$?
 
 echo $(whoami)
 if [[ $STATUS != 0 ]]; then
     echo "Failed speed test: $STATUS"
+    rm $FILE_OUT
     exit 2
 fi
-DL_SPEED=$(cat $file_output | grep -i "^Download")
-UL_SPEED=$(cat $file_output | grep -i "^Upload")
-PROVIDER=$(cat $file_output | grep "Testing from" | sed 's/Testing from //' | sed 's/\.\.\.//')
-mutt mackall.tom@gmail.com -s "$PROVIDER: $DL_SPEED, $UL_SPEED" < "$file_output"
+DL_SPEED=$(cat $FILE_OUT | grep -i "^Download")
+UL_SPEED=$(cat $FILE_OUT | grep -i "^Upload")
+PROVIDER=$(cat $FILE_OUT | grep "Testing from" | sed 's/Testing from //' | sed 's/\.\.\.//')
+mutt mackall.tom@gmail.com -s "$PROVIDER: $DL_SPEED, $UL_SPEED" < "$FILE_OUT"
+rm $FILE_OUT
 exit 0
